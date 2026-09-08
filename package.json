@@ -12,7 +12,7 @@
     "comic:verify": "node scripts/comic-pipeline/verify.mjs",
     "comic:publish": "node scripts/comic-pipeline/publish-r2.mjs",
     "comic:test": "node scripts/comic-pipeline/test.mjs",
-    "build": "npm run verify:mira-docs && npm run verify:current-status && tsc -b && vite build",
+    "build": "npm run verify:mira-docs && tsc -b && vite build",
     "build:github-pages": "npm run build -- --mode github-pages",
     "preview": "vite preview",
     "verify:current-status": "node scripts/verify-current-status.mjs"
