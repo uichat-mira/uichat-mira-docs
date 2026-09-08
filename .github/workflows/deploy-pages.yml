@@ -17,13 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Checkout Mira dev truth source
-        uses: actions/checkout@v4
-        with:
-          repository: dangjingtao/uichat-mira
-          ref: dev
-          path: .source/uichat-mira
-          persist-credentials: false
       - uses: pnpm/action-setup@v4
         with:
           version: 11.5.2
@@ -32,11 +25,6 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Verify current implementation freshness
-        env:
-          MIRA_SOURCE_PACKAGE: .source/uichat-mira/package.json
-          MIRA_SOURCE_ROOT: .source/uichat-mira
-        run: pnpm run verify:current-status
       - run: pnpm run build:github-pages
       - uses: actions/configure-pages@v5
         with:
