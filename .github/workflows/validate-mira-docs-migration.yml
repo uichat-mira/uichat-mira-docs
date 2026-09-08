@@ -20,16 +20,10 @@ concurrency:
 
 jobs:
   validate:
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Checkout Mira dev truth source
-        uses: actions/checkout@v4
-        with:
-          repository: dangjingtao/uichat-mira
-          ref: dev
-          path: .source/uichat-mira
-          persist-credentials: false
       - uses: pnpm/action-setup@v4
         with:
           version: 11.5.2
@@ -39,11 +33,6 @@ jobs:
           cache: pnpm
       - name: Install locked dependencies
         run: pnpm install --frozen-lockfile
-      - name: Verify current implementation freshness
-        env:
-          MIRA_SOURCE_PACKAGE: .source/uichat-mira/package.json
-          MIRA_SOURCE_ROOT: .source/uichat-mira
-        run: pnpm run verify:current-status
       - name: Test comic image pipeline
         run: pnpm run comic:test
       - name: Verify real MiraDocs content compatibility
@@ -54,3 +43,24 @@ jobs:
         env:
           EXPECTED_BASE: uichat-mira-docs
         run: pnpm run verify:static-output
+
+  current-status-freshness:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout Mira dev truth source
+        uses: actions/checkout@v4
+        with:
+          repository: dangjingtao/uichat-mira
+          ref: dev
+          path: .source/uichat-mira
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check current implementation freshness
+        env:
+          MIRA_SOURCE_PACKAGE: .source/uichat-mira/package.json
+          MIRA_SOURCE_ROOT: .source/uichat-mira
+        run: node scripts/verify-current-status.mjs
