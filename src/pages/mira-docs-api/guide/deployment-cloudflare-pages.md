@@ -22,6 +22,19 @@ Node.js: 22
 
 `main` 更新时，Cloudflare 独立完成检出、锁定依赖安装、Vite 构建和发布。
 
+站点构建只验证本站内容与构建契约，不依赖 `uichat-mira@dev` 的实时版本。博客、文档、下载页和其他站点内容不能因为开发分支继续前进而被阻断发布。
+
+## 当前实现快照巡检
+
+`src/pages/docs/status/current.md` 记录一次明确时间点上的实现快照。仓库保留 `verify:current-status` 用于检查它是否已经落后于 `uichat-mira@dev`。
+
+这项检查属于独立巡检：
+
+- 定时或人工触发时可以失败并提醒维护者更新快照；
+- 不进入 `pnpm run build`；
+- 不作为 Cloudflare Pages 或 GitHub Pages 的发布前置条件；
+- 不影响 Release、R2 下载链接或其他与开发快照无关的内容发布。
+
 ## 分支预览
 
 Draft PR 或功能分支更新后，Cloudflare 会生成：

@@ -16,14 +16,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Checkout Mira dev truth source
-        uses: actions/checkout@v4
-        with:
-          repository: dangjingtao/uichat-mira
-          ref: dev
-          path: .source/uichat-mira
-          persist-credentials: false
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -37,12 +29,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Verify current implementation freshness
-        env:
-          MIRA_SOURCE_PACKAGE: .source/uichat-mira/package.json
-          MIRA_SOURCE_ROOT: .source/uichat-mira
-        run: pnpm run verify:current-status
 
       - name: Build
         run: pnpm run build
