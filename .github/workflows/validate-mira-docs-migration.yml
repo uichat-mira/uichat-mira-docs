@@ -52,7 +52,7 @@ jobs:
       - name: Checkout Mira dev truth source
         uses: actions/checkout@v4
         with:
-          repository: dangjingtao/uichat-mira
+          repository: uichat-mira/mira-desktop
           ref: dev
           path: .source/uichat-mira
           persist-credentials: false

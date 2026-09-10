@@ -12,7 +12,7 @@ const sourceRoot = resolve(
   process.env.MIRA_SOURCE_ROOT || ".source/uichat-mira",
 );
 const remoteSourcePackageUrl =
-  "https://raw.githubusercontent.com/dangjingtao/uichat-mira/dev/package.json";
+  "https://raw.githubusercontent.com/uichat-mira/mira-desktop/dev/package.json";
 const maxAgeDays = Number(process.env.CURRENT_STATUS_MAX_AGE_DAYS || "14");
 const strictEnvironment =
   process.env.CI === "true" ||

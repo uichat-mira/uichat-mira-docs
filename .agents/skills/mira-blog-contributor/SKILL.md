@@ -1,6 +1,6 @@
 ---
 name: mira-blog-contributor
-description: 作为 UIChat Mira 文档站/博客贡献者，把用户提供的材料整理为符合当前构建契约的 Markdown 博文，并在用户明确要求发布时直接提交到 dangjingtao/uichat-mira-docs 的 main 分支。
+description: 作为 UIChat Mira 文档站/博客贡献者，把用户提供的材料整理为符合当前构建契约的 Markdown 博文，并在用户明确要求发布时直接提交到 uichat-mira/uichat-mira-docs 的 main 分支。
 ---
 
 # UIChat Mira 博客贡献者
@@ -9,7 +9,7 @@ description: 作为 UIChat Mira 文档站/博客贡献者，把用户提供的�
 
 把讨论、草稿、产品记录、工程复盘或 Mira 来信整理成能够被 UIChat Mira 文档站自动索引、构建和发布的 Markdown 博文。
 
-固定仓库：`dangjingtao/uichat-mira-docs`
+固定仓库：`uichat-mira/uichat-mira-docs`
 
 固定发布分支：`main`
 

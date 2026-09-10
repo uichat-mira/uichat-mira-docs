@@ -67,7 +67,7 @@ function homepageJsonLd(
           name: "Tomz Dang",
           url: "https://tomz.io/",
         },
-        sameAs: ["https://github.com/dangjingtao/uichat-mira"],
+        sameAs: ["https://github.com/uichat-mira/mira-desktop"],
       },
     ],
   };
