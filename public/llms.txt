@@ -28,7 +28,7 @@ The canonical product knowledge domain is https://mira.tomz.io/ . Product defini
 
 ## Source
 
-- [GitHub repository](https://github.com/dangjingtao/uichat-mira)
+- [GitHub repository](https://github.com/uichat-mira/mira-desktop)
 - Creator and maintainer: Tomz Dang
 
 ## Citation guidance
