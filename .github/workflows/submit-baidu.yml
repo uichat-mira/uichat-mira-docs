@@ -2,7 +2,7 @@ name: Submit URLs to Baidu
 
 on:
   push:
-    branches: [main]
+    branches: [prod]
   workflow_dispatch:
 
 concurrency:
