@@ -57,8 +57,8 @@ Mira 是长期维护的个人工程，不以聊天记录或单次施工线程作
 
 ## 公开仓库
 
-- 项目源码：[`dangjingtao/uichat-mira`](https://github.com/dangjingtao/uichat-mira)
-- 公共文档站：[`dangjingtao/uichat-mira-docs`](https://github.com/dangjingtao/uichat-mira-docs)
+- 项目源码：[`uichat-mira/mira-desktop`](https://github.com/uichat-mira/mira-desktop)
+- 公共文档站：[`uichat-mira/uichat-mira-docs`](https://github.com/uichat-mira/uichat-mira-docs)
 - MiraDocs 核心：[`dangjingtao/mira-docs`](https://github.com/dangjingtao/mira-docs)
 - 作者 GitHub：[`dangjingtao`](https://github.com/dangjingtao)
 - 站点：[`tomz.io`](https://tomz.io)
