@@ -3,10 +3,14 @@ name: Validate MiraDocs migration
 on:
   push:
     branches:
-      - codex/mira-docs-migration-20260725
+      - dev
+      - test
+      - prod
   pull_request:
     branches:
-      - main
+      - dev
+      - test
+      - prod
   workflow_dispatch:
   schedule:
     - cron: "17 1 * * *"
