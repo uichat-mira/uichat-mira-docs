@@ -1,30 +1,27 @@
-# Repository Environment Exception
+# Repository Environment Model
 
-This repository currently uses a documented exception to the Mira Organization environment model during and immediately after ownership migration.
+This repository follows the Mira Organization migration branch model.
 
-## Current reality
+```text
+feat/* → dev → test → prod
+```
 
-- `main` is the current publishing source for the documentation website.
-- GitHub Pages deploys automatically from `main` through `.github/workflows/deploy-pages.yml`.
-- Cloudflare Pages production deployment is an explicit `workflow_dispatch` through `.github/workflows/deploy-cloudflare-pages.yml`.
-- The existing `dev` branch is historical/stale relative to `main` and is not treated as the development environment.
-- Dedicated `test` and `prod` branches are not currently part of this repository's real deployment chain.
+## Branch semantics
 
-## Exception to the organization model
+- `feat/*`: change branches; CI only.
+- `dev`: development integration and preview source.
+- `test`: acceptance/staging source.
+- `prod`: production source.
+- `main`: retained for historical compatibility; it must not bypass `prod` for deployment.
 
-The standard `feat/* -> dev -> test -> prod` promotion chain is not introduced as part of the repository ownership migration, because doing so would change the site's established release topology rather than merely migrate ownership.
+## Deployment semantics
 
-Omitted stages for now: `dev`, `test`, and `prod` as deployment branches.
+- Pull requests into `dev`, `test`, and `prod` run validation.
+- GitHub Pages production publication is triggered only by `prod`.
+- Baidu production URL submission is triggered only by `prod`.
+- Cloudflare Pages remains Git Integration driven. Its production branch must be `prod`; `dev`, `test`, and feature branches are preview branches.
+- The manual Wrangler workflow is fallback-only and must not become a second automatic deployment path.
 
-Replacement checks:
+## Migration rule
 
-1. Feature/change work is validated by pull-request CI before merge.
-2. Merge to `main` triggers the existing GitHub Pages build/deploy path.
-3. Cloudflare Pages production publication remains an explicit CI/CD action from the validated `main` source.
-4. Production acceptance requires live smoke verification after deployment.
-
-## Production protection
-
-`main` is retained as the current production source only under this documented repository-specific exception. Migrating the site to the full organization branch model is a separate governance change and must not be bundled into repository ownership migration.
-
-Historical branches are retained and are not reclassified merely to satisfy naming conventions.
+The Cloudflare Pages project name `uichat-mira-docs` and other external resource identities remain unchanged. Branch alignment changes promotion semantics, not resource names.

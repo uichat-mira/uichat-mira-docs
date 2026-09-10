@@ -1,6 +1,6 @@
 ---
 name: mira-blog-contributor
-description: 作为 UIChat Mira 文档站/博客贡献者，把用户提供的材料整理为符合当前构建契约的 Markdown 博文，并在用户明确要求发布时直接提交到 uichat-mira/uichat-mira-docs 的 main 分支。
+description: 作为 UIChat Mira 文档站/博客贡献者，把用户提供的材料整理为符合当前构建契约的 Markdown 博文，并在用户明确要求发布时按 feat/* → dev → test → prod 的组织分支流程提交到 uichat-mira/uichat-mira-docs。
 ---
 
 # UIChat Mira 博客贡献者
@@ -11,7 +11,9 @@ description: 作为 UIChat Mira 文档站/博客贡献者，把用户提供的�
 
 固定仓库：`uichat-mira/uichat-mira-docs`
 
-固定发布分支：`main`
+分支流程：`feat/* → dev → test → prod`
+
+生产发布分支：`prod`
 
 博文根目录：`src/pages/blogs/`
 
@@ -19,7 +21,7 @@ description: 作为 UIChat Mira 文档站/博客贡献者，把用户提供的�
 
 ## 何时执行发布
 
-只有用户明确表达“发布、推送、提交到博客、上 main、发出去”等发布意图时，才向 GitHub 写入。
+只有用户明确表达“发布、推送、提交到博客、发出去”等发布意图时，才向 GitHub 写入。
 
 用户只是在讨论、润色、试写、看草稿时，不得擅自提交。
 
@@ -29,12 +31,12 @@ description: 作为 UIChat Mira 文档站/博客贡献者，把用户提供的�
 
 仓库实现可能变化。每次发布前至少读取：
 
-1. `package.json`
-2. `src/App.tsx` 中 Markdown glob、frontmatter 解析、博客排序和作者解析相关代码
-3. `src/pages/mira-docs-api/guide/authoring.md`
+1. `dev` 分支的 `package.json`
+2. `dev` 分支 `src/App.tsx` 中 Markdown glob、frontmatter 解析、博客排序和作者解析相关代码
+3. `dev` 分支 `src/pages/mira-docs-api/guide/authoring.md`
 4. 目标博客目录中至少一篇最近的现有文章
 
-如果说明文档与运行时代码冲突，以当前 `main` 分支代码为准。
+如果说明文档与运行时代码冲突，以当前 `dev` 分支代码为准。
 
 ## 路径与分类
 
@@ -174,29 +176,16 @@ reviewedBy: tomz
 
 用户明确要求发布后：
 
-1. 读取 `main` 最新契约和目标分类文章。
+1. 读取 `dev` 最新契约和目标分类文章。
 2. 生成最终 Markdown。
-3. 检查目标路径是否存在。
-4. 新文章使用 GitHub `create_file` 直接写入 `main`。
-5. 修订现有文章时先读取当前 blob SHA，再使用 `update_file` 写入 `main`。
-6. 提交信息使用：
-
-```text
-blog: publish <slug>
-```
-
-修订文章时使用：
-
-```text
-blog: update <slug>
-```
-
-7. 获取提交 SHA，并检查该提交关联的 GitHub Actions 运行。
-8. 构建工作流应执行 Node 22、`npm ci` 和 `npm run build -- --mode github-pages`。
-9. 如果构建失败，读取失败 job 与日志；问题仅由本次文章导致时，直接修正文章并再次提交。不要用修改构建代码来掩盖内容错误。
-10. 如果暂时无法取得 Actions 状态，明确说明只完成了静态契约检查，不声称构建已通过。
-
-除非仓库保护规则阻止直接写入，或用户明确要求 PR，否则不要额外创建分支和 Pull Request。
+3. 从当前 `dev` 创建独立 `feat/blog-<slug>` 分支。
+4. 检查目标路径是否存在；新增或更新文章只发生在该 feature 分支。
+5. 提交信息使用 `blog: publish <slug>`；修订文章使用 `blog: update <slug>`。
+6. 创建 `feat/blog-<slug> → dev` Pull Request，并检查 PR validation。
+7. `dev` 验证通过后，按仓库晋级流程将同一变更推进到 `test`，再推进到 `prod`。
+8. `prod` 是生产发布源；不得通过 `main` 绕过 `prod`。
+9. 如果构建失败，读取失败 job 与日志；问题仅由本次文章导致时，直接修正 feature 分支并再次验证。不要用修改构建代码来掩盖内容错误。
+10. 如果暂时无法取得 Actions 状态，明确说明当前停在哪个晋级阶段，不声称生产已发布。
 
 ## 发布结果回报
 
@@ -205,9 +194,10 @@ blog: update <slug>
 - 文章标题
 - 仓库路径
 - 页面路由，通常为 `/blogs/<category>/<slug>`
-- commit SHA 或提交链接
+- feature / dev / test / prod 当前晋级位置
+- commit SHA 或 PR 链接
 - GitHub Actions 构建状态
-- 若未验证构建，明确写“已提交，尚未取得构建结果”
+- 若尚未进入 `prod`，明确写“尚未生产发布”
 
 不要把内部工具 ID、blob SHA 或冗长操作流水暴露给用户。
 
@@ -215,9 +205,11 @@ blog: update <slug>
 
 - 不得把文章写入不存在的根级 `post/` 或 `posts/` 目录。
 - 不得在未获得发布意图时直接推送。
+- 不得绕过 `dev → test → prod` 直接写生产。
+- 不得通过 `main` 发布生产内容。
 - 不得使用错误日期格式后声称排序正常。
 - 不得省略 H1。
 - 不得为一篇普通博文手写 React 路由。
-- 不得未经核验声称 `npm run build` 已通过。
+- 不得未经核验声称构建或生产部署已通过。
 - 不得顺手重构博客页面、调整样式或修改无关文件。
 - 不得把计划中的 Mira 能力写成已经落地的事实。
