@@ -2,8 +2,7 @@ name: Deploy GitHub Pages
 on:
   push:
     branches:
-      - main
-      - feat/works-comic-reader-experiment
+      - prod
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,6 +13,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
+    if: github.ref_name == 'prod'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +34,7 @@ jobs:
           path: dist
   deploy:
     environment:
-      name: ${{ github.ref_name == 'main' && 'github-pages' || 'github-pages-experiment' }}
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build

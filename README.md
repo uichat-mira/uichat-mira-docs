@@ -31,21 +31,31 @@ npm run dev
 npm run build
 ```
 
-## 部署
+## 分支与部署
+
+仓库遵循：
+
+```text
+feat/* → dev → test → prod
+```
+
+`main` 只保留历史兼容，不作为生产发布旁路。
 
 ### GitHub Pages
 
-推送 `main` 后，`.github/workflows/deploy-pages.yml` 自动构建并部署。
+推送 `prod` 后，`.github/workflows/deploy-pages.yml` 自动构建并部署。
 
 仓库 Settings → Pages → Source 需要选择 **GitHub Actions**。
 
 ### Cloudflare Pages
 
-连接本仓库并使用：
+Cloudflare Pages 使用 Git Integration；Production branch 应设置为 `prod`：
 
 - Framework preset：Vite
 - Build command：`npm run build`
 - Build output directory：`dist`
 - Node.js：22
+
+`dev`、`test` 和 feature 分支用于预览；`prod` 对应生产域名。仓库保留手动 Wrangler workflow 作为 Git Integration 异常时的生产补发路径，且只允许从 `prod` 执行。
 
 Vite 的 base 已兼容 GitHub Pages 项目路径；Cloudflare Pages 根路径部署也可正常工作。
