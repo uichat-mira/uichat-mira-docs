@@ -2,7 +2,7 @@ name: Submit URLs to Baidu
 
 on:
   push:
-    branches: [main]
+    branches: [prod]
   workflow_dispatch:
 
 concurrency:
@@ -11,6 +11,7 @@ concurrency:
 
 jobs:
   submit:
+    if: github.ref_name == 'prod'
     runs-on: ubuntu-latest
     permissions:
       contents: read
