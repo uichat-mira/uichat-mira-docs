@@ -1,9 +1,9 @@
 # UIChat Mira 产品文档
 
-面向 [UIChat Mira](https://github.com/dangjingtao/uichat-mira) 的精选产品文档站。内容依据源码 `dev` 分支整理，覆盖品牌、哲学、产品、架构、工程与当前状态。
+面向 [UIChat Mira](https://github.com/uichat-mira/mira-desktop) 的精选产品文档站。内容依据源码 `dev` 分支整理，覆盖品牌、哲学、产品、架构、工程与当前状态。
 
 - Sites：https://uichat-mira-docs.dangjingtao.chatgpt.site
-- GitHub Pages：https://dangjingtao.github.io/uichat-mira-docs/
+- GitHub Pages：https://uichat-mira.github.io/uichat-mira-docs/
 
 ## 文档结构
 
