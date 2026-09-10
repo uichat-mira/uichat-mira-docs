@@ -11,6 +11,7 @@ concurrency:
 
 jobs:
   submit:
+    if: github.ref_name == 'prod'
     runs-on: ubuntu-latest
     permissions:
       contents: read
