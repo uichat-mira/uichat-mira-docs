@@ -32,7 +32,10 @@ Publisher: GitHub Actions + Wrangler Direct Upload
 推送 `prod` 后，`.github/workflows/deploy-cloudflare-pages.yml` 自动执行生产发布。它只构建一次根路径生产产物，然后：
 
 1. 将 `dist` 通过 `wrangler pages deploy ... --project-name=uichat-mira-docs --branch=prod` 发布到 Cloudflare Pages；
-2. Cloudflare 发布成功后，使用同一份构建中的 sitemap 生成本次变更 URL，并提交到 Baidu。
+2. Cloudflare 发布成功后，对本次精确 deployment 与 `mira.tomz.io` 执行 T5 production smoke；
+3. 使用同一份构建中的 sitemap 生成本次变更 URL，并在凭据可用时提交到 Baidu。
+
+构建产物包含 `mira-deployment.json`，记录当前 commit SHA 与 workflow run ID。T5 会同时从 Wrangler 返回的精确 `pages.dev` deployment 和 `mira.tomz.io` 读取这个标记，确认自定义域名已经指向当前生产提交，再检查首页与深层部署文档。成功执行 deploy command 本身不视为 T5 通过。
 
 workflow 同时保留 `workflow_dispatch`，用于从 `prod` 做受控重发。非 `prod` ref 即使人工触发，也不会执行生产 jobs。
 
@@ -75,7 +78,7 @@ MiraDocs 静态构建仍会生成：
 
 ## 手动重发
 
-需要补发生产时，在 `prod` 上人工触发同一个 **Publish Docs production** workflow。它走与自动生产发布完全相同的 build、Cloudflare project、branch 和 secrets 合同，不维护第二套发布实现。
+需要补发生产时，在 `prod` 上人工触发同一个 **Publish Docs production** workflow。它走与自动生产发布完全相同的 build、Cloudflare project、branch、T5 smoke 和 secrets 合同，不维护第二套发布实现。
 
 不要通过重新连接 GitHub App、创建第二个 Pages 项目、切换 DNS 或重新启用旧 Git Integration 来完成普通补发。
 
@@ -93,4 +96,4 @@ pnpm run build:github-pages
 EXPECTED_BASE=uichat-mira-docs pnpm run verify:static-output
 ```
 
-生产发布后再检查首页、深层文档、博客详情、搜索、主题切换、PWA 和分享元数据。成功执行 deploy command 只证明发布动作完成，不替代生产 smoke。
+生产 workflow 的 T5 负责证明当前 commit 已经同时出现在精确 Cloudflare deployment 和 `mira.tomz.io`。发布后如涉及视觉、搜索、主题、PWA 或分享元数据的改动，再按变更风险补充相应人工烟测。
