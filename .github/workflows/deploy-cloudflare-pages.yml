@@ -125,6 +125,7 @@ jobs:
           path: |
             dist
             urls.txt
+          if-no-files-found: error
           retention-days: 1
 
   deploy-cloudflare:
@@ -135,6 +136,11 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: docs-production
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
 
       - name: Deploy prod to Cloudflare Pages
         run: npx --yes wrangler@3.90.0 pages deploy dist --project-name=uichat-mira-docs --branch=prod
