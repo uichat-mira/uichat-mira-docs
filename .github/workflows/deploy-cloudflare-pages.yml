@@ -1,29 +1,35 @@
-name: Deploy Cloudflare Pages
+name: Publish Docs production
 
 on:
+  push:
+    branches:
+      - prod
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
-  group: cloudflare-pages
+  group: docs-production
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     if: github.ref_name == 'prod'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 11.5.2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -31,11 +37,158 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
+      - name: Build production site
         run: pnpm run build
+
+      - name: Build changed URL list
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          BASE_SHA="$BEFORE_SHA"
+          if [ -z "$BASE_SHA" ] || [ "$BASE_SHA" = "0000000000000000000000000000000000000000" ]; then
+            BASE_SHA=$(git rev-parse HEAD^ 2>/dev/null || true)
+          fi
+
+          if [ -n "$BASE_SHA" ]; then
+            git diff --name-only "$BASE_SHA" "$GITHUB_SHA" > /tmp/changed-files.txt
+          else
+            git show --pretty='' --name-only "$GITHUB_SHA" > /tmp/changed-files.txt
+          fi
+
+          node <<'NODE'
+          const fs = require('fs');
+
+          const changed = fs.readFileSync('/tmp/changed-files.txt', 'utf8')
+            .split(/\r?\n/)
+            .map((line) => line.trim())
+            .filter(Boolean);
+          const sitemap = fs.readFileSync('dist/sitemap.xml', 'utf8');
+          const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+
+          const normalizePath = (value) => {
+            try {
+              return decodeURI(value).replace(/\/$/, '') || '/';
+            } catch {
+              return value.replace(/\/$/, '') || '/';
+            }
+          };
+
+          const urlsByPath = new Map(
+            sitemapUrls.map((url) => {
+              const parsed = new URL(url);
+              return [normalizePath(parsed.pathname), url];
+            }),
+          );
+
+          const candidates = new Set();
+          let hasSiteWideChange = false;
+
+          for (const file of changed) {
+            if (/^src\/pages\/.+\.md$/i.test(file) && !/(^|\/)README\.md$/i.test(file)) {
+              let route = file
+                .replace(/^src\/pages/, '')
+                .replace(/^\/docs/, '')
+                .replace(/\.md$/i, '');
+              if (!route) route = '/';
+              candidates.add(normalizePath(route));
+              continue;
+            }
+
+            if (
+              file === 'index.html' ||
+              file === 'src/site.config.ts' ||
+              /^src\/(components\/|.*\.(tsx?|css)$)/.test(file)
+            ) {
+              hasSiteWideChange = true;
+            }
+          }
+
+          if (hasSiteWideChange) candidates.add('/');
+
+          const urls = [...new Set(
+            [...candidates]
+              .map((path) => urlsByPath.get(path))
+              .filter(Boolean),
+          )];
+
+          fs.writeFileSync('urls.txt', urls.length ? `${urls.join('\n')}\n` : '');
+
+          console.log(`Changed files: ${changed.length}`);
+          console.log(`URLs selected for Baidu: ${urls.length}`);
+          if (urls.length) console.log(urls.join('\n'));
+          NODE
+
+      - name: Upload production build
+        uses: actions/upload-artifact@v7
+        with:
+          name: docs-production
+          path: |
+            dist
+            urls.txt
+          retention-days: 1
+
+  deploy-cloudflare:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download production build
+        uses: actions/download-artifact@v8
+        with:
+          name: docs-production
 
       - name: Deploy prod to Cloudflare Pages
         run: npx --yes wrangler@3.90.0 pages deploy dist --project-name=uichat-mira-docs --branch=prod
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  submit-baidu:
+    needs:
+      - build
+      - deploy-cloudflare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download production build
+        uses: actions/download-artifact@v8
+        with:
+          name: docs-production
+
+      - name: Submit changed URLs to Baidu
+        env:
+          BAIDU_PUSH_TOKEN: ${{ secrets.BAIDU_PUSH_TOKEN_MIRA }}
+        run: |
+          if [ -z "$BAIDU_PUSH_TOKEN" ]; then
+            echo "BAIDU_PUSH_TOKEN_MIRA is not configured; skipping Baidu submission."
+            exit 0
+          fi
+
+          if [ ! -s urls.txt ]; then
+            echo "No changed public URLs to submit; skipping."
+            exit 0
+          fi
+
+          echo "Submitting $(wc -l < urls.txt) changed URL(s) to Baidu..."
+
+          HTTP_STATUS=$(curl --silent --show-error \
+            -o baidu-response.json \
+            -w '%{http_code}' \
+            -H 'Content-Type:text/plain' \
+            --data-binary @urls.txt \
+            "http://data.zz.baidu.com/urls?site=https://mira.tomz.io&token=${BAIDU_PUSH_TOKEN}")
+
+          echo "Baidu HTTP status: $HTTP_STATUS"
+          echo "Baidu response:"
+          cat baidu-response.json
+          echo
+
+          if grep -qi 'over quota' baidu-response.json; then
+            echo "::warning::Baidu daily URL submission quota is exhausted; skipping without failing the workflow."
+            exit 0
+          fi
+
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            exit 0
+          fi
+
+          echo "::error::Baidu URL submission failed with HTTP $HTTP_STATUS"
+          exit 1
