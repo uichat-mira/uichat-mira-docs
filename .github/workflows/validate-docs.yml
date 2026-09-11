@@ -1,11 +1,10 @@
-name: Validate MiraDocs migration
+name: Validate Docs
 
 on:
   push:
     branches:
       - dev
       - test
-      - prod
   pull_request:
     branches:
       - dev
@@ -19,7 +18,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: mira-docs-migration-${{ github.ref }}
+  group: docs-validation-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -27,22 +26,29 @@ jobs:
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
         with:
           version: 11.5.2
-      - uses: actions/setup-node@v4
+
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
+
       - name: Install locked dependencies
         run: pnpm install --frozen-lockfile
+
       - name: Test comic image pipeline
         run: pnpm run comic:test
-      - name: Verify real MiraDocs content compatibility
+
+      - name: Verify MiraDocs content compatibility
         run: pnpm run verify:mira-docs
-      - name: Build existing GitHub Pages site
+
+      - name: Build GitHub Pages candidate
         run: pnpm run build:github-pages
+
       - name: Verify generated static output
         env:
           EXPECTED_BASE: uichat-mira-docs
@@ -52,17 +58,20 @@ jobs:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+
       - name: Checkout Mira dev truth source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: uichat-mira/mira-desktop
           ref: dev
           path: .source/uichat-mira
           persist-credentials: false
-      - uses: actions/setup-node@v4
+
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
+
       - name: Check current implementation freshness
         env:
           MIRA_SOURCE_PACKAGE: .source/uichat-mira/package.json
