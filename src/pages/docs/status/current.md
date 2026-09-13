@@ -1,21 +1,21 @@
 ---
 title: 当前实现快照
-description: 以 2026-09-05 的 dev 分支为准，说明 Provider、Knowledge Base、Evaluation、Agent、Tool Runtime、MicroApps Hub 与已知边界。
+description: 以 2026-09-14 的 dev 分支为准，说明 Provider、Knowledge Base、Evaluation、Agent、Tool Runtime、Forge、MicroApps Hub 与已知边界。
 group: 现状与方向
 order: 17
 sourceBranch: dev
-sourceVersion: 0.99.12
-sourceCommit: 7343d4532f566e36c0eb88969969c6422b5eb862
-verifiedAt: 2026-09-05
+sourceVersion: 0.100.1
+sourceCommit: 0e313cf4f2f1ffc791c47334f90439e1e25b077e
+verifiedAt: 2026-09-14
 ---
 
 # 当前实现快照
 
-> 本页核对日期为 2026 年 9 月 5 日，核对基线为 `dev@7343d45`。它描述当前可验证实现，不把设计方向、历史方案或待修复合同写成已经交付的能力。
+> 本页核对日期为 2026 年 9 月 14 日，核对基线为 `dev@0e313cf`。它描述当前可验证实现，不把设计方向、历史方案或待修复合同写成已经交付的能力。
 
 ## 版本与定位
 
-当前根包版本为 `0.99.12`，项目描述仍是：
+当前根包版本为 `0.100.1`，项目描述仍是：
 
 > An intelligent agent cabin that starts with a chat and returns to your side.
 
@@ -31,7 +31,8 @@ Mira 仍以桌面端、本地优先、多 Provider 的个人 AI 工作台为核�
 - Evaluation Package、Dataset、Run、指标和报告；
 - 角色与提示词原型；
 - MCP、内置工具与 Harness；
-- Agent 任务执行与 execution trace；
+- Agent 任务执行、execution trace 与可取消的 run-control；
+- Forge 集成 Runtime、Desktop 工作区与共享 API；
 - MicroApps Hub、独立 Studio 与专用 Runtime；
 - 桌面端构建、调试与发布链路。
 
@@ -223,6 +224,7 @@ Evaluation Package
 - `Pi Loop` 是应用默认 Main Agent 运行时；
 - `LangGraph` 保留为显式兼容、历史测试与回归对照运行时；
 - Main Planner 维护用户全局目标，并决定下一步与最终完成；
+- 每次 Agent 运行会取得独立的 run-control lease 与 `AbortSignal`；同一 `runId` 的新 lease 会使旧 controller 失效，已取消运行会以 `cancelled` 状态收口而不是继续写入普通完成结果；
 - Harness 负责具体工具的公共工具面、暴露、冻结调用、Policy、审批、执行与审计。
 
 ## 三类执行路径
@@ -272,6 +274,20 @@ Tool Exposure 当前规则：
 - 工具包选择只提供偏好，不直接改变权限或触发调用。
 
 `terminal_session` 当前是完整 Host shell / PTY Runtime。Workspace 是默认执行上下文，但不是不可突破的假沙箱；工作空间外的 `cwd` 必须在显示真实目标后获得具体审批。
+
+## Forge 当前快照
+
+Forge 已经从独立控制面收进 Mira Desktop 的主工程边界。当前仓库明确要求以下集成入口存在：
+
+```text
+server/src/forge
+desktop/src/features/forge
+desktop/src/shared/api/forge
+```
+
+根级 `pnpm check` 会执行 `check:forge-cutover`，并拒绝旧 standalone Forge 的独立端口、独立状态目录、独立 package / workspace 等标记。
+
+这组检查证明 Forge 的运行时、桌面入口与共享 API 已由 Mira Desktop 主仓库持有；它不等于所有 Forge 工作流、交互和自动化能力都已经稳定或完整交付。
 
 ## MicroApps 当前快照
 
