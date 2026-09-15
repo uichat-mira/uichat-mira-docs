@@ -340,8 +340,8 @@ type: page
         <h1 class="mobile-product-title">Mira，跟你一起出门。</h1>
         <p class="mobile-product-lede">在手机上直接使用自己的模型，也可以连接桌面端 Mira，把更重的能力留在电脑。Mobile 不是 Desktop 的缩小版，而是一个更贴身的入口。</p>
         <div class="mobile-product-actions">
-          <a class="mobile-product-action primary" href="https://assets.tomz.io/mira/mobile/dev/latest/uichat-mira-mobile-release.apk">下载 Android</a>
-          <a class="mobile-product-action" href="https://assets.tomz.io/mira/mobile/dev/latest/uichat-mira-mobile-ios-unsigned-device.ipa">iOS 测试包</a>
+          <a class="mobile-product-action primary" href="https://github.com/uichat-mira/mira-mobile/releases" data-mobile-download="android">下载 Android</a>
+          <a class="mobile-product-action" href="https://github.com/uichat-mira/mira-mobile/releases" data-mobile-download="ios">iOS 测试包</a>
           <a class="mobile-product-action" href="https://github.com/uichat-mira/mira-mobile">查看源码 ↗</a>
         </div>
         <p class="mobile-product-note">Android 为已签名 dev APK；iOS 当前提供未签名真机 IPA，需要自行签名或侧载。</p>
@@ -406,8 +406,8 @@ type: page
           <p>可以用，也还在快速变化。Android 是目前更直接的体验入口；iOS 真机包仍属于测试分发。</p>
         </div>
         <div class="mobile-download-buttons">
-          <a class="mobile-product-action primary" href="https://assets.tomz.io/mira/mobile/dev/latest/uichat-mira-mobile-release.apk">Android APK</a>
-          <a class="mobile-product-action" href="https://assets.tomz.io/mira/mobile/dev/latest/uichat-mira-mobile-ios-unsigned-device.ipa">iOS IPA</a>
+          <a class="mobile-product-action primary" href="https://github.com/uichat-mira/mira-mobile/releases" data-mobile-download="android">Android APK</a>
+          <a class="mobile-product-action" href="https://github.com/uichat-mira/mira-mobile/releases" data-mobile-download="ios">iOS IPA</a>
         </div>
       </div>
     </section>

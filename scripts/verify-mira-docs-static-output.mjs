@@ -203,6 +203,18 @@ if (existsSync(mobilePath)) {
   ) {
     failures.push("Mira Mobile 静态页把产品 section 泄漏成了源码代码块");
   }
+  if (
+    !html.includes('data-mobile-download="android"') ||
+    !html.includes('data-mobile-download="ios"')
+  ) {
+    failures.push("Mira Mobile 静态页缺少动态下载绑定");
+  }
+  if (
+    /https:\/\/assets\.tomz\.io\/mira\/mobile\/[^"']+\.(?:apk|ipa)/i.test(html) ||
+    /github\.com\/[^"']+\/releases\/download\/[^"']+\.(?:apk|ipa)/i.test(html)
+  ) {
+    failures.push("Mira Mobile 静态页重新写死了具体 APK/IPA 下载地址");
+  }
 }
 
 const blogEntry = [...docsByRoute.entries()].find(([route]) =>
