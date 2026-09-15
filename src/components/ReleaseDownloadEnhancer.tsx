@@ -41,6 +41,7 @@ const mobileGithubIpaFallbackUrl =
   "https://github.com/dangjingtao/uichat-mira-mobile/releases/download/v0.1.2-dev/uichat-mira-mobile-ios-unsigned-device.ipa";
 const mobileR2IpaUrl =
   "https://assets.tomz.io/mira/mobile/dev/latest/uichat-mira-mobile-ios-unsigned-device.ipa";
+const mobileProductUrl = `${import.meta.env.BASE_URL}mobile`;
 
 function formatVersion(value: string) {
   const version = value.trim();
@@ -279,86 +280,91 @@ export default function ReleaseDownloadEnhancer() {
   if (!mountNode) return null;
 
   return createPortal(
-    <div className={`release-download-split${open ? " is-open" : ""}`}>
-      <a
-        className="btn btn-secondary release-download-main"
-        href={recommendedUrl}
-        aria-label={`下载 Mira 推荐版本（${source === "r2" ? "R2 镜像" : "GitHub"}）`}
-      >
-        <Download size={16} aria-hidden="true" />
-        下载
-      </a>
-      <button
-        className="btn btn-secondary release-download-toggle"
-        type="button"
-        aria-label="选择下载来源和其他 Mira 安装包"
-        aria-expanded={open}
-        onClick={() => setOpen((value) => !value)}
-      >
-        <ChevronDown size={15} aria-hidden="true" />
-      </button>
+    <div style={{ display: "contents" }}>
+      <div className={`release-download-split${open ? " is-open" : ""}`}>
+        <a
+          className="btn btn-secondary release-download-main"
+          href={recommendedUrl}
+          aria-label={`下载 Mira 推荐版本（${source === "r2" ? "R2 镜像" : "GitHub"}）`}
+        >
+          <Download size={16} aria-hidden="true" />
+          下载
+        </a>
+        <button
+          className="btn btn-secondary release-download-toggle"
+          type="button"
+          aria-label="选择下载来源和其他 Mira 安装包"
+          aria-expanded={open}
+          onClick={() => setOpen((value) => !value)}
+        >
+          <ChevronDown size={15} aria-hidden="true" />
+        </button>
 
-      {open ? (
-        <div className="release-download-menu" role="menu">
-          <div className="release-download-source" aria-label="下载来源">
-            <div className="release-download-source-options">
-              <button
-                type="button"
-                className={source === "github" ? "active" : ""}
-                aria-pressed={source === "github"}
-                onClick={() => setSource("github")}
-              >
-                GitHub
-              </button>
-              <button
-                type="button"
-                className={source === "r2" ? "active" : ""}
-                aria-pressed={source === "r2"}
-                onClick={() => setSource("r2")}
-              >
-                R2 镜像
-              </button>
-            </div>
-          </div>
-
-          <div className="release-download-options">
-            {downloads.options.length ? (
-              downloads.options.map((option) => (
-                <a
-                  key={option.key}
-                  href={source === "r2" ? option.r2Url : option.githubUrl}
-                  role="menuitem"
+        {open ? (
+          <div className="release-download-menu" role="menu">
+            <div className="release-download-source" aria-label="下载来源">
+              <div className="release-download-source-options">
+                <button
+                  type="button"
+                  className={source === "github" ? "active" : ""}
+                  aria-pressed={source === "github"}
+                  onClick={() => setSource("github")}
                 >
-                  <div className="release-download-option-title">
-                    <span>{option.label}</span>
-                    {option.version ? (
-                      <span className="release-download-version">
-                        {option.version}
-                      </span>
-                    ) : null}
-                  </div>
-                  <small>
-                    {option.meta} · {source === "r2" ? "R2 镜像" : "GitHub"}
-                  </small>
-                </a>
-              ))
-            ) : (
-              <div className="release-download-empty">正在读取最新构建产物…</div>
-            )}
-          </div>
+                  GitHub
+                </button>
+                <button
+                  type="button"
+                  className={source === "r2" ? "active" : ""}
+                  aria-pressed={source === "r2"}
+                  onClick={() => setSource("r2")}
+                >
+                  R2 镜像
+                </button>
+              </div>
+            </div>
 
-          <a
-            className="release-download-all"
-            href={release?.html_url || fallbackReleaseUrl}
-            target="_blank"
-            rel="noreferrer"
-            role="menuitem"
-          >
-            <span>查看所有版本</span>
-            <ExternalLink size={13} aria-hidden="true" />
-          </a>
-        </div>
-      ) : null}
+            <div className="release-download-options">
+              {downloads.options.length ? (
+                downloads.options.map((option) => (
+                  <a
+                    key={option.key}
+                    href={source === "r2" ? option.r2Url : option.githubUrl}
+                    role="menuitem"
+                  >
+                    <div className="release-download-option-title">
+                      <span>{option.label}</span>
+                      {option.version ? (
+                        <span className="release-download-version">
+                          {option.version}
+                        </span>
+                      ) : null}
+                    </div>
+                    <small>
+                      {option.meta} · {source === "r2" ? "R2 镜像" : "GitHub"}
+                    </small>
+                  </a>
+                ))
+              ) : (
+                <div className="release-download-empty">正在读取最新构建产物…</div>
+              )}
+            </div>
+
+            <a
+              className="release-download-all"
+              href={release?.html_url || fallbackReleaseUrl}
+              target="_blank"
+              rel="noreferrer"
+              role="menuitem"
+            >
+              <span>查看所有版本</span>
+              <ExternalLink size={13} aria-hidden="true" />
+            </a>
+          </div>
+        ) : null}
+      </div>
+      <a className="btn btn-secondary" href={mobileProductUrl}>
+        Mira Mobile →
+      </a>
     </div>,
     mountNode,
   );
