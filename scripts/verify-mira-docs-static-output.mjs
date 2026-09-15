@@ -190,6 +190,21 @@ if (existsSync(claudePath)) {
 }
 verifyDocumentShell(claudeRoute, "Claude");
 
+const mobileRoute = "/mobile";
+const mobilePath = routeFile(mobileRoute);
+if (existsSync(mobilePath)) {
+  const html = readFileSync(mobilePath, "utf8");
+  if (!html.includes('class="mobile-product-section"')) {
+    failures.push("Mira Mobile 静态页缺少产品 section");
+  }
+  if (
+    html.includes("&lt;section class=&quot;mobile-product-section&quot;") ||
+    html.includes("<pre><code>&lt;section class=\"mobile-product-section\"")
+  ) {
+    failures.push("Mira Mobile 静态页把产品 section 泄漏成了源码代码块");
+  }
+}
+
 const blogEntry = [...docsByRoute.entries()].find(([route]) =>
   route.startsWith("/blogs/"),
 );
