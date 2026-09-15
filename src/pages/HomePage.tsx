@@ -8,6 +8,7 @@ import { allDocs, compareBlogDocs } from "../content/mira-docs-adapter";
 const appBase = import.meta.env.BASE_URL;
 const desktopRepoUrl = "https://github.com/uichat-mira/mira-desktop";
 const organizationUrl = "https://github.com/uichat-mira";
+const fairWorkUrl = "https://github.com/uichat-mira/.github/blob/main/FAIR-WORK.md";
 
 function docHref(path: string) {
   return `${appBase}${path.replace(/^\/+/, "")}`;
@@ -123,6 +124,24 @@ export default function HomePage({ darkMode, sitemapData, footer }: HomePageProp
           </figure>
         </div>
       </header>
+
+      <section className="home-fair-work" aria-labelledby="home-fair-work-title">
+        <div className="wrap home-fair-work-layout">
+          <div className="home-fair-work-copy">
+            <span className="eyebrow">FAIR WORK / 公平劳动</span>
+            <div>
+              <h2 id="home-fair-work-title">Mira 反对 996。</h2>
+              <p>
+                <strong>人不是基础设施。</strong> 不是因为工作不重要，而是因为人更重要。
+              </p>
+            </div>
+          </div>
+          <a href={fairWorkUrl} target="_blank" rel="noreferrer">
+            阅读公平劳动声明
+            <ArrowUpRight size={14} aria-hidden="true" />
+          </a>
+        </div>
+      </section>
 
       <section className="home-now-section" aria-labelledby="home-now-title">
         <div className="wrap">
