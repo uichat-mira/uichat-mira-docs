@@ -1,5 +1,8 @@
 .release-download-enhancer-root {
   display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .release-download-split {
