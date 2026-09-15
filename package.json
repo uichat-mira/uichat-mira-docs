@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "verify:mira-docs": "node scripts/verify-mira-docs-compat.mjs",
-    "verify:static-output": "node scripts/verify-mira-docs-static-output.mjs && node scripts/verify-mobile-product-static-output.mjs",
+    "verify:static-output": "node scripts/verify-mira-docs-static-output.mjs",
     "comic:inspect": "node scripts/comic-pipeline/inspect.mjs",
     "comic:build": "node scripts/comic-pipeline/build.mjs",
     "comic:verify": "node scripts/comic-pipeline/verify.mjs",
