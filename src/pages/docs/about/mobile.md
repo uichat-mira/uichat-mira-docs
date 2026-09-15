@@ -358,7 +358,6 @@ type: page
         </div>
       </div>
     </section>
-
     <section class="mobile-product-section">
       <div class="mobile-product-section-head">
         <span>DUAL ENTRY / 双链路</span>
@@ -379,7 +378,6 @@ type: page
         </article>
       </div>
     </section>
-
     <section class="mobile-product-section">
       <div class="mobile-product-section-head">
         <span>CURRENT / 现在已经有的</span>
@@ -392,7 +390,6 @@ type: page
         <article class="mobile-fact-card"><h3>双平台构建</h3><p>Android 提供签名 APK；iOS 提供未签名真机测试 IPA。</p></article>
       </div>
     </section>
-
     <section class="mobile-product-section">
       <div class="mobile-product-principle">
         <h2>不是把 Desktop 塞进一块更小的屏幕。</h2>
@@ -402,7 +399,6 @@ type: page
         </div>
       </div>
     </section>
-
     <section class="mobile-product-section">
       <div class="mobile-download-panel">
         <div>
