@@ -57,6 +57,64 @@
   backdrop-filter: blur(12px);
 }
 
+.home-fair-work {
+  border-bottom: 1px solid var(--hairline);
+  background: color-mix(in srgb, var(--primary) 8%, var(--canvas));
+}
+
+.home-fair-work-layout {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.home-fair-work-copy {
+  display: flex;
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+  min-width: 0;
+}
+
+.home-fair-work-copy .eyebrow {
+  flex: 0 0 auto;
+}
+
+.home-fair-work-copy h2 {
+  margin: 0 0 4px;
+  font-size: clamp(24px, 2.6vw, 34px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.home-fair-work-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.home-fair-work-copy strong {
+  color: var(--ink);
+}
+
+.home-fair-work-layout > a {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  align-items: center;
+  color: var(--primary-active);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.home-fair-work-layout > a:hover {
+  color: var(--ink);
+}
+
 .home-section-heading {
   max-width: 760px;
   margin-bottom: 42px;
@@ -289,6 +347,16 @@
     min-height: 0;
   }
 
+  .home-fair-work-layout,
+  .home-fair-work-copy {
+    align-items: flex-start;
+  }
+
+  .home-fair-work-copy {
+    flex-direction: column;
+    gap: 10px;
+  }
+
   .home-now-grid,
   .home-writing-grid {
     grid-template-columns: 1fr;
@@ -318,6 +386,17 @@
 
   .home-product-shot {
     display: none;
+  }
+
+  .home-fair-work-layout {
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+
+  .home-fair-work-copy h2 {
+    font-size: 28px;
   }
 
   .home-section-heading {
