@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "verify:mira-docs": "node scripts/verify-mira-docs-compat.mjs",
-    "verify:static-output": "node scripts/verify-mira-docs-static-output.mjs",
+    "verify:static-output": "node scripts/verify-mira-docs-static-output.mjs && node scripts/verify-mobile-product-page.mjs",
     "comic:inspect": "node scripts/comic-pipeline/inspect.mjs",
     "comic:build": "node scripts/comic-pipeline/build.mjs",
     "comic:verify": "node scripts/comic-pipeline/verify.mjs",
@@ -38,7 +38,6 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/three": "^0.185.1",
-    "@vitejs/plugin-react": "^5.0.4",
     "sharp": "^0.35.3",
     "tailwindcss": "^4.3.2",
     "typescript": "^5.9.3",
