@@ -25,22 +25,21 @@ type DownloadOption = {
   r2Url: string;
 };
 
+type MobileDownloadTarget = {
+  githubUrl: string;
+  r2Url: string;
+};
+
 const latestReleaseUrl =
   "https://api.github.com/repos/dangjingtao/uichat-mira/releases/latest";
 const fallbackReleaseUrl =
   "https://github.com/dangjingtao/uichat-mira/releases/latest";
 const r2PublicBaseUrl = "https://assets.tomz.io/mira/latest";
 const mobileReleasesUrl =
-  "https://api.github.com/repos/dangjingtao/uichat-mira-mobile/releases?per_page=20";
-const mobileReleaseFallbackTag = "v0.1.2-dev";
-const mobileGithubApkFallbackUrl =
-  "https://github.com/dangjingtao/uichat-mira-mobile/releases/download/v0.1.2-dev/uichat-mira-mobile-release.apk";
-const mobileR2ApkUrl =
-  "https://assets.tomz.io/mira/mobile/dev/latest/uichat-mira-mobile-release.apk";
-const mobileGithubIpaFallbackUrl =
-  "https://github.com/dangjingtao/uichat-mira-mobile/releases/download/v0.1.2-dev/uichat-mira-mobile-ios-unsigned-device.ipa";
-const mobileR2IpaUrl =
-  "https://assets.tomz.io/mira/mobile/dev/latest/uichat-mira-mobile-ios-unsigned-device.ipa";
+  "https://api.github.com/repos/uichat-mira/mira-mobile/releases?per_page=20";
+const mobileReleasesPageUrl =
+  "https://github.com/uichat-mira/mira-mobile/releases";
+const mobileR2DevBaseUrl = "https://assets.tomz.io/mira/mobile/dev/latest";
 const mobileProductUrl = `${import.meta.env.BASE_URL}mobile`;
 
 function formatVersion(value: string) {
@@ -53,14 +52,24 @@ function mobileVersionFromTag(tag: string) {
   return formatVersion(tag.replace(/-dev$/i, ""));
 }
 
+function findMobileAndroidReleaseAsset(release: GitHubRelease | null) {
+  return release?.assets.find((asset) => /(?:^|-)release\.apk$/i.test(asset.name));
+}
+
+function findMobileIosDeviceAsset(release: GitHubRelease | null) {
+  return release?.assets.find((asset) => /ios-unsigned-device\.ipa$/i.test(asset.name));
+}
+
 function findMobileDevRelease(releases: GitHubRelease[]) {
   return releases.find(
     (release) =>
       /^v.+-dev$/i.test(release.tag_name) &&
-      release.assets.some(
-        (asset) => asset.name === "uichat-mira-mobile-release.apk",
-      ),
+      Boolean(findMobileAndroidReleaseAsset(release)),
   );
+}
+
+function mobileR2AssetUrl(asset: ReleaseAsset) {
+  return `${mobileR2DevBaseUrl}/${encodeURIComponent(asset.name)}`;
 }
 
 function r2AssetName(asset: ReleaseAsset, releaseTag: string) {
@@ -140,31 +149,48 @@ function classifyDownloads(
   pushOption("tauri-nsis", "Tauri 安装版", "轻量实验版 · EXE", tauriNsis);
   pushOption("tauri-msi", "Tauri MSI", "企业或批量部署", tauriMsi);
 
-  const mobileReleaseTag = mobileRelease?.tag_name || mobileReleaseFallbackTag;
-  const mobileReleaseApk = mobileRelease?.assets.find(
-    (asset) => asset.name === "uichat-mira-mobile-release.apk",
-  );
-  const mobileReleaseIpa = mobileRelease?.assets.find(
-    (asset) => asset.name === "uichat-mira-mobile-ios-unsigned-device.ipa",
-  );
-  options.push({
-    key: "android-release",
-    label: "Android 安装版",
-    version: mobileVersionFromTag(mobileReleaseTag),
-    meta: "React Native · 已签名 APK · dev",
-    githubUrl:
-      mobileReleaseApk?.browser_download_url || mobileGithubApkFallbackUrl,
-    r2Url: mobileR2ApkUrl,
-  });
-  options.push({
-    key: "ios-unsigned-device",
-    label: "iOS 真机 IPA",
-    version: mobileVersionFromTag(mobileReleaseTag),
-    meta: "React Native · 未签名 IPA · 需侧载",
-    githubUrl:
-      mobileReleaseIpa?.browser_download_url || mobileGithubIpaFallbackUrl,
-    r2Url: mobileR2IpaUrl,
-  });
+  const mobileVersion = mobileRelease
+    ? mobileVersionFromTag(mobileRelease.tag_name)
+    : "";
+  const mobileReleaseApk = findMobileAndroidReleaseAsset(mobileRelease);
+  const mobileReleaseIpa = findMobileIosDeviceAsset(mobileRelease);
+
+  const mobileTargets: {
+    android: MobileDownloadTarget | null;
+    ios: MobileDownloadTarget | null;
+  } = {
+    android: mobileReleaseApk
+      ? {
+          githubUrl: mobileReleaseApk.browser_download_url,
+          r2Url: mobileR2AssetUrl(mobileReleaseApk),
+        }
+      : null,
+    ios: mobileReleaseIpa
+      ? {
+          githubUrl: mobileReleaseIpa.browser_download_url,
+          r2Url: mobileR2AssetUrl(mobileReleaseIpa),
+        }
+      : null,
+  };
+
+  if (mobileTargets.android) {
+    options.push({
+      key: "android-release",
+      label: "Android 安装版",
+      version: mobileVersion,
+      meta: "React Native · 已签名 APK · dev",
+      ...mobileTargets.android,
+    });
+  }
+  if (mobileTargets.ios) {
+    options.push({
+      key: "ios-unsigned-device",
+      label: "iOS 真机 IPA",
+      version: mobileVersion,
+      meta: "React Native · 未签名 IPA · 需侧载",
+      ...mobileTargets.ios,
+    });
+  }
 
   return {
     recommendedGithubUrl:
@@ -173,6 +199,8 @@ function classifyDownloads(
       ? r2AssetUrl(recommended, releaseTag)
       : fallbackReleaseUrl,
     options,
+    mobileTargets,
+    mobileReleasePageUrl: mobileRelease?.html_url || mobileReleasesPageUrl,
   };
 }
 
@@ -222,11 +250,29 @@ export default function ReleaseDownloadEnhancer() {
         if (devRelease) setMobileRelease(devRelease);
       })
       .catch(() => {
-        // Keep the last known successful dev release when GitHub is unavailable.
+        // Product-page buttons keep the releases page fallback when GitHub is unavailable.
       });
 
     return () => controller.abort();
   }, []);
+
+  useEffect(() => {
+    const targets = document.querySelectorAll<HTMLAnchorElement>(
+      "a[data-mobile-download]",
+    );
+
+    targets.forEach((target) => {
+      const kind = target.dataset.mobileDownload;
+      const resolved =
+        kind === "android"
+          ? downloads.mobileTargets.android
+          : kind === "ios"
+            ? downloads.mobileTargets.ios
+            : null;
+
+      target.href = resolved?.r2Url || downloads.mobileReleasePageUrl;
+    });
+  }, [downloads, location.pathname]);
 
   // Mount exactly once for each rendered route. The previous implementation
   // watched the whole React tree with MutationObserver, which could trigger a
