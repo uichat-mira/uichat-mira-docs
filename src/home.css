@@ -257,13 +257,21 @@
 }
 
 .home-open-links a {
-  display: grid;
-  grid-template-columns: 20px minmax(0, 1fr) 16px;
+  display: flex;
   gap: 10px;
   align-items: center;
+  min-width: 0;
   padding: 15px 0;
   border-bottom: 1px solid var(--hairline);
   text-decoration: none;
+}
+
+.home-open-links a > svg {
+  flex: 0 0 auto;
+}
+
+.home-open-links a > svg:last-child {
+  margin-left: auto;
 }
 
 @media (max-width: 920px) {
@@ -309,10 +317,6 @@
   }
 
   .home-product-shot {
-    border-radius: 12px;
-  }
-
-  .home-product-shot figcaption {
     display: none;
   }
 
