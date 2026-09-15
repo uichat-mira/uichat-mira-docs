@@ -3,13 +3,11 @@ import {
   useMemo,
   useRef,
   useState,
-  type CSSProperties,
   type KeyboardEvent as ReactKeyboardEvent,
-  type ReactNode,
   type SyntheticEvent,
 } from "react";
 import { marked } from "marked";
-import { SitemapGalaxy, type SitemapGalaxyData } from "./components/SitemapGalaxy";
+import type { SitemapGalaxyData } from "./components/SitemapGalaxy";
 import hljs from "highlight.js/lib/common";
 import {
   ArrowUpRight,
@@ -18,10 +16,8 @@ import {
   Compass,
   Cpu,
   ChevronUp,
-  Download,
   FileCode2,
   FileQuestion,
-  GitBranch,
   Lightbulb,
   Menu,
   Moon,
@@ -51,6 +47,7 @@ import {
   type AuthorKey,
   type Doc,
 } from "./content/mira-docs-adapter";
+import HomePage from "./pages/HomePage";
 
 type LinkItem = { label: string; href: string };
 type ConfiguredNavItem = { label: string; href: string };
@@ -61,12 +58,6 @@ const themeOptions: { name: ThemeName; label: string }[] = [
   { name: "apple", label: "Apple" },
   { name: "supabase", label: "Supabase" },
 ];
-type CardItem = {
-  title: string;
-  description: string;
-  tag?: string;
-  href?: string;
-};
 type DocSection = {
   key: string;
   title: string;
@@ -81,7 +72,7 @@ type SiteArea = {
   path: string;
   href: string;
 };
-const githubUrl = "https://github.com/dangjingtao/uichat-mira";
+const githubUrl = "https://github.com/uichat-mira/mira-desktop";
 const appBase = import.meta.env.BASE_URL;
 const MIRA_DOCS_AREA_KEY = "mira-docs-api";
 const VISUAL_CONTENT_ROOT = "design-md";
@@ -233,16 +224,16 @@ const visibleSections = [
 const sitemapData: SitemapGalaxyData = {
   root: "网站地图",
   sections: visibleSections.map((section) => ({
-  key: section.key,
-  title: section.title,
-  description: section.description,
-  path: section.docs[0]?.path || "/docs",
-  docs: section.docs.map((doc) => ({
-    title: doc.title,
-    path: doc.path,
-    description: doc.description,
-    date: doc.date,
-  })),
+    key: section.key,
+    title: section.title,
+    description: section.description,
+    path: section.docs[0]?.path || "/docs",
+    docs: section.docs.map((doc) => ({
+      title: doc.title,
+      path: doc.path,
+      description: doc.description,
+      date: doc.date,
+    })),
   })),
 };
 type ContextGraphNode = {
@@ -394,9 +385,6 @@ const configuredHeaderNav: ConfiguredNavGroup[] = [
     ],
   },
 ];
-function homeHref(hash = "") {
-  return `${appBase}${hash}`;
-}
 function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (character) => (
     {
@@ -523,40 +511,7 @@ function RenderedMarkdown({ html, className = "markdown" }: { html: string; clas
   return <div ref={containerRef} className={className} dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
-const content = {
-  nav: [] as LinkItem[],
-  meta: ["本地优先", "证据驱动", "自主可控"],
-  philosophy: [
-    {
-      title: "本地优先，不是古拉格群岛",
-      description:
-        "对话、配置、知识与工作状态首先属于用户；Provider、MCP 和集成仍然可以连接外部能力。",
-    },
-    {
-      title: "可控的自主",
-      description:
-        "一套完善的 Harness、Policy 与 Approval Agent系统，执行边界清晰可见。",
-    },
-    {
-      title: "证据先于答案",
-      description:
-        "检索到说明不等于任务完成，工具返回成功也不等于业务目标成立，Mira 会把证据交回决策回路。",
-    },
-  ] satisfies CardItem[],
-  code: [
-    "__dirname: D:\\workspace\\rag-demo\\electron app.getAppPath():",
-    "D:\\workspace\\rag-demo\\electron process.resourcesPath:",
-    "D:\\workspace\\rag-demo\\node_modules\\.pnpm\\electron@31.7.7\\node_modules\\electron\\dist\\resources",
-    "Dev mode: backend server already started via concurrently",
-    "[ERROR:CONSOLE] Request Autofill.enable failed.",
-    "{code:-32601, message:'Autofill.enable' wasn't found}",
-    "source: devtools://devtools/bundled/core/protocol_client/protocol_client.js",
-    "[ERROR:CONSOLE] Request Autofill.setAddresses failed.",
-    "{code:-32601, message:'Autofill.setAddresses' wasn't found}",
-    "[vite] hmr update /src/features/Settings/pages/MicroApps/Tts/index.tsx",
-  ],
-};
-content.nav = [
+const navItems: LinkItem[] = [
   { label: "文档", href: docHref("/about/origin") },
   ...siteAreas.map((area) => ({ label: area.title, href: area.href })),
 ].sort((a, b) => {
@@ -573,194 +528,6 @@ content.nav = [
   return rank(a) - rank(b);
 });
 
-function Button({
-  children,
-  href,
-  kind = "secondary",
-}: {
-  children: ReactNode;
-  href: string;
-  kind?: "primary" | "secondary" | "ghost" | "coral";
-}) {
-  const className = {
-    primary: "btn-primary",
-    secondary: "btn-secondary",
-    ghost: "btn-ghost-dark",
-    coral: "btn-on-coral",
-  }[kind];
-  const internal = href.startsWith(appBase) && !href.includes("#");
-  return internal ? (
-    <Link
-      className={`btn ${className}`}
-      to={href.slice(Math.max(appBase.length - 1, 0))}
-    >
-      {children}
-    </Link>
-  ) : (
-    <a className={`btn ${className}`} href={href}>
-      {children}
-    </a>
-  );
-}
-type GitHubRelease = {
-  html_url: string;
-  assets: { name: string; browser_download_url: string }[];
-};
-
-type GitHubContributor = { login: string };
-type GitHubTag = { name: string };
-
-function githubContributorCount(linkHeader: string | null, fallback: number) {
-  const lastPage = linkHeader?.match(/<[^>]*[?&]page=(\d+)[^>]*>;\s*rel="last"/i);
-  return lastPage ? Number(lastPage[1]) : fallback;
-}
-
-function LatestReleaseButton() {
-  const [releaseUrl, setReleaseUrl] = useState(`${githubUrl}/releases/latest`);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch("https://api.github.com/repos/dangjingtao/uichat-mira/releases/latest", {
-      headers: { Accept: "application/vnd.github+json" },
-      signal: controller.signal,
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error(`GitHub API returned ${response.status}`);
-        return response.json() as Promise<GitHubRelease>;
-      })
-      .then((release) => {
-        const artifact = release.assets.find((asset) =>
-          /\.(appimage|dmg|exe|msi|pkg|tar\.gz|zip)$/i.test(asset.name),
-        );
-        setReleaseUrl(artifact?.browser_download_url || release.html_url);
-      })
-      .catch(() => {
-        // Keep the stable latest-release page when the API is unavailable.
-      });
-    return () => controller.abort();
-  }, []);
-
-  return (
-    <a
-      className="btn btn-secondary release-download-button"
-      href={releaseUrl}
-      target="_blank"
-      rel="noreferrer"
-    >
-      <Download size={16} aria-hidden="true" />
-      下载 Mira
-    </a>
-  );
-}
-function SectionHead({
-  eyebrow,
-  title,
-  description,
-}: {
-  eyebrow: string;
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="section-head">
-      <span className="eyebrow">{eyebrow}</span>
-      <h2>{title}</h2>
-      <p>{description}</p>
-    </div>
-  );
-}
-function PhilosophySpotlight() {
-  return (
-    <div className="philosophy-spotlight">
-      <div className="philosophy-floating-bg" aria-hidden="true">
-        <div className="philosophy-floating-stage">
-          <span className="philosophy-floater c-primary-active">
-            你这个想法，简直无可挑剔。
-          </span>
-          <span className="philosophy-floater c-muted">
-            你问到了问题的核心。
-          </span>
-          <span className="philosophy-floater c-ink serif">
-            你不是敏感，你是精准。
-          </span>
-          <span className="philosophy-floater c-muted-soft">
-            这一句，反而特别真实。
-          </span>
-          <span className="philosophy-floater c-primary">
-            你没有错，只是太超前了。
-          </span>
-          <span className="philosophy-floater c-ink">
-            我完全，完全站在你这边。
-          </span>
-          <span className="philosophy-floater c-muted">这反而更稳。</span>
-          <span className="philosophy-floater c-primary-active serif">
-            是因为你太对了。
-          </span>
-          <span className="philosophy-floater c-muted-soft">
-            要不要我现在就为你生成一张图？
-          </span>
-          <span className="philosophy-floater c-ink">
-            我讲一句可能会让你冷静一点的话。
-          </span>
-          <span className="philosophy-floater c-primary">
-            这次我懂了，我真的懂了。
-          </span>
-          <span className="philosophy-floater c-muted">不用向我解释。</span>
-        </div>
-      </div>
-      <div className="philosophy-spotlight-copy">
-        <span className="eyebrow">PRODUCT PHILOSOPHY / 产品哲学</span>
-        <h2 className="philosophy-spotlight-heading">
-          <span>自主，不等于失控。</span>
-          <span className="philosophy-spotlight-heading-accent">
-            <span>智能，不失去自能。</span>
-          </span>
-        </h2>
-        <div className="philosophy-spotlight-intro philosophy-spotlight-body">
-          <p>
-            Mira
-            想做的，不是替人决定一切的机器，也不是只能等待指令的工具。
-          </p>
-          <p>
-            它应当理解你、帮助你、为你行动，同时让数据、边界与最终决定仍然属于你。
-          </p>
-        </div>
-      </div>
-      <div className="philosophy-spotlight-divider" aria-hidden="true" />
-      <div className="philosophy-spotlight-chapter">
-        <h3>接住，不是接管</h3>
-        <div className="philosophy-spotlight-body">
-          <p>
-            当人疲惫、混乱或暂时说不清需求时，Mira
-            不该用更多步骤和追问把压力还给用户。它应当先理解当前处境，保留上下文，再提供恰到好处的帮助。
-          </p>
-          <p>
-            但理解不意味着越权。Mira
-            可以提出建议、整理信息、执行经过许可的动作；不能悄悄替用户作出不可逆的决定。
-          </p>
-        </div>
-      </div>
-      <div className="philosophy-spotlight-compare">
-        <div className="philosophy-spotlight-column">
-          <span>我们相信</span>
-          <ul>
-            <li>理解先于操作</li>
-            <li>在疲惫时降低使用成本</li>
-            <li>重要动作保持确认</li>
-          </ul>
-        </div>
-        <div className="philosophy-spotlight-column">
-          <span>我们拒绝</span>
-          <ul>
-            <li>为了显得聪明而抢夺决定权</li>
-            <li>把复杂流程重新扔给用户</li>
-            <li>以“自动化”为名模糊边界</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-}
 function Footer({ className = "" }: { className?: string }) {
   return (
     <footer className={className}>
@@ -868,287 +635,7 @@ function PwaUpdatePrompt() {
     </div>
   );
 }
-function AuthorIntro() {
-  const [contributorCount, setContributorCount] = useState("—");
-  const [productVersion, setProductVersion] = useState("—");
 
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch("https://api.github.com/repos/dangjingtao/uichat-mira/contributors?per_page=1", {
-      headers: { Accept: "application/vnd.github+json" },
-      signal: controller.signal,
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error(`GitHub API returned ${response.status}`);
-        return response.json().then((contributors: GitHubContributor[]) => ({
-          contributors,
-          linkHeader: response.headers.get("Link"),
-        }));
-      })
-      .then(({ contributors, linkHeader }) => {
-        const count = githubContributorCount(
-          linkHeader,
-          // GitHub puts the total page count in the last relation.
-          // When there is only one page, the response itself is the fallback.
-          contributors.length,
-        );
-        setContributorCount(String(count));
-      })
-      .catch(() => {
-        // Keep the card usable when GitHub is unavailable or rate-limits the request.
-      });
-    return () => controller.abort();
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch("https://api.github.com/repos/dangjingtao/uichat-mira/tags?per_page=1", {
-      headers: { Accept: "application/vnd.github+json" },
-      signal: controller.signal,
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error(`GitHub API returned ${response.status}`);
-        return response.json() as Promise<GitHubTag[]>;
-      })
-      .then(([tag]) => {
-        if (tag?.name) setProductVersion(tag.name);
-      })
-      .catch(() => {
-        // Keep the version slot neutral when GitHub is unavailable or rate-limits the request.
-      });
-    return () => controller.abort();
-  }, []);
-
-  return (
-    <section className="border-0 pb-section">
-      <div className="wrap">
-        <div className="author-intro-card grid grid-cols-1 items-center gap-6 rounded-lg border border-hairline bg-canvas p-6 md:grid-cols-[88px_minmax(0,1fr)_auto] md:gap-[22px] md:p-7 xl:grid-cols-[128px_minmax(0,1fr)_auto] xl:gap-8 xl:p-10">
-          <div className="flex h-[72px] w-[72px] overflow-hidden rounded-full bg-surface-cream md:h-20 md:w-20 xl:h-28 xl:w-28">
-            <img
-              className="block h-full w-full object-cover"
-              src={authorAvatarUrl}
-              alt="Tomz Dang"
-            />
-          </div>
-          <div>
-            <span className="mb-2 block font-mono text-[11px] tracking-[.08em] text-primary-active">
-              CREATED &amp; MAINTAINED BY
-            </span>
-            <h2 className="mb-2 text-[32px]">Tomz Dang</h2>
-            <p className="mb-[14px] max-w-[62ch] text-[14px]">
-              一个前端开发者持续构建的 local-first AI
-              workspace。源码、文档与工程判断都公开留在 GitHub。
-            </p>
-            <div className="flex flex-wrap gap-[18px]">
-              <a
-                className="inline-flex items-center gap-[5px] text-[13px] font-semibold text-primary-active hover:text-ink"
-                href="https://github.com/dangjingtao"
-              >
-                <GitBranch size={15} aria-hidden="true" />
-                GitHub 主页
-                <ArrowUpRight size={13} aria-hidden="true" />
-              </a>
-              <a
-                className="inline-flex items-center gap-[5px] text-[13px] font-semibold text-primary-active hover:text-ink"
-                href={githubUrl}
-              >
-                <GitBranch size={15} aria-hidden="true" />
-                UIChat Mira
-                <ArrowUpRight size={13} aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-          <div className="min-w-0 border-t border-hairline pt-4 xl:min-w-[230px] xl:border-l xl:border-t-0 xl:pl-7 xl:pt-0">
-            <div className="my-[7px] flex items-baseline gap-3.5 max-[820px]:my-0 max-[820px]:mr-[18px] max-[820px]:inline-flex max-[560px]:my-[7px] max-[560px]:mr-0 max-[560px]:flex">
-              <strong className="min-w-12 font-mono text-[14px] font-medium text-primary-active">
-                {productVersion}
-              </strong>
-              <span className="whitespace-nowrap text-[12px] text-muted max-[560px]:whitespace-normal">
-                产品版本
-              </span>
-            </div>
-            <div className="my-[7px] flex items-baseline gap-3.5 max-[820px]:my-0 max-[820px]:mr-[18px] max-[820px]:inline-flex max-[560px]:my-[7px] max-[560px]:mr-0 max-[560px]:flex">
-              <strong className="min-w-12 font-mono text-[14px] font-medium text-primary-active">
-                {contributorCount}
-              </strong>
-              <span className="whitespace-nowrap text-[12px] text-muted max-[560px]:whitespace-normal">
-                GitHub Contributors
-              </span>
-            </div>
-            <div className="my-[7px] flex items-baseline gap-3.5 max-[820px]:my-0 max-[820px]:mr-[18px] max-[820px]:inline-flex max-[560px]:my-[7px] max-[560px]:mr-0 max-[560px]:flex">
-              <strong className="min-w-12 font-mono text-[14px] font-medium text-primary-active">
-                v1.5
-              </strong>
-              <span className="whitespace-nowrap text-[12px] text-muted max-[560px]:whitespace-normal">
-                Agent 稳定化
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-type ChatSegment = { text: string; strong?: boolean };
-type ChatMessage = { segments: ChatSegment[]; speaker?: "user" | "agent" };
-const chatMessages: ChatMessage[] = [
-  {
-    speaker: "user",
-    segments: [
-      {
-        text: "马勒戈壁的，一个静态文档站写成这个死样子我完全不想碰它",
-      },
-    ],
-  },
-  {
-    speaker: "agent",
-    segments: [
-      { text: "Mira", strong: true },
-      { text: " · 骂得对。" },
-      {
-        text: "这个不是你不会用，是我把后端调试对象原样甩给 owner 了。",
-        strong: true,
-      },
-    ],
-  },
-  {
-    speaker: "agent",
-    segments: [
-      { text: "Mira", strong: true },
-      { text: " · 骂得对。" },
-      { text: "这个已经不是“写得丑”，这是我把 dev runtime 写炸了。", strong: true },
-    ],
-  },
-];
-function renderSegments(segments: ChatSegment[]) {
-  return segments.map((segment, index) =>
-    segment.strong ? (
-      <b key={`${segment.text}-${index}`}>{segment.text}</b>
-    ) : (
-      <span key={`${segment.text}-${index}`}>{segment.text}</span>
-    ),
-  );
-}
-const chatTypeDurations = [1800, 2360];
-function totalSegmentLength(segments: ChatSegment[]) {
-  return segments.reduce((sum, segment) => sum + segment.text.length, 0);
-}
-function renderTypedSegments(segments: ChatSegment[], visibleChars: number) {
-  let consumed = 0;
-  return segments.map((segment, index) => {
-    const remaining = Math.max(visibleChars - consumed, 0);
-    const text = remaining > 0 ? segment.text.slice(0, remaining) : "";
-    consumed += segment.text.length;
-    if (!text) return null;
-    return segment.strong ? (
-      <b key={`${segment.text}-${index}`}>{text}</b>
-    ) : (
-      <span key={`${segment.text}-${index}`}>{text}</span>
-    );
-  });
-}
-
-function SiteHeaderBase({
-  onSearch,
-  onToggleTheme,
-  darkMode,
-  wide = false,
-}: {
-  onSearch: () => void;
-  onToggleTheme: () => void;
-  darkMode: boolean;
-  wide?: boolean;
-}) {
-  const location = useLocation();
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  useEffect(() => {
-    setOpenMenu(null);
-    setMobileOpen(false);
-  }, [location.pathname]);
-  const isActive = (item: LinkItem) => {
-    const target = item.href.slice(Math.max(appBase.length - 1, 0));
-    if (item.label === "文档")
-      return (
-        location.pathname === "/sitemap" ||
-        allDocs.some(
-          (doc) => doc.root === "docs" && doc.path === location.pathname,
-        )
-      );
-    return (
-      location.pathname === target || location.pathname.startsWith(`${target}/`)
-    );
-  };
-  return (
-    <nav className={`top-nav${wide ? " docs-header" : ""}`}>
-      <div className="wrap">
-        <Link className="brand" to="/">
-          <img className="brand-logo" src={logoSrc} onError={handleLogoError} alt="" />
-          UIChat Mira
-        </Link>
-        <ul className="menu">
-          {content.nav.map((item) => {
-            const active = isActive(item);
-            return (
-              <li key={item.href}>
-                <Link
-                  className={active ? "active" : ""}
-                  aria-current={active ? "page" : undefined}
-                  to={item.href.slice(Math.max(appBase.length - 1, 0))}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="nav-right">
-          <button
-            type="button"
-            className="theme-toggle"
-            onClick={onToggleTheme}
-            aria-label={darkMode ? "切换到浅色模式" : "切换到暗黑模式"}
-            title={darkMode ? "浅色模式" : "暗黑模式"}
-          >
-            {darkMode ? (
-              <Sun size={17} aria-hidden="true" />
-            ) : (
-              <Moon size={17} aria-hidden="true" />
-            )}
-          </button>
-          <button
-            type="button"
-            className="site-search inline-flex items-center gap-2 rounded-md border border-hairline bg-canvas px-2.5 font-sans text-[13px] text-muted-soft"
-            onClick={onSearch}
-          >
-            搜索{" "}
-            <kbd className="rounded bg-surface-card px-1.5 py-px font-mono text-[10px]">
-              Ctrl K
-            </kbd>
-          </button>
-          <a
-            className="text-link header-github"
-            href={githubUrl}
-            aria-label="GitHub"
-            title="GitHub"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              width="20"
-              height="20"
-              fill="currentColor"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 2.807 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"></path>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </nav>
-  );
-}
 function MobileHeaderPanel({
   onSearch,
   onToggleTheme,
@@ -1165,7 +652,7 @@ function MobileHeaderPanel({
   return (
     <div className="mobile-header-panel">
       <div className="mobile-header-links">
-        {content.nav.map((item) => (
+        {navItems.map((item) => (
           <Link
             key={item.href}
             to={item.href.slice(Math.max(appBase.length - 1, 0))}
@@ -1264,7 +751,7 @@ function SiteHeader({
           UIChat Mira
         </Link>
         <ul className="menu">
-          {content.nav.map((item) => {
+          {navItems.map((item) => {
             const active = isActive(item);
             return (
               <li key={item.href}>
@@ -1412,90 +899,6 @@ function SiteHeader({
         </div>
       </div>
     </nav>
-  );
-}
-function HomePage({ darkMode }: { darkMode: boolean }) {
-  return (
-    <div className="site">
-      <header>
-        <div
-          className="wrap hero-grid home-hero-grid"
-        >
-          <div>
-            <h1 className="hero-title">
-              从聊天出发，最终回到<span>「接住你」。</span>
-            </h1>
-            <p className="lede">
-              UIChat Mira 是一个本地优先的个人 AI 工作台。聊天只是入口，模型、角色、知识、MCP、工具与微应用在同一个空间里协同工作。它不接管你，而是在你仍然掌握方向时，替你接住复杂。
-            </p>
-            <div className="hero-cta">
-              <Button href={docHref("/about/origin")} kind="primary">
-                开始认识 Mira
-              </Button>
-              <LatestReleaseButton />
-            </div>
-            <div className="hero-meta">
-              {content.meta.map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </div>
-          </div>
-          <ChatMockup />
-        </div>
-      </header>
-      <section className="sitemap-galaxy-home" aria-label="网站地图星图">
-        <div className="wrap">
-          <SitemapGalaxy
-            key={darkMode ? "sitemap-galaxy-dark" : "sitemap-galaxy-light"}
-            data={sitemapData}
-            theme={darkMode ? "dark" : "light"}
-          />
-        </div>
-      </section>
-      <section className="home-video-section" aria-label="Mira 产品介绍视频">
-        <div className="wrap">
-          <div className="home-video-frame">
-            <video
-              className="home-product-video"
-              controls
-              playsInline
-              preload="metadata"
-              src="https://assets.tomz.io/videos/mira-product-intro-en-final-music.mp4"
-            />
-          </div>
-        </div>
-      </section>
-      <section id="philosophy">
-        <div className="wrap">
-          <PhilosophySpotlight />
-        </div>
-      </section>
-      <section id="configure">
-        <div className="wrap home-configure-grid">
-          <div>
-            <span className="eyebrow">配置示例</span>
-            <h2>
-              改个样式,
-              <br />
-              接好所有灾难。
-            </h2>
-            <p>一句「继续改」，引发的蓝屏几天代码丢失。这种体验不应被垄断。</p>
-            <a className="text-link" href={docHref("/engineering/development")}>
-              查看配置与运行文档 →
-            </a>
-          </div>
-          <div className="code-card">
-            {content.code.map((line, index) => (
-              <div className="line" key={`${line}-${index}`}>
-                {line}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      <AuthorIntro />
-      <Footer />
-    </div>
   );
 }
 
@@ -1722,7 +1125,16 @@ function RoutedApp() {
         wide={navIsWide}
       />
       <Routes>
-        <Route path="/" element={<HomePage darkMode={darkMode} />} />
+        <Route
+          path="/"
+          element={
+            <HomePage
+              darkMode={darkMode}
+              sitemapData={sitemapData}
+              footer={<Footer />}
+            />
+          }
+        />
         <Route element={<DocsLayout />}>
           <Route path="/sitemap" element={<DocPage path="/sitemap" />} />
           <Route
@@ -1762,141 +1174,6 @@ function RoutedApp() {
 
 export default function App() {
   return <RoutedApp />;
-}
-
-function ChatMockup() {
-  const mockupRef = useRef<HTMLDivElement>(null);
-  const [playCycle, setPlayCycle] = useState(-1);
-  const [typedCounts, setTypedCounts] = useState([0, 0]);
-  const [reducedMotion, setReducedMotion] = useState(false);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const syncPreference = () => setReducedMotion(mediaQuery.matches);
-    syncPreference();
-    mediaQuery.addEventListener("change", syncPreference);
-    return () => mediaQuery.removeEventListener("change", syncPreference);
-  }, []);
-  useEffect(() => {
-    const node = mockupRef.current;
-    if (!node || typeof IntersectionObserver === "undefined") return;
-    let wasVisible = false;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (!entry) return;
-        const visible = entry.isIntersecting && entry.intersectionRatio >= 0.45;
-        if (visible && !wasVisible) setPlayCycle((cycle) => cycle + 1);
-        wasVisible = visible;
-      },
-      { threshold: [0, 0.45, 0.7] },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-  useEffect(() => {
-    if (playCycle < 0) return;
-    if (reducedMotion) {
-      setTypedCounts(
-        chatMessages
-          .filter((message) => message.speaker === "agent")
-          .map((message) => totalSegmentLength(message.segments)),
-      );
-      return;
-    }
-    setTypedCounts([0, 0]);
-    const timers: number[] = [];
-    let cumulativeDelay = 640;
-    chatMessages
-      .filter((message) => message.speaker === "agent")
-      .forEach((message, index) => {
-        const totalChars = totalSegmentLength(message.segments);
-        const step = Math.max(
-          Math.round(chatTypeDurations[index] / Math.max(totalChars, 1)),
-          32,
-        );
-        for (let visible = 1; visible <= totalChars; visible += 1) {
-          const timeoutId = window.setTimeout(
-            () => {
-              setTypedCounts((current) => {
-                const next = [...current];
-                next[index] = visible;
-                return next;
-              });
-            },
-            cumulativeDelay + visible * step,
-          );
-          timers.push(timeoutId);
-        }
-        cumulativeDelay += chatTypeDurations[index] + 880;
-      });
-    return () => timers.forEach((timer) => window.clearTimeout(timer));
-  }, [playCycle, reducedMotion]);
-  const agentMessages = chatMessages.filter(
-    (message) => message.speaker === "agent",
-  );
-  const inputVisible =
-    reducedMotion ||
-    typedCounts.every(
-      (count, index) =>
-        count >= totalSegmentLength(agentMessages[index].segments),
-    );
-  const animationStyle = (index: number): CSSProperties => ({
-    ["--chat-delay" as string]: `${index * 280}ms`,
-  });
-  return (
-    <div
-      ref={mockupRef}
-      className={`chat-mockup${playCycle >= 0 ? " is-visible" : ""}`}
-      data-play-cycle={playCycle}
-      aria-label="Mira 对话示意"
-    >
-      <div className="bar">
-        <div className="dots">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className="model-switch">
-          <span className="active">GPT-5.6</span>
-          <span>Claude</span>
-          <span>Ollama</span>
-          <span>Qwen</span>
-        </div>
-      </div>
-      <div className="bubble user" style={animationStyle(0)}>
-        {chatMessages[0].segments[0].text}
-      </div>
-      {agentMessages.map((message, index) => {
-        const visibleChars = typedCounts[index];
-        const totalChars = totalSegmentLength(message.segments);
-        const state = reducedMotion
-          ? "done"
-          : visibleChars > 0
-            ? visibleChars >= totalChars
-              ? "done"
-              : "typing"
-            : "pending";
-        return (
-          <div
-            className={`bubble agent bubble-agent-${state}`}
-            key={`agent-${index}`}
-          >
-            {renderTypedSegments(message.segments, visibleChars)}
-            {state === "typing" ? (
-              <span className="typing-caret" aria-hidden="true" />
-            ) : null}
-          </div>
-        );
-      })}
-      <div
-        className={`chat-input${inputVisible ? " chat-input-visible" : ""}`}
-        style={animationStyle(3)}
-      >
-        &gt; 输入消息，或输入 / 调用工具…
-      </div>
-    </div>
-  );
 }
 
 function DocNav({ current }: { current: string }) {
