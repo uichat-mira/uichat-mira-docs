@@ -126,7 +126,7 @@ export default function HomePage({ darkMode, sitemapData, footer }: HomePageProp
       </header>
 
       <section className="home-fair-work" aria-label="Mira 公平劳动声明">
-        <div className="wrap" style={{ paddingTop: 32, paddingBottom: 32 }}>
+        <div className="wrap">
           <object
             data={`${appBase}images/product/mira-fair-work-statement.svg`}
             type="image/svg+xml"
@@ -173,10 +173,6 @@ export default function HomePage({ darkMode, sitemapData, footer }: HomePageProp
 
       <section className="sitemap-galaxy-home" aria-label="网站地图星图">
         <div className="wrap">
-          <div className="home-section-heading home-section-heading-compact">
-            <span className="eyebrow">EXPLORE / 探索</span>
-            <h2>从这里看看 Mira 已经长出了什么。</h2>
-          </div>
           <SitemapGalaxy
             key={darkMode ? "sitemap-galaxy-dark" : "sitemap-galaxy-light"}
             data={sitemapData}
