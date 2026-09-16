@@ -134,7 +134,8 @@ export default function HomePage({ darkMode, sitemapData, footer }: HomePageProp
             style={{
               display: "block",
               width: "100%",
-              height: "clamp(220px, 31.25vw, 400px)",
+              height: "auto",
+              aspectRatio: "1280 / 400",
               border: 0,
               borderRadius: 8,
             }}
