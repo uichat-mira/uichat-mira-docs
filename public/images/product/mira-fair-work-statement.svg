@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" preserveAspectRatio="xMinYMid slice" role="img" aria-label="FAIR WORK / 公平劳动 — Mira 反对 996">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FAF7F2"/>
+      <stop offset="0.55" stop-color="#F7F1EA"/>
+      <stop offset="1" stop-color="#F3EAE1"/>
+    </linearGradient>
+    <clipPath id="panel">
+      <rect x="0.5" y="0.5" width="1279" height="399" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <rect x="0.5" y="0.5" width="1279" height="399" rx="8" fill="url(#paper)"/>
+  <rect x="0.5" y="0.5" width="1279" height="399" rx="8" fill="none" stroke="#E7B69C" stroke-opacity="0.55"/>
+
+  <g clip-path="url(#panel)">
+    <line x1="620" y1="58" x2="620" y2="352" stroke="#E7B69C" stroke-opacity="0.45" stroke-width="1"/>
+
+    <text x="928" y="306" text-anchor="middle"
+          font-family="Georgia, 'Noto Serif SC', 'Source Han Serif SC', serif"
+          font-size="226" font-weight="700" letter-spacing="4"
+          fill="#201A17" fill-opacity="0.08">996</text>
+
+    <line x1="675" y1="158" x2="1160" y2="158" stroke="#2A231F" stroke-opacity="0.78" stroke-width="1.5"/>
+    <g stroke="#2A231F" stroke-opacity="0.52" stroke-width="1">
+      <line x1="730" y1="151" x2="730" y2="165"/>
+      <line x1="810" y1="151" x2="810" y2="165"/>
+      <line x1="890" y1="151" x2="890" y2="165"/>
+      <line x1="970" y1="151" x2="970" y2="165"/>
+      <line x1="1050" y1="151" x2="1050" y2="165"/>
+    </g>
+    <line x1="1130" y1="147" x2="1130" y2="169" stroke="#9E3F2B" stroke-width="1.35"/>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+       font-size="9" letter-spacing="1.6" text-anchor="middle" fill="#75665D">
+      <text x="730" y="137">MON</text>
+      <text x="810" y="137">TUE</text>
+      <text x="890" y="137">WED</text>
+      <text x="970" y="137">THU</text>
+      <text x="1050" y="137">FRI</text>
+      <text x="1130" y="137" fill="#9E3F2B">SAT</text>
+    </g>
+
+    <line x1="918" y1="48" x2="918" y2="235" stroke="#2A231F" stroke-opacity="0.78" stroke-width="1.5"/>
+    <line x1="918" y1="260" x2="918" y2="360" stroke="#2A231F" stroke-opacity="0.78" stroke-width="1.5"/>
+    <path d="M918 235 L907 243 L929 251 L918 260" fill="none" stroke="#9E3F2B" stroke-width="1.25"/>
+
+    <g stroke="#2A231F" stroke-opacity="0.44" stroke-width="1">
+      <line x1="911" y1="69" x2="925" y2="69"/>
+      <line x1="911" y1="113" x2="925" y2="113"/>
+      <line x1="911" y1="205" x2="925" y2="205"/>
+      <line x1="911" y1="296" x2="925" y2="296"/>
+      <line x1="911" y1="341" x2="925" y2="341"/>
+    </g>
+
+    <circle cx="918" cy="158" r="4" fill="#9E3F2B"/>
+    <circle cx="918" cy="158" r="9" fill="none" stroke="#9E3F2B" stroke-opacity="0.30" stroke-width="1"/>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+       font-size="10" letter-spacing="1.8" fill="#75665D">
+      <text x="936" y="72">09:00</text>
+      <text x="936" y="345">21:00</text>
+    </g>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+       font-size="10" letter-spacing="2" text-anchor="end">
+      <text x="1170" y="245" fill="#75665D">6 DAYS</text>
+      <text x="1170" y="264" fill="#9E3F2B">72 HOURS</text>
+    </g>
+
+    <text x="1200" y="78" text-anchor="end"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+          font-size="10" letter-spacing="2.4" fill="#75665D" fill-opacity="0.82">MIRA / STATEMENT</text>
+
+    <g font-family="Georgia, 'Noto Serif SC', 'Source Han Serif SC', serif"
+       text-anchor="end" fill="#201A17">
+      <text x="1200" y="324" font-size="25" font-weight="700" letter-spacing="0.8">工作不该成为</text>
+      <text x="1200" y="360" font-size="25" font-weight="700" letter-spacing="0.8">现代人的受难架。</text>
+    </g>
+
+    <rect x="80" y="68" width="98" height="24" rx="3" fill="#9E3F2B"/>
+    <text x="92" y="84.5"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+          font-size="11" letter-spacing="1.5" fill="#FAF7F2">FAIR WORK</text>
+    <text x="192" y="85"
+          font-family="'Noto Sans SC', 'PingFang SC', sans-serif"
+          font-size="12.5" letter-spacing="3" fill="#75665D">公平劳动</text>
+
+    <line x1="80" y1="112" x2="560" y2="112" stroke="#E7B69C"/>
+
+    <text x="80" y="182"
+          font-family="Georgia, 'Noto Serif SC', 'Source Han Serif SC', serif"
+          font-size="56" font-weight="700" letter-spacing="0.2" fill="#201A17">Mira 反对 <tspan fill="#C76236">996</tspan>。</text>
+
+    <text x="80" y="236"
+          font-family="Georgia, 'Noto Serif SC', 'Source Han Serif SC', serif"
+          font-size="31" font-weight="700" letter-spacing="0.6" fill="#9E3F2B">人不是资本的燃料。</text>
+
+    <g font-family="'Noto Sans SC', 'PingFang SC', sans-serif"
+       font-size="15" letter-spacing="0.4" fill="#75665D">
+      <text x="80" y="286">技术应该接住复杂，</text>
+      <text x="80" y="312">而不是把复杂重新压回人的身体、时间与生活。</text>
+    </g>
+
+    <a href="https://github.com/uichat-mira/.github/blob/main/FAIR-WORK.md" target="_blank" rel="noopener noreferrer" aria-label="阅读公平劳动声明">
+      <title>阅读公平劳动声明</title>
+      <rect x="68" y="334" width="176" height="48" rx="6" fill="#000" fill-opacity="0" pointer-events="all"/>
+      <text x="80" y="358"
+            font-family="'Noto Sans SC', 'PingFang SC', sans-serif"
+            font-size="13.5" font-weight="600" letter-spacing="0.8" fill="#C76236" style="cursor:pointer">阅读公平劳动声明 →</text>
+      <line x1="80" y1="368" x2="218" y2="368" stroke="#C76236" stroke-opacity="0.55"/>
+    </a>
+  </g>
+</svg>
