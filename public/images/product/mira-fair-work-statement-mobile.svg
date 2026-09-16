@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" width="400" height="520" role="img" aria-label="FAIR WORK / 公平劳动 · Mira 反对 996">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FAF7F2"/>
+      <stop offset="0.58" stop-color="#F7F1EA"/>
+      <stop offset="1" stop-color="#F3EAE1"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="12" y="12" width="376" height="496" rx="18" fill="url(#paper)"/>
+  <rect x="12.5" y="12.5" width="375" height="495" rx="17.5" fill="none" stroke="#E7B69C" stroke-opacity="0.65"/>
+
+  <g>
+    <rect x="34" y="34" width="96" height="22" rx="3" fill="#9E3F2B"/>
+    <text x="46" y="49"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+          font-size="10.5" letter-spacing="1.4" fill="#FAF7F2">FAIR WORK</text>
+    <text x="140" y="49.5"
+          font-family="'Noto Sans SC', 'PingFang SC', sans-serif"
+          font-size="12" letter-spacing="2.4" fill="#75665D">公平劳动</text>
+
+    <line x1="34" y1="88" x2="366" y2="88" stroke="#E7B69C"/>
+
+    <text x="206" y="306" text-anchor="middle"
+          font-family="Georgia, 'Noto Serif SC', 'Source Han Serif SC', serif"
+          font-size="170" font-weight="700" letter-spacing="2"
+          fill="#201A17" fill-opacity="0.05">996</text>
+
+    <line x1="324" y1="124" x2="324" y2="204" stroke="#2A231F" stroke-opacity="0.55" stroke-width="1.2"/>
+    <line x1="302" y1="164" x2="346" y2="164" stroke="#2A231F" stroke-opacity="0.55" stroke-width="1.2"/>
+    <circle cx="324" cy="164" r="3.3" fill="#9E3F2B"/>
+    <text x="334" y="128"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+          font-size="8.6" letter-spacing="1.4" fill="#75665D">09:00</text>
+    <text x="334" y="200"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+          font-size="8.6" letter-spacing="1.4" fill="#75665D">21:00</text>
+
+    <text x="34" y="166"
+          font-family="Georgia, 'Noto Serif SC', 'Source Han Serif SC', serif"
+          font-size="42" font-weight="700" fill="#201A17">Mira 反对 <tspan fill="#C76236">996</tspan>。</text>
+
+    <text x="34" y="214"
+          font-family="Georgia, 'Noto Serif SC', 'Source Han Serif SC', serif"
+          font-size="24" font-weight="700" fill="#9E3F2B">人不是资本的燃料。</text>
+
+    <g font-family="'Noto Sans SC', 'PingFang SC', sans-serif"
+       font-size="15" fill="#6D5E56">
+      <text x="34" y="286">我们反对把超长工时包装成奋斗。</text>
+      <text x="34" y="313">我们反对把无法拒绝的加班称为选择。</text>
+      <text x="34" y="340">工作应当支持生活，而不是吞没生活。</text>
+    </g>
+
+    <text x="34" y="402"
+          font-family="Georgia, 'Noto Serif SC', 'Source Han Serif SC', serif"
+          font-size="20" font-weight="700" fill="#201A17">劳动值得尊重，生活不该被透支。</text>
+
+    <text x="34" y="458"
+          font-family="'Noto Sans SC', 'PingFang SC', sans-serif"
+          font-size="15" font-weight="700" letter-spacing="0.5" fill="#C76236">公平工作，从每一次拒绝不合理开始。</text>
+    <line x1="34" y1="468" x2="172" y2="468" stroke="#C76236" stroke-opacity="0.55"/>
+
+    <text x="34" y="490"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+          font-size="8.8" letter-spacing="1.4" fill="#A18B80">MIRA / FAIR WORK STATEMENT</text>
+  </g>
+</svg>
