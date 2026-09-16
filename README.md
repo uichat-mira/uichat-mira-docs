@@ -39,6 +39,8 @@ pnpm build
 feat/* → dev → test → prod
 ```
 
+正常工程工作从 GitHub Issue 开始；Mira 的受信任开工入口创建 GitHub-native linked branch，使后续 PR 自动继承服务端 Issue 关系，供 Organization AI Review 读取可信 Task 合同。
+
 `main` 只保留历史兼容，不作为生产发布旁路。
 
 ### GitHub Pages
