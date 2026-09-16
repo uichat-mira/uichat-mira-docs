@@ -58,6 +58,7 @@
 }
 
 .home-fair-work {
+  padding: 0;
   border-bottom: 1px solid var(--hairline);
   background: color-mix(in srgb, var(--primary) 8%, var(--canvas));
 }
@@ -214,7 +215,7 @@
 }
 
 .sitemap-galaxy-home {
-  padding-top: var(--sp-section);
+  padding: 0;
 }
 
 .home-video-section {
