@@ -63,6 +63,21 @@
   background: color-mix(in srgb, var(--primary) 8%, var(--canvas));
 }
 
+.fair-work-desktop {
+  display: block;
+}
+
+.fair-work-mobile {
+  display: none;
+}
+
+.fair-work-desktop object,
+.fair-work-mobile object {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .home-fair-work-layout {
   display: flex;
   gap: 28px;
@@ -375,6 +390,21 @@
 
   .home-now-card p {
     min-height: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .fair-work-desktop {
+    display: none;
+  }
+
+  .fair-work-mobile {
+    display: block;
+  }
+
+  .home-fair-work .wrap {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
