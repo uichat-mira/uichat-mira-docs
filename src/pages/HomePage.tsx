@@ -117,10 +117,10 @@ export default function HomePage({ darkMode, sitemapData, footer }: HomePageProp
 
           <figure className="home-product-shot">
             <img
-              src={`${appBase}images/product/mira-chat-workspace.webp`}
-              alt="UIChat Mira 对话工作区界面"
+              src={`${appBase}images/product/mira-hero-desktop-mobile.svg`}
+              alt="Mira Desktop 与 Mobile 协同示意"
             />
-            <figcaption>真实产品界面 · Chat Workspace</figcaption>
+            <figcaption>Mira Desktop + Mobile · 产品关系示意</figcaption>
           </figure>
         </div>
       </header>
