@@ -127,23 +127,29 @@ export default function HomePage({ darkMode, sitemapData, footer }: HomePageProp
 
       <section className="home-fair-work" aria-label="Mira 公平劳动声明">
         <div className="wrap">
-          <object
-            data={`${appBase}images/product/mira-fair-work-statement.svg`}
-            type="image/svg+xml"
-            aria-label="Mira 反对 996。人不是资本的燃料。工作不该成为现代人的受难架。"
-            style={{
-              display: "block",
-              width: "100%",
-              height: "auto",
-              aspectRatio: "1280 / 400",
-              border: 0,
-              borderRadius: 8,
-            }}
-          >
-            <a href={fairWorkUrl} target="_blank" rel="noreferrer">
-              阅读公平劳动声明
-            </a>
-          </object>
+          <div className="fair-work-desktop">
+            <object
+              data={`${appBase}images/product/mira-fair-work-statement.svg`}
+              type="image/svg+xml"
+              aria-label="Mira 反对 996。人不是资本的燃料。"
+            >
+              <a href={fairWorkUrl} target="_blank" rel="noreferrer">
+                阅读公平劳动声明
+              </a>
+            </object>
+          </div>
+
+          <div className="fair-work-mobile">
+            <object
+              data={`${appBase}images/product/mira-fair-work-statement-mobile.svg`}
+              type="image/svg+xml"
+              aria-label="Mira 公平劳动声明"
+            >
+              <a href={fairWorkUrl} target="_blank" rel="noreferrer">
+                阅读公平劳动声明
+              </a>
+            </object>
+          </div>
         </div>
       </section>
 
