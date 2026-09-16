@@ -21,14 +21,14 @@ Markdown 位于 `docs/<section>/*.md`：
 ## 本地开发
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 构建验证：
 
 ```bash
-npm run build
+pnpm build
 ```
 
 ## 分支与部署
