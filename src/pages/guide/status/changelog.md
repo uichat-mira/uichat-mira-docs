@@ -9,7 +9,7 @@ order: 19
 
 > 这里是 Mira Desktop 面向用户的发布摘要。正式版本事实以 [Desktop CHANGELOG](https://github.com/uichat-mira/mira-desktop/blob/prod/CHANGELOG.md) 和 [GitHub Releases](https://github.com/uichat-mira/mira-desktop/releases) 为准。
 
-## v0.104.0 · 2026-10-13 · 正式发布
+## v0.104.0 · 已正式发布
 
 **Mira Next 二期正式交付。** 本次更新的重点不是多出一排按钮，而是让 Agent 更可靠地发现所需能力、执行工具，并保留可追溯的执行证据。
 
@@ -35,7 +35,7 @@ order: 19
 
 发布源码为 `prod@dfb1ee18007d`，对应正式 Tag `v0.104.0`。[查看发布流水线](https://github.com/uichat-mira/mira-desktop/actions/runs/38391739003)。
 
-## v0.103.0 · 2026-10-07 · 正式发布
+## v0.103.0 · 已正式发布
 
 这版打下 Mira Next 二期的工具基础：
 
@@ -47,7 +47,7 @@ order: 19
 
 [查看 v0.103.0 GitHub Release](https://github.com/uichat-mira/mira-desktop/releases/tag/v0.103.0) · [查看 0.102.0 → 0.103.0 代码差异](https://github.com/uichat-mira/mira-desktop/compare/v0.102.0...v0.103.0)
 
-## v0.102.0 · 2026-10-02 · 正式发布
+## v0.102.0 · 已正式发布
 
 此版本完成 `dev → test → prod` 晋级并发布正式安装包。它将默认 Agent、工作空间所有权和应用导航推进到新的稳定基线。
 
