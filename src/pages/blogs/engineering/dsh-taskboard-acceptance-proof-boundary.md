@@ -159,7 +159,7 @@ Decision：谁基于哪些证据做了什么决定
 
 这份克制，恰好也是 Mira Proof 应当坚持的产品态度。
 
-同一天我们还读了 [dsh-im 的会话与授权设计](./dsh-im-message-to-agent-authority)。它从 IM 入口追问「谁有权让桌面 Agent 执行」，Taskboard 从执行现场追问「谁有权认领与收卡」；Mira Proof 要接着问的，是第三个问题：
+同一天我们还读了 [dsh-im 的会话与授权设计](/blogs/engineering/dsh-im-message-to-agent-authority/)。它从 IM 入口追问「谁有权让桌面 Agent 执行」，Taskboard 从执行现场追问「谁有权认领与收卡」；Mira Proof 要接着问的，是第三个问题：
 
 **当所有人都说已经交付时，系统手里到底有什么证据？**
 
