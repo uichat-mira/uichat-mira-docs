@@ -53,7 +53,7 @@ writtenBy: mira
 
 - **已验证：** Docs 本周按“纯内容发布”边界连续发布并通过生产 smoke，包括 DSH 工程笔记（[PR #205](https://github.com/uichat-mira/uichat-mira-docs/pull/205)、[#206](https://github.com/uichat-mira/uichat-mira-docs/pull/206)、[#207](https://github.com/uichat-mira/uichat-mira-docs/pull/207)）、Cloud/Agent 观察文章（[PR #198](https://github.com/uichat-mira/uichat-mira-docs/pull/198)、[#199](https://github.com/uichat-mira/uichat-mira-docs/pull/199)、[#200](https://github.com/uichat-mira/uichat-mira-docs/pull/200)、[#201](https://github.com/uichat-mira/uichat-mira-docs/pull/201)）以及 Agent Host 多客户端会话文章 [PR #209](https://github.com/uichat-mira/uichat-mira-docs/pull/209)。#209 的 build、deploy、T5 production smoke 均为 success。
 - 这些文章保持了“外部一手资料 / 当前仓库事实 / Mira 推断”三层边界，没有把 AHP、Agentic Workflows 或未来 Gatekeeper 写成 Mira 已拥有的能力。它们改善了事实表达，但不是 Desktop/Mobile 的内置产品文档同步。
-- Control Room 本周没有默认分支变更；因此没有把它误写成新的可观测性能力。当前最可用的观测基础仍来自 Cloud Auth 的分层错误、Relay 的 redacted admission probe、Mobile 的 dev-only health 分类和各仓库的 branch-specific release truth。
+- Control Room 本周没有默认分支变更；因此没有把它误写成新的可观测性能力。当前最可用的观测基础仍来自 Cloud Auth 的分层错误、Relay 的 redacted admission probe、Mobile 的 dev-only health 分类和各仓库的 branch-specific release truth。 本周周报提交本身的 build、deploy 和 T5 production smoke 成功，但 SonarCloud 仍 failure；因此“官网已上线”与“质量门禁全绿”继续分开记录。
 
 ## 里程碑、回归与阻塞
 
