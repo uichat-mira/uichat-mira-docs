@@ -15,7 +15,7 @@ Mira 使用 pnpm workspace。具体脚本应以 dev 分支 package.json 与各�
 
 ## 本地运行
 
-开发通常需要同时启动桌面 Renderer 与本地后端。涉及 Electron 或 Tauri 时，还要验证 preload/command 边界和打包环境，而不只是在浏览器中确认页面。
+开发通常需要同时启动桌面 Renderer 与本地后端。涉及 Electron 时，还要验证 preload/IPC 边界和打包环境，而不只是在浏览器中确认页面。Tauri 已从开发主线退役。
 
 ## 按边界测试
 
