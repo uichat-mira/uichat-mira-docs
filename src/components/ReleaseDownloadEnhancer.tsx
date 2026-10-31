@@ -96,13 +96,6 @@ function r2AssetName(asset: ReleaseAsset, releaseTag: string) {
     }
   }
 
-  if (/^tauri-windows_/i.test(asset.name)) {
-    return asset.name.replace(
-      /(_tauri_(?:nsis|msi)_)UIChat\.Mira_/i,
-      "$1UIChat Mira_",
-    );
-  }
-
   return asset.name;
 }
 
@@ -121,23 +114,15 @@ function classifyDownloads(
   const releaseTag = release?.tag_name || "";
   const desktopVersion = formatVersion(releaseTag);
 
+  // Historic GitHub releases may still contain retired Tauri installers.
+  // Only an explicit Electron Setup executable may become a Desktop download.
   const electronSetup = assets.find(
     (asset) =>
-      /electron/i.test(asset.name) && /setup.*\.exe$/i.test(asset.name),
-  );
-  const tauriNsis = assets.find(
-    (asset) =>
-      /tauri/i.test(asset.name) &&
-      /(?:nsis|setup)/i.test(asset.name) &&
-      /\.exe$/i.test(asset.name),
-  );
-  const tauriMsi = assets.find(
-    (asset) => /tauri/i.test(asset.name) && /\.msi$/i.test(asset.name),
+      /^electron(?:-win)?_/i.test(asset.name) &&
+      /setup.*\.exe$/i.test(asset.name),
   );
   const macIntelDmg = assets.find(isMacIntelAsset);
-  const fallback = assets.find((asset) => /\.(exe|msi)$/i.test(asset.name));
-
-  const recommended = electronSetup || tauriNsis || tauriMsi || fallback;
+  const recommended = electronSetup;
   const options: DownloadOption[] = [];
 
   const pushOption = (
@@ -158,8 +143,6 @@ function classifyDownloads(
   };
 
   pushOption("electron", "Windows 安装版", "Electron · EXE · 推荐", electronSetup);
-  pushOption("tauri-nsis", "Tauri 安装版", "轻量实验版 · EXE", tauriNsis);
-  pushOption("tauri-msi", "Tauri MSI", "企业或批量部署", tauriMsi);
   if (macIntelDmg) {
     pushOption(
       "macos-intel",

@@ -112,7 +112,7 @@ order: 18
 
 持续完善：
 
-- Electron 主路径与 Tauri 并行路径；
+- Electron 单一桌面壳的安装、升级与跨平台发布验证（Tauri 已从 `dev` 退役）；
 - 安装包和更新；
 - SQLite Migration；
 - 本地 Runtime 与资源打包；
