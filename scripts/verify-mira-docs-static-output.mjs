@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { relative, resolve } from "node:path";
+import { verifyBlogFeed } from "./blog-feed.mjs";
 import { parseMiraDoc } from "@uichat-mira/docs";
 
 const root = process.cwd();
@@ -381,6 +382,13 @@ if (existsSync(redirectsPath) && existsSync(sitemapPath)) {
       failures.push(`_redirects 缺少 canonical 跳转: ${source} -> ${canonical}`);
     }
   }
+}
+
+try {
+  const feed = verifyBlogFeed(distRoot);
+  console.log("RSS static output verified: " + feed.count + " blog articles.");
+} catch (error) {
+  failures.push("博客 RSS feed 校验失败: " + (error instanceof Error ? error.message : String(error)));
 }
 
 if (existsSync(robotsPath)) {
