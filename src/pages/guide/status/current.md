@@ -386,9 +386,9 @@ MicroApps Hub 中还有不属于严格 Registry 的真实入口：
 
 页面卡片、Definition、Runtime、External Invoke 和 Agent Access 不能互相代替。
 
-## 桌面平台与发布当前快照
+## 桌面平台与发布快照（含后续核验）
 
-Windows 仍是当前完整 Release Factory 与 Tauri 发布的主合同。
+本页主体记录的是 **2026 年 10 月 2 日**的代码状态，当时 Windows Electron 与 Tauri 仍并行构建。**后续变更：2026 年 10 月 31 日，Desktop 的 [DSK-011 / PR #445](https://github.com/uichat-mira/mira-desktop/pull/445) 已合入 `dev`，退役 Tauri，Electron 成为唯一受支持的桌面壳。** 本站当前下载菜单仅提供 Electron 版本；正式发布的 `v0.105.0` 早于退役，历史 Release 中保留的 Tauri 安装资产不因此消失。
 
 Intel macOS Electron 已经从“探索能不能打包”进入真实兼容性发布链：
 
