@@ -1,6 +1,6 @@
 ---
 title: 更新日志
-description: Mira Desktop v0.104.0 已正式发布，了解 Agent 渐进式能力发现、Mira Next 二期和历史版本变化。
+description: Mira Desktop 最新正式 Release 为 v0.105.0；官网仅推荐 Electron 下载，保留历史发布记录。
 group: 现状与方向
 order: 19
 ---
@@ -8,6 +8,18 @@ order: 19
 # 更新日志
 
 > 这里是 Mira Desktop 面向用户的发布摘要。正式版本事实以 [Desktop CHANGELOG](https://github.com/uichat-mira/mira-desktop/blob/prod/CHANGELOG.md) 和 [GitHub Releases](https://github.com/uichat-mira/mira-desktop/releases) 为准。
+
+## v0.105.0 · 已正式发布
+
+2026 年 10 月 22 日发布。正式发布包与更新内容以 [v0.105.0 GitHub Release](https://github.com/uichat-mira/mira-desktop/releases/tag/v0.105.0) 为准；本站不根据未经核验的版本差异补写功能说明。
+
+### 当前官网下载政策
+
+Windows 统一推荐 **Electron Setup（EXE）**，macOS Intel 继续提供 Electron DMG（尚未进行 Apple Developer ID 签名及公证）。首页下载菜单保留 GitHub 与 Cloudflare R2 镜像来源，不再提供 Tauri 安装包入口。
+
+请注意：v0.105.0 发布于 Tauri 退役之前，因此其历史 GitHub Release 中仍包含 Tauri NSIS 安装资产。2026 年 10 月 31 日，Desktop [DSK-011 / PR #445](https://github.com/uichat-mira/mira-desktop/pull/445) 已将 Tauri 从 **dev 开发主线**退役；这不表示 v0.105.0 的已发布二进制包被重新构建，也不表示旧 Release 文件已经删除。未来正式发布沿 Electron-only 构建链交付。
+
+[查看 v0.105.0 GitHub Release](https://github.com/uichat-mira/mira-desktop/releases/tag/v0.105.0) · [查看 0.104.0 → 0.105.0 代码差异](https://github.com/uichat-mira/mira-desktop/compare/v0.104.0...v0.105.0)
 
 ## v0.104.0 · 已正式发布
 
@@ -25,7 +37,7 @@ order: 19
 
 [查看 v0.104.0 GitHub Release](https://github.com/uichat-mira/mira-desktop/releases/tag/v0.104.0) · [查看 0.103.0 → 0.104.0 代码差异](https://github.com/uichat-mira/mira-desktop/compare/v0.103.0...v0.104.0)
 
-### 下载与发布验证
+### 当时的下载与发布验证（历史）
 
 本次正式 Release 已发布。Release Factory V2 的测试、Windows Electron / Tauri 打包、Intel macOS 构建和发布任务均完成成功。
 
