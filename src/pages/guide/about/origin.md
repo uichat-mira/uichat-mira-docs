@@ -62,7 +62,7 @@ Mira 当前以桌面应用为主要交付形态：
 
 ```text
 React / Vite Renderer
-→ Electron（主桌面壳）或 Tauri（并行路径）
+→ Electron（唯一桌面壳）
 → Fastify Backend
 → SQLite / Local Artifact / External Provider
 ```
