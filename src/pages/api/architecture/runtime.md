@@ -1,6 +1,6 @@
 ---
 title: 桌面运行时
-description: React/Vite、Electron/Tauri、Fastify 与 SQLite 如何组成工作舱。
+description: React/Vite、Electron、Fastify 与 SQLite 如何组成工作舱。
 group: 架构
 order: 10
 ---
@@ -15,7 +15,7 @@ Mira 是 pnpm workspace 管理的桌面应用。运行时从界面到数据大�
 
 ## Desktop Shell
 
-Electron 是当前主路径，负责窗口、生命周期和 preload 边界；Tauri 作为并行壳保留。Renderer 不应直接拥有操作系统权限，敏感能力经由桌面桥接进入。
+Electron 是唯一受支持的桌面壳，负责窗口、生命周期和 preload 边界。Tauri 已从 Desktop `dev` 退役；旧 Release 仍保留历史下载资产。Renderer 不应直接拥有操作系统权限，敏感能力经由桌面桥接进入。
 
 ## Backend
 

@@ -11,7 +11,7 @@ UIChat Mira 使用 pnpm workspace 组织多个运行边界。阅读源码时，�
 
 ## desktop
 
-desktop 包含 React/Vite Renderer、Electron main/preload 和 Tauri 并行壳。页面路由、聊天界面、设置与桌面生命周期在这里汇合。
+`desktop/` 包含 React/Vite Renderer、页面路由、聊天界面与设置；`electron/` 负责唯一桌面壳的 main/preload、窗口与生命周期。Tauri 实现已从 `dev` 删除。
 
 ## server
 

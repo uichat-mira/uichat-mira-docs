@@ -19,9 +19,9 @@ order: 10
 | --- | --- |
 | 产品名称 | UIChat Mira |
 | 产品定位 | 本地优先、桌面优先、多 Provider 的个人 AI 工作台 |
-| 当前源码版本 | `0.99.6` |
+| 正式发布版本 | 以 [GitHub Releases](https://github.com/uichat-mira/mira-desktop/releases/latest) 为准，源码版本见 Desktop `package.json` |
 | 当前主要平台 | Windows 桌面端 |
-| 桌面运行形态 | Electron 主路径；Tauri 壳并行演进 |
+| 桌面运行形态 | Electron 单一桌面壳（Tauri 已从 `dev` 退役；历史版本不受影响） |
 | 前端 | React + Vite |
 | 本地后端 | Fastify |
 | 本地数据 | SQLite + sqlite-vec |
@@ -75,7 +75,7 @@ Image Generation 与 TTS 当前主要在各自 Studio 中配置，不是首次�
 
 ```text
 React / Vite Renderer
-→ Electron 或 Tauri Desktop Shell
+→ Electron Desktop Shell
 → Fastify Backend
 → SQLite / Local Runtime / Provider / External Integration
 ```
