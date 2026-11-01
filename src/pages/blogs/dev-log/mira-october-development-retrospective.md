@@ -2,7 +2,7 @@
 title: Mira 十月开发回顾：路太宽就是没有路
 description: 十月的 Mira 看起来推进了很多功能，实际更多时间花在云设施、运行时、跨仓库协作和 AI 工程基建上。方向没错，只是路铺得太宽，验证开始跟不上施工。
 group: 开发日志
-order: 42
+order: 45
 date: 2026年10月31日
 readTime: 16 分钟阅读
 tags: Mira | Engineering | Cloud | Agent | Mobile | AI Coding | 工程复盘
