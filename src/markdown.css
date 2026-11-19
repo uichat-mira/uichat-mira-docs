@@ -40,3 +40,11 @@
   .visual-html-frame{margin-right:-8px;margin-left:-8px;border-radius:var(--r-md)}
   .visual-html-frame iframe{height:760px}
 }
+
+/* Standalone ten-scene roadshow: full slide and speaker notes remain visible on narrow screens. */
+.visual-html-frame.cyber-roadshow-embed{border:0;border-radius:0;background:#121211;margin-bottom:28px}
+.visual-html-frame.cyber-roadshow-embed iframe{height:clamp(790px,70vw,940px);background:#121211}
+@media(max-width:700px){
+  .visual-html-frame.cyber-roadshow-embed{margin-right:-8px;margin-left:-8px;border-radius:0}
+  .visual-html-frame.cyber-roadshow-embed iframe{height:1015px}
+}
