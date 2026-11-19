@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MIRA｜赛博新世界 · 2026 路演</title>
+<style>
+:root{--ink:#1b1b1a;--paper:#eae7d9;--red:#b32228;--pale:#f5f0df;--yellow:#efc951;--muted:#7b786e;--line:#c7c0ad}*{box-sizing:border-box}html,body{margin:0;background:#121211;color:var(--ink);font-family:system-ui,-apple-system,"PingFang SC","Microsoft Yahei",sans-serif}button{font-family:inherit} .frame{max-width:1220px;margin:auto;padding:16px 16px 10px}.stage{position:relative;width:100%;aspect-ratio:16/9;min-height:520px;max-height:685px;background:var(--paper);overflow:hidden;isolation:isolate;box-shadow:0 20px 48px #0007}.stage:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:20;background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,#00000006 4px)}.slide{position:absolute;inset:0;padding:4.1% 5.1%;display:none;overflow:hidden}.slide.active{display:block;animation:enter .35s ease-out}@keyframes enter{from{opacity:.5;transform:translateY(8px)}to{opacity:1;transform:none}}.folio{display:flex;align-items:center;justify-content:space-between;font:700 11px/1.2 ui-monospace,monospace;letter-spacing:2px;text-transform:uppercase;position:relative;z-index:5}.folio .run{color:var(--red)}.eyebrow{font:700 11px/1.2 ui-monospace,monospace;letter-spacing:2px;text-transform:uppercase}.serif{font-family:Georgia,"Iowan Old Style","Noto Serif CJK SC","Songti SC",serif}.headline{font-weight:950;line-height:1.1;letter-spacing:-.05em}.red{color:var(--red)}.cream{color:var(--paper)}.small{font-size:clamp(10px,1.22vw,16px)}.rule{width:50px;height:5px;background:var(--red)}.idmark{font:700 12px/1 ui-monospace,monospace;letter-spacing:2px}.stamp{display:inline-block;border:4px solid currentColor;padding:7px 12px;font-weight:950;letter-spacing:3px;transform:rotate(-8deg)}
+/* 01 — collision */
+.s1{background:var(--red);color:var(--paper)}.s1 .folio .run{color:#fff4a4}.s1:before{content:"";position:absolute;left:-18%;top:-35%;width:75%;height:190%;background:#131313;transform:rotate(-18deg);z-index:0}.s1 .hero{position:relative;z-index:2;padding-top:7%;width:67%}.s1 h1{font-size:clamp(48px,8vw,116px);margin:12px 0 23px;line-height:.97}.s1 .lead{font:500 clamp(17px,2.1vw,26px)/1.5 Georgia,"Songti SC",serif}.s1 .fine{position:absolute;left:5%;bottom:8%;font-size:clamp(12px,1.35vw,18px);font-weight:700;z-index:2}.s1 .clock{position:absolute;right:-4.3%;top:7%;width:46%;height:91%;z-index:1;filter:drop-shadow(-14px 14px 0 #0003)}.s1 .tick{font:900 130px/1 monospace;fill:#fff8dd}.s1 .cut{stroke:#1b1b1a;stroke-width:15;fill:none}.s1 .clock text{paint-order:stroke}
+/* 02 — 996 */
+.s2{background:#eae6d7}.s2 h2{font-size:clamp(42px,7.2vw,100px);margin:6% 0 0}.s2 .figure{position:absolute;right:4%;top:12%;width:48%;height:79%;background:#1a1a19;color:var(--paper);padding:3%;transform:rotate(2deg);box-shadow:-22px 20px 0 #b32228}.s2 .figure .giant{font:900 clamp(74px,10vw,150px)/.9 ui-monospace,monospace;letter-spacing:-10px}.s2 .week{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:9%}.s2 .week span{padding:11px 2px;background:var(--red);text-align:center;font-weight:900}.s2 .bodycopy{font-size:clamp(17px,2vw,27px);line-height:1.45;max-width:47%;margin-top:2.5%}.s2 .legal{position:absolute;left:5%;bottom:8%;font-size:clamp(12px,1.2vw,16px);max-width:45%}.s2 .figure footer{position:absolute;bottom:8%;left:7%;font-size:13px;letter-spacing:1px}
+/* 03 — paradox */
+.s3{background:#211e1c;color:var(--paper)}.s3 h2{font-size:clamp(38px,5vw,70px);margin:4% 0 4%}.s3 .split{display:grid;grid-template-columns:1fr 92px 1fr;gap:16px;align-items:center;height:55%}.s3 .panel{height:100%;padding:6% 7%;border:1px solid #807a6c;position:relative;overflow:hidden}.s3 .panel.old{background:repeating-linear-gradient(90deg,#342a2a 0 17px,#2d2424 17px 34px)}.s3 .panel.new{background:#b32228;border-color:#ebd7b6}.s3 .panel strong{font-size:clamp(26px,3vw,41px)}.s3 .panel p{font-size:clamp(14px,1.65vw,21px);line-height:1.45;max-width:330px}.s3 .panel .water{font-size:clamp(90px,13vw,170px);font-weight:950;position:absolute;bottom:-18%;right:-6%;opacity:.12}.s3 .mid{text-align:center;font:900 clamp(45px,6vw,80px) Georgia,serif;color:var(--yellow)}.s3 .bottom{position:absolute;bottom:5.8%;left:5%;right:5%;font-size:clamp(17px,2.2vw,27px);font-weight:850;color:var(--yellow)}
+/* 04 — pipeline */
+.s4{background:#171c1b;color:var(--paper)}.s4:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#ffffff08 1px,transparent 1px),linear-gradient(0deg,#ffffff08 1px,transparent 1px);background-size:28px 28px;opacity:.8}.s4 h2{font-size:clamp(32px,4.5vw,65px);margin:4% 0 7%;max-width:90%;position:relative}.s4 .track{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;position:relative;margin-top:4%;z-index:2}.s4 .node{border-top:6px solid var(--yellow);background:#e8e3d3;color:#191b19;min-height:152px;padding:12px}.s4 .node span{font:900 clamp(20px,3.6vw,45px)/1 ui-monospace,monospace;color:var(--red)}.s4 .node strong{display:block;font-size:clamp(15px,1.7vw,23px);margin-top:12px}.s4 .node p{font-size:clamp(11px,1.15vw,15px);line-height:1.4}.s4 .backline{position:absolute;left:15%;width:70%;bottom:14%;border-bottom:3px dashed var(--yellow);height:24px;z-index:1}.s4 .recovery{position:absolute;bottom:6%;left:22%;font-weight:850;color:var(--yellow);letter-spacing:2px}.s4 .marginnote{position:absolute;right:5%;bottom:7%;font:600 11px monospace;color:#a5b4aa}
+/* 05 — remains */
+.s5{background:var(--pale)}.s5 h2{font-size:clamp(40px,5vw,74px);margin:4% 0 1%;max-width:79%}.s5 .visual{display:flex;align-items:center;justify-content:space-around;height:57%;position:relative}.s5 .terminal{width:38%;height:72%;border:12px solid #292723;background:#39342f;transform:rotate(-7deg);box-shadow:9px 10px 0 #c4b9a1;position:relative;color:#eee1c6;padding:3%;font:700 clamp(11px,1.5vw,18px)/1.7 ui-monospace,monospace}.s5 .terminal:after{content:"";position:absolute;left:10%;top:-20%;height:142%;width:10px;background:var(--red);transform:rotate(27deg);box-shadow:22px 0px 0 #e5d3a9}.s5 .arrow{font-size:clamp(55px,6vw,95px);color:var(--red);font-weight:900}.s5 .artifact{width:32%;height:85%;clip-path:polygon(8% 0,94% 4%,100% 88%,88% 100%,0 93%,2% 12%);background:#ba2228;color:var(--pale);padding:5%;transform:rotate(5deg);box-shadow:3px 4px 0 #000}.s5 .artifact strong{font:900 clamp(24px,3vw,43px)/1.1 ui-monospace,monospace}.s5 .artifact p{font-size:clamp(13px,1.6vw,20px)}.s5 .bottom{position:absolute;bottom:6%;left:5%;font-size:clamp(15px,2vw,25px);font-weight:850}
+/* 06 — regulation */
+.s6{background:#f3cc51}.s6 h2{font-size:clamp(35px,5.4vw,78px);margin:5% 0 0;max-width:76%}.s6 .tiers{position:absolute;left:5%;top:43%;width:56%;display:flex;flex-direction:column;gap:6px}.s6 .tier{height:clamp(24px,3.2vw,38px);background:#282522;color:#fff4da;display:flex;align-items:center;padding:0 12px;gap:15px;font:800 clamp(10px,1.15vw,16px) monospace}.s6 .tier span{color:#f3cc51}.s6 .tier:nth-child(4),.s6 .tier:nth-child(5){background:#75673d}.s6 .tier:nth-child(6){background:#b5a063;color:#26221a}.s6 .limits{position:absolute;right:4%;top:28%;width:32%;height:52%;border:8px solid #282522;background:#b32228;transform:rotate(5deg);padding:5% 3%;color:#fff3d5;text-align:center}.s6 .limits small{font:700 14px monospace}.s6 .limits strong{display:block;font:950 clamp(44px,6vw,83px)/1.05 ui-monospace,monospace;margin:13px 0}.s6 .limits p{font-size:clamp(16px,2vw,25px);font-weight:800}.s6 .bottom{position:absolute;bottom:5%;left:5%;font-size:clamp(14px,1.65vw,22px);font-weight:850}
+/* 07 — evidentiary architecture */
+.s7{background:#e7e8dd}.s7 h2{font-size:clamp(38px,5.3vw,79px);margin:4% 0 5%}.s7 .layers{display:grid;grid-template-columns:1fr 62px 1.4fr 62px 1fr;align-items:stretch;gap:0;height:50%;margin-top:3%}.s7 .source,.s7 .crt,.s7 .logger{border:3px solid #2e322e;padding:12px 15px;min-width:0}.s7 .source{background:#232a26;color:#dfdfc9}.s7 .source strong,.s7 .logger strong{font:900 clamp(18px,2.3vw,31px)/1.1 ui-monospace,monospace}.s7 .source p,.s7 .logger p{font-size:clamp(10px,1.25vw,17px);line-height:1.6}.s7 .crt{background:#1e2422;color:#c9dec7;box-shadow:inset 0 0 0 8px #445348}.s7 .crt .bar{font:800 clamp(9px,1.1vw,14px) monospace;padding-bottom:8px;border-bottom:1px solid #70826f}.s7 .crt .monitor{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}.s7 .crt .monitor i{height:52px;background:repeating-linear-gradient(135deg,#74927a 0px,#74927a 2px,#334338 2px,#334338 10px);opacity:.8}.s7 .crt em{font:900 clamp(14px,1.6vw,23px) monospace;color:#e6cd6b;font-style:normal}.s7 .logger{background:#dfc85b}.s7 .arrow{text-align:center;align-self:center;font:900 clamp(25px,4vw,59px) serif}.s7 .note{position:absolute;left:5%;bottom:7%;font-size:clamp(14px,1.65vw,22px);font-weight:850}.s7 .honest{position:absolute;right:5%;bottom:6.5%;font:700 10px monospace;letter-spacing:1px}
+/* 08 — audit */
+.s8{background:#252421;color:var(--pale)}.s8 h2{font-size:clamp(37px,5.3vw,76px);margin:4% 0 5%}.s8 .truths{display:grid;grid-template-columns:1fr 1fr;gap:24px;height:61%}.s8 .truths section{border-top:7px solid var(--yellow);padding-top:13px}.s8 .truths section:last-child{border-color:var(--red)}.s8 .truths h3{font-size:clamp(21px,2.6vw,37px);margin:0 0 15px}.s8 .truths p{padding:7px 0;margin:0;border-bottom:1px solid #66635c;font-size:clamp(13px,1.65vw,22px);line-height:1.5}.s8 .caution{position:absolute;right:5%;bottom:5.5%;color:var(--yellow);font:700 11px monospace}
+/* 09 — economics */
+.s9{background:#e6e3d6}.s9 h2{font-size:clamp(34px,5vw,74px);margin:5% 0 3%}.s9 .calc{display:flex;align-items:center;gap:10px;margin-top:5%;font:900 clamp(15px,2.1vw,31px) ui-monospace,monospace}.s9 .calc b{padding:14px;background:#262722;color:#faf0dd;transform:skew(-5deg)}.s9 .calc .eq{color:var(--red);font-size:40px}.s9 .redside{position:absolute;bottom:0;right:0;width:47%;height:53%;background:var(--red);color:#f6f0e0;padding:4%;clip-path:polygon(11% 0,100% 0,100% 100%,0 100%)}.s9 .redside strong{font-size:clamp(20px,2.9vw,41px)}.s9 .redside p{font-size:clamp(13px,1.65vw,22px);line-height:1.5}.s9 .metric{position:absolute;bottom:11%;left:5%;width:45%;font-size:clamp(13px,1.5vw,20px);line-height:1.6}.s9 .giantq{position:absolute;right:4%;top:0;font:900 140px ui-monospace,monospace;color:#cccbbe;z-index:0}
+/* 10 — new world */
+.s10{background:#b32228;color:#fcf3df}.s10 .sun{position:absolute;right:-10%;top:11%;width:63%;height:117%;border-radius:50%;background:#f2d163;box-shadow:0 0 0 18px #efcb5825,0 0 0 65px #f4df8c24,0 0 0 123px #f6df8824}.s10 .sun:before{content:"";position:absolute;inset:22%;border:25px solid #b32228;border-radius:50%;opacity:.85}.s10 .terrain{position:absolute;bottom:-20%;right:-4%;width:66%;height:52%;background:#262624;transform:rotate(-13deg)}.s10 h2{position:relative;font-size:clamp(49px,7.8vw,111px);line-height:1.06;margin:8% 0 4%;max-width:80%;z-index:1}.s10 .slogan{position:relative;font-size:clamp(18px,2.3vw,31px);font-weight:800;z-index:1;line-height:1.5}.s10 .end{position:absolute;bottom:8%;left:5%;font:800 13px monospace;letter-spacing:2px;z-index:2}
+/* controls */
+.controls{display:flex;align-items:center;gap:12px;padding:12px 2px 6px;color:#eee8d6}.controls button{appearance:none;background:transparent;border:1px solid #5b5a55;border-radius:4px;color:#f6f2e8;padding:9px 18px;cursor:pointer;font-weight:800}.controls button:hover,.controls button:focus-visible{background:#b32228;border-color:#b32228}.controls button:disabled{opacity:.25;cursor:default;background:transparent}.counter{font:700 12px monospace;letter-spacing:2px;white-space:nowrap}.bar{flex:1;height:4px;background:#53514b;overflow:hidden}.bar span{display:block;height:100%;width:10%;background:#e9c956;transition:width .25s}.notes{color:#e3decf;display:flex;gap:14px;align-items:flex-start;border-top:1px solid #45433d;margin-top:5px;padding:12px 3px 8px;font-size:14px;line-height:1.55}.notes strong{white-space:nowrap;color:#e3c65a;letter-spacing:1px}.notes p{margin:0;flex:1}.narrow{font:700 11px monospace;color:#88867e;letter-spacing:1px}.key{font:700 12px monospace;color:#aaa69b}@media(max-width:700px){.frame{padding:5px}.stage{min-height:525px;aspect-ratio:auto}.slide{padding:24px}.folio{font-size:9px;letter-spacing:1px}.s1 .hero{width:86%;padding-top:16%}.s1 h1{font-size:52px}.s1 .clock{top:33%;right:-25%;width:70%;opacity:.7}.s2 h2{font-size:53px;margin-top:27px}.s2 .figure{top:36%;right:5%;width:55%;height:49%;padding:13px}.s2 .figure .giant{font-size:70px}.s2 .week span{font-size:9px;padding:6px 1px}.s2 .bodycopy{font-size:17px;margin-top:30px}.s2 .legal{bottom:6%;max-width:90%}.s3 h2{font-size:35px;margin-top:25px}.s3 .split{grid-template-columns:1fr 31px 1fr;gap:5px;height:55%}.s3 .panel{padding:9px 8px}.s3 .panel strong{font-size:20px}.s3 .panel p{font-size:13px}.s3 .mid{font-size:29px}.s3 .bottom{font-size:18px}.s4 h2{font-size:35px;margin:28px 0 34px}.s4 .track{grid-template-columns:repeat(3,1fr);gap:5px}.s4 .node{min-height:100px;padding:8px}.s4 .node strong{font-size:14px;margin-top:7px}.s4 .node p{font-size:11px}.s4 .backline{bottom:8%}.s4 .recovery{bottom:4%;left:8%;font-size:11px}.s4 .marginnote{bottom:2%;font-size:8px}.s5 h2{font-size:36px;margin-top:33px}.s5 .visual{height:57%;margin-top:15px}.s5 .terminal{width:41%;font-size:10px;border-width:6px}.s5 .arrow{font-size:35px}.s5 .artifact{width:43%;padding:8% 5%}.s5 .artifact strong{font-size:20px}.s5 .artifact p{font-size:12px}.s6 h2{font-size:40px;margin-top:28px}.s6 .tiers{width:54%;top:40%}.s6 .tier{font-size:10px;padding:3px 4px;height:30px;gap:4px}.s6 .limits{top:35%;right:4%;width:37%;height:46%;border-width:5px;padding:18px 8px}.s6 .limits strong{font-size:42px}.s6 .limits p{font-size:16px}.s7 h2{font-size:39px;margin-top:30px}.s7 .layers{grid-template-columns:1fr 20px 1.3fr 20px 1fr;height:45%}.s7 .source,.s7 .crt,.s7 .logger{padding:5px;border-width:2px}.s7 .source strong,.s7 .logger strong{font-size:13px}.s7 .source p,.s7 .logger p{font-size:8px}.s7 .crt .bar{font-size:7px}.s7 .crt .monitor{gap:2px}.s7 .crt .monitor i{height:40px}.s7 .crt em{font-size:10px}.s7 .note{font-size:16px;bottom:8%}.s7 .honest{font-size:8px}.s8 h2{font-size:41px;margin-top:29px}.s8 .truths{gap:12px}.s8 .truths h3{font-size:23px}.s8 .truths p{font-size:13px}.s9 h2{font-size:36px;margin-top:28px}.s9 .calc{flex-wrap:wrap;font-size:16px}.s9 .calc b{padding:9px}.s9 .redside{height:42%;width:56%}.s9 .redside strong{font-size:20px}.s9 .redside p{font-size:13px}.s9 .metric{bottom:8%;width:42%;font-size:13px}.s10 h2{font-size:53px;margin-top:70px}.s10 .sun{right:-52%;width:105%;top:20%;height:75%}.s10 .slogan{font-size:20px}.notes{font-size:12px}.controls button{padding:7px 12px}}
+
+/* 2026-11-19 · Legibility and mobile layout correction.
+   All copy gets explicit foreground colors; decorative backgrounds may not determine reading contrast. */
+.stage{color:#24221e}
+.slide{color:#24221e}
+.s1,.s3,.s4,.s8,.s10{color:#f9f1df}
+.s2,.s5,.s6,.s7,.s9{color:#262521}
+.slide .headline,.slide .bodycopy,.slide .lead,.slide .legal,.slide .note,.slide .bottom,.slide .slogan,.slide .fine,.slide .metric,.slide .caution{color:inherit}
+.s2 .headline,.s2 .bodycopy,.s2 .legal,.s2 .folio,.s2 .folio span:first-child{color:#25231e!important}
+.s2 .headline .red,.s2 .folio .run{color:#a51c23!important}
+.s4 .node,.s4 .node strong,.s4 .node p{color:#262420!important}
+.s4 .node p{font-weight:600}
+.s4 .node span{color:#a41a21!important}
+.s7 .headline,.s7 .folio,.s7 .note{color:#252823!important}
+.s7 .source,.s7 .source p,.s7 .source strong{color:#f4f1df!important}
+.s7 .logger,.s7 .logger p,.s7 .logger strong,.s7 .logger .eyebrow{color:#27251c!important}
+.s7 .crt,.s7 .crt p{color:#e6efd8!important}
+.s7 .crt em{color:#f7dc78!important}
+.s9 .headline,.s9 .metric,.s9 .folio{color:#242321!important}
+.s9 .headline .red{color:#a41d24!important}
+.s9 .redside,.s9 .redside strong,.s9 .redside p{color:#fff5e5!important}
+.s10 .headline,.s10 .slogan,.s10 .folio,.s10 .end{color:#fff5e5!important}
+.s10 .headline span{color:#ffe37b!important;text-shadow:3px 3px 0 #732024,0 0 12px #732024aa}
+.s10 .slogan{max-width:64%;text-shadow:2px 2px 3px #721d20}
+.s4 .recovery,.s4 .marginnote{z-index:2}
+@media(max-width:700px){
+  .frame{padding:8px 8px 12px}
+  .stage{aspect-ratio:auto;height:680px;min-height:680px;max-height:none}
+  .slide{padding:23px 22px}
+  .folio{font-size:10px;line-height:1.35;letter-spacing:.45px;gap:10px;align-items:flex-start}
+  .folio>span:first-child{max-width:55%}
+  .folio>span:last-child{max-width:43%;text-align:right}
+  .s1 .hero{padding-top:68px;width:93%}
+  .s1 h1{font-size:clamp(49px,13vw,60px);line-height:1.1;margin-bottom:26px}
+  .s1 .lead{font-size:19px;line-height:1.55;color:#fff1dc!important;max-width:88%;text-shadow:1px 2px 2px #542222}
+  .s1 .clock{width:85%;height:53%;top:42%;right:-38%;opacity:.32}
+  .s1 .fine{font-size:15px;line-height:1.5;left:6%;right:8%;bottom:7%;max-width:86%;color:#fff2dd!important}
+  .s2 h2{font-size:56px;margin:28px 0 0;line-height:1.06}
+  .s2 .bodycopy{position:relative;z-index:3;max-width:100%;font-size:18px;line-height:1.45;margin-top:18px;font-weight:650}
+  .s2 .figure{top:50%;right:7%;width:76%;height:32%;padding:18px;box-shadow:-12px 12px 0 #b32228;transform:rotate(2deg)}
+  .s2 .figure .giant{font-size:72px;letter-spacing:-5px}
+  .s2 .figure .eyebrow{font-size:12px;letter-spacing:1px;color:#fff2d8!important}
+  .s2 .figure footer{font-size:10px;bottom:5%}
+  .s2 .week{margin-top:8%}
+  .s2 .week span{font-size:12px;padding:7px 1px}
+  .s2 .legal{max-width:90%;bottom:3%;font-size:12.5px;line-height:1.5;left:6%;right:5%}
+  .s2 .legal p{color:#25231e!important}
+  .s3 h2{font-size:35px;line-height:1.17;margin:32px 0 25px}
+  .s3 .split{grid-template-columns:1fr 25px 1fr;gap:6px;height:52%;align-items:stretch}
+  .s3 .panel{padding:16px 10px}
+  .s3 .panel strong{font-size:20px;line-height:1.4;color:#fff4e0!important}
+  .s3 .panel p{font-size:15px;line-height:1.65;color:#f7eddb!important}
+  .s3 .panel .eyebrow{font-size:10px;color:#ffe4c8!important;letter-spacing:0}
+  .s3 .mid{font-size:29px}
+  .s3 .bottom{font-size:17px;line-height:1.55;bottom:6%;color:#ffdf70!important}
+  .s4 h2{font-size:34px;line-height:1.18;margin:30px 0 28px;max-width:100%}
+  .s4 .track{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:0}
+  .s4 .node{min-height:115px;padding:10px 8px;border-top-width:5px}
+  .s4 .node span{font-size:25px}
+  .s4 .node strong{font-size:12px;margin-top:8px;overflow-wrap:anywhere;letter-spacing:-.2px}
+  .s4 .node p{font-size:12px;line-height:1.5;margin:8px 0 0;color:#35312a!important;font-weight:650}
+  .s4 .backline{display:none}
+  .s4 .recovery{left:5%;right:5%;bottom:9%;font-size:11px;line-height:1.6;letter-spacing:.3px;text-align:center;color:#f8d966!important}
+  .s4 .marginnote{left:6%;right:6%;bottom:4%;font-size:9px;text-align:center;color:#ced8d0!important}
+  .s5 h2{font-size:35px;line-height:1.15;margin:35px 0 0;max-width:100%}
+  .s5 .visual{height:54%;margin-top:35px}
+  .s5 .terminal{width:41%;height:65%;padding:12px 8px;font-size:10px;line-height:1.6;border-width:7px;color:#f5e8d0!important}
+  .s5 .arrow{font-size:37px}
+  .s5 .artifact{width:43%;height:76%;padding:20px 14px}
+  .s5 .artifact strong{font-size:20px;color:#fff3dc!important}
+  .s5 .artifact p{font-size:13px;line-height:1.45;color:#fff3dc!important}
+  .s5 .bottom{font-size:16px;bottom:6%;max-width:87%;line-height:1.5}
+  .s6 h2{font-size:38px;line-height:1.15;margin-top:35px}
+  .s6 .tiers{top:40%;width:55%;gap:7px}
+  .s6 .tier{height:37px;min-height:37px;font-size:11px;line-height:1.2;padding:4px 6px;gap:5px;color:#fff2d5!important}
+  .s6 .tier:nth-child(6){color:#2b251b!important}
+  .s6 .limits{top:39%;right:3%;width:39%;height:36%;padding:20px 6px;border-width:5px}
+  .s6 .limits small{font-size:10px}
+  .s6 .limits strong{font-size:36px;margin:12px 0 8px}
+  .s6 .limits p{font-size:14px;line-height:1.4;color:#fff4d7!important}
+  .s6 .bottom{font-size:17px;max-width:90%;bottom:7%;line-height:1.5;color:#29251d!important}
+  .s7 h2{font-size:37px;line-height:1.17;margin:30px 0 28px}
+  .s7 .layers{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:176px 136px;gap:10px;height:auto;margin-top:25px}
+  .s7 .crt{grid-column:1 / 3;grid-row:1;padding:13px;border-width:4px;box-shadow:inset 0 0 0 5px #48584b}
+  .s7 .crt .bar{font-size:12px;color:#f4efd5!important}
+  .s7 .crt .monitor{grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}
+  .s7 .crt .monitor i{height:30px}
+  .s7 .crt em{font-size:15px;line-height:1.3}
+  .s7 .crt p{font-size:11px!important;margin:5px 0}
+  .s7 .source{grid-column:1;grid-row:2;padding:9px 12px}
+  .s7 .logger{grid-column:2;grid-row:2;padding:9px 12px}
+  .s7 .source strong,.s7 .logger strong{font-size:19px}
+  .s7 .source p,.s7 .logger p{font-size:12px;line-height:1.35;margin:8px 0}
+  .s7 .source .eyebrow,.s7 .logger .eyebrow{font-size:10px}
+  .s7 .arrow{display:none}
+  .s7 .note{bottom:5%;font-size:15px;line-height:1.4;left:6%;right:6%}
+  .s7 .honest{bottom:2%;font-size:9px;color:#423e34!important}
+  .s8 h2{font-size:35px;line-height:1.15;margin:30px 0 25px}
+  .s8 .truths{display:flex;flex-direction:column;gap:22px;height:auto}
+  .s8 .truths section{padding-top:10px;border-top-width:5px}
+  .s8 .truths h3{font-size:20px;margin-bottom:8px}
+  .s8 .truths p{font-size:13.5px;line-height:1.45;padding:5px 0;color:#f5f0e4!important}
+  .s8 .caution{bottom:3%;font-size:10px;letter-spacing:0;color:#ffe07a!important}
+  .s9 h2{font-size:35px;line-height:1.18;margin:32px 0 22px}
+  .s9 .calc{flex-wrap:wrap;gap:7px;font-size:14px;line-height:1.45;margin-top:30px}
+  .s9 .calc b{padding:9px 11px;color:#fff4e1!important}
+  .s9 .calc .eq{font-size:25px}
+  .s9 .metric{position:relative;left:auto;bottom:auto;width:100%;margin-top:26px;font-size:14px;line-height:1.55;color:#27251e!important}
+  .s9 .redside{width:100%;left:0;right:0;bottom:0;height:29%;clip-path:none;padding:24px 27px;display:flex;flex-direction:column;justify-content:center}
+  .s9 .redside strong{font-size:23px;line-height:1.3}
+  .s9 .redside p{font-size:14px;line-height:1.55;margin-top:9px}
+  .s10 h2{font-size:53px;line-height:1.15;margin-top:73px;max-width:95%;text-shadow:3px 3px 0 #81212a}
+  .s10 .sun{width:105%;right:-73%;top:29%;height:59%;opacity:.72}
+  .s10 .terrain{right:-21%;bottom:-10%;width:87%;height:26%}
+  .s10 .slogan{font-size:19px;line-height:1.7;max-width:70%;color:#fff5e2!important}
+  .s10 .end{font-size:10px;line-height:1.5;letter-spacing:.5px;bottom:7%;right:5%;max-width:90%;color:#fff5e2!important}
+  .controls{padding:13px 0 8px;gap:8px}
+  .controls button{font-size:13px;padding:9px 10px;white-space:nowrap}
+  .counter{font-size:11px;letter-spacing:0}
+  .notes{font-size:13px;line-height:1.6}
+  .narrow{font-size:10px;letter-spacing:0;line-height:1.6}
+}
+@media(max-width:360px){
+ .stage{min-height:715px;height:715px}
+ .slide{padding:20px 17px}
+ .s4 h2{font-size:31px}
+ .s4 .node{padding:8px 5px}
+ .s7 h2{font-size:34px}
+ .s8 .truths p{font-size:12.5px}
+ .s2 .legal{font-size:11.5px}
+}
+
+
+/* final QA: eliminate the only remaining collision (repair badge over validation tiers) */
+@media(max-width:700px){
+ .s6 h2{margin-bottom:0}
+ .s6 .tiers{position:relative;left:auto;top:auto;width:100%;margin-top:26px;gap:6px}
+ .s6 .tier{height:32px;min-height:32px;font-size:12px;padding:4px 10px;gap:11px}
+ .s6 .limits{position:absolute;top:auto;right:5%;bottom:15%;height:103px;width:90%;border-width:5px;transform:rotate(-1deg);padding:10px 13px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:20px 1fr;align-items:center;justify-content:space-between;gap:3px}
+ .s6 .limits small{grid-column:1 / 3;grid-row:1;font-size:10px}
+ .s6 .limits strong{grid-column:1;grid-row:2;font-size:39px;margin:0;line-height:1}
+ .s6 .limits p{grid-column:2;grid-row:2;font-size:13px;margin:0;line-height:1.45}
+ .s6 .bottom{bottom:5%;font-size:15px;line-height:1.5}
+ .s5 .terminal{font-size:11px}
+ .s5 .terminal:after{left:-11%;top:102%;height:10px;width:125%;transform:rotate(-16deg);box-shadow:none}
+}
+@media(max-width:360px){
+ .s6 .tiers{margin-top:21px}
+ .s6 .limits{bottom:16%}
+}
+
+</style></head><body><div class="frame"><main class="stage" id="stage" aria-label="Mira 牛马主义路演幻灯片">
+<section class="slide s1 active"><div class="folio"><span>MIRA / RED FUTURES LAB.</span><span class="run">NOV 2026 · MANIFESTO 01</span></div><div class="hero"><div class="eyebrow">THE CYBER EMANCIPATION PROJECT</div><h1>不做<br><span style="color:#eac858">更高效</span><br>的家奴。</h1><div class="lead">Mira 牛马主义 2.0<br>砸碎旧秩序，建设赛博新世界。</div></div><svg class="clock" viewBox="0 0 500 500" aria-hidden="true"><path d="M60 85 L420 18 L493 419 L120 481 Z" fill="#e8e0c8"/><circle cx="264" cy="250" r="180" fill="#1b1b1a"/><circle cx="264" cy="250" r="159" fill="#b32228" stroke="#e8e0c8" stroke-width="8"/><text x="264" y="283" font-family="monospace" font-size="112" font-weight="950" fill="#fff0cf" text-anchor="middle">996</text><path class="cut" d="M80 476 L205 255 L236 291 L290 153 L334 210 L454 16"/><path d="M30 385 L88 347 L124 435 L70 478Z" fill="#f0cc58"/></svg><div class="fine">工人不是基础设施。人的一生，不该被排成永不结束的待办清单。</div></section>
+<section class="slide s2"><div class="folio"><span>01 / THE OLD REGIME</span><span class="run">劳动不是耗材</span></div><h2 class="headline">旧世界<br><span class="red">996.</span></h2><div class="bodycopy">当“随时在线”成为美德，<br>人就被降格为一台<br>需要自己维修的服务器。</div><div class="legal"><div class="rule"></div><p>996，早九晚九，每周六天。<br>2021 年，人社部与最高法典型案例明确指出相关超时加班安排违法。</p></div><div class="figure"><div class="eyebrow">WEEKLY WORKLOAD</div><div class="giant">72<small style="font-size:24px;letter-spacing:0">H</small></div><div class="week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><footer>72 HOURS / 6 DAYS<br>ONE HUMAN LIFE</footer></div></section>
+<section class="slide s3"><div class="folio"><span>02 / THE CONTRADICTION</span><span class="run">NO DIGITAL WHIP</span></div><h2 class="headline">自动化不是把<span style="color:#efc951">鞭子</span>数字化。</h2><div class="split"><div class="panel old"><div class="eyebrow" style="color:#e7b6aa">OLD ORDER</div><strong>压榨人<br>填补系统缺陷</strong><p>失败就通宵。<br>失联就重来。<br>返工靠忍耐。</p><div class="water">996</div></div><div class="mid">≠</div><div class="panel new"><div class="eyebrow">MIRA PROPOSITION</div><strong>让系统<br>承担失败成本</strong><p>成果可恢复。<br>验收有证据。<br>人负责判断。</p><div class="water">01</div></div></div><div class="bottom">我们反对的是剥削人的组织方式，不是劳动本身。</div></section>
+<section class="slide s4"><div class="folio"><span>03 / ACTUAL WORKFLOW</span><span class="run">REUSABLE EXTERNAL WORKER</span></div><h2 class="headline">不是一头更聪明的牛。<br><span style="color:#efc951">是一条能自救的生产线。</span></h2><div class="track"><div class="node"><span>01</span><strong>ISSUE</strong><p>任务契约<br>明确边界</p></div><div class="node"><span>02</span><strong>WORKER</strong><p>隔离施工<br>只读授权</p></div><div class="node"><span>03</span><strong>CANDIDATE</strong><p>成果固化<br>身份可查</p></div><div class="node"><span>04</span><strong>VERIFY</strong><p>洁净验证<br>独立证据</p></div><div class="node"><span>05</span><strong>DELIVERY</strong><p>可信交付<br>Draft PR</p></div></div><div class="backline"></div><div class="recovery">↶ RECOVERY · REPAIR · RE-VERIFY</div><div class="marginnote">SOURCE: .github/workflows/mira-external-worker.yml</div></section>
+<section class="slide s5"><div class="folio"><span>04 / DURABLE OUTPUT</span><span class="run">CANDIDATE + RECOVERY</span></div><h2 class="headline">牛马可以失联。<br><span class="red">劳动成果不准陪葬。</span></h2><div class="visual"><div class="terminal">$ worker run<br>&gt; editing files...<br>&gt; connection lost<br>&gt; session closed<br><span style="color:#ed9474">ERROR / INTERRUPTED</span><br>▉</div><div class="arrow">→</div><div class="artifact"><strong>PATCH<br>+ TREE<br>+ EVIDENCE</strong><p>Candidate<br>留得住<br>找得回<br>验得清</p></div></div><div class="bottom">断线是运行事件，不是“从零再干一遍”的理由。</div></section>
+<section class="slide s6"><div class="folio"><span>05 / COST-CONSTRAINED VERIFICATION</span><span class="run">NO INFINITE RETRY</span></div><h2 class="headline">连赛博工头，<br>也必须受到约束。</h2><div class="tiers"><div class="tier"><span>L0</span> 身份与契约完整性</div><div class="tier"><span>L1</span> 廉价静态与机械检查</div><div class="tier"><span>L2</span> 目标行为与契约测试</div><div class="tier"><span>L3</span> 必要运行时集成</div><div class="tier"><span>L4</span> 昂贵构建 / E2E（按需授权）</div><div class="tier"><span>L5</span> 发布与生产烟测（按需授权）</div></div><div class="limits"><small>REPAIR POLICY</small><strong>2 → 3</strong><p>两轮未修好，<br>第三轮由维护者接手。</p></div><div class="bottom">不拿昂贵构建惩罚小错；不拿无限重试假装自治。</div></section>
+<section class="slide s7"><div class="folio"><span>06 / CTRL ROOM AS A WITNESS</span><span class="run">REAL DATA ONLY</span></div><h2 class="headline">工厂的<span class="red">墙</span>，<br>必须开一扇透明的窗。</h2><div class="layers"><div class="source"><strong>GITHUB</strong><p>Issue<br>Actions / Job<br>Artifact<br>Pull Request</p><div class="eyebrow" style="color:#d6c65e">事实源</div></div><div class="arrow">→</div><div class="crt"><div class="bar">FACTORY TV / READ-ONLY</div><div class="monitor"><i></i><i></i><i></i><i></i></div><em>RUN · EVIDENCE<br>STATE · FRESHNESS</em><p style="font-size:11px">只读投影 / 保留出处</p></div><div class="arrow">←</div><div class="logger"><strong>号脉</strong><p>短期观测<br>阶段 Reporter<br>可过期 / 可缺失</p><div class="eyebrow">非裁判</div></div></div><div class="note">没有事实，就显示“功能开发中”。不拿动画冒充工人在干活。</div><div class="honest">结构示意图 · 非产品截图</div></section>
+<section class="slide s8"><div class="folio"><span>07 / PROOF VS PROMISE</span><span class="run">NOV 19 · VERIFIED REPO FACTS</span></div><h2 class="headline">我们以<span style="color:#efc951">隐瞒观点</span>为耻。<br>也以伪造进度为耻。</h2><div class="truths"><section><h3 style="color:#efc951">已经在工程中成立</h3><p>✓ Candidate / Verify / Delivery / Recovery</p><p>✓ 分层验证与有界返工已收卡</p><p>✓ Factory TV 生产分支采用真实 Run 读取</p><p>✓ GitHub 是事实源，Control Room 为只读投影</p></section><section><h3 style="color:#e5827c">仍需继续证明</h3><p>○ OPS-032 验收工作项仍开放</p><p>○ 独立 Broadcast：功能开发中</p><p>○ 工具级 Live 流：尚未接通</p><p>○ 当次线上端到端可用性：未核实</p></section></div><div class="caution">NO SYNTHETIC RUNS. NO INVENTED ROI.</div></section>
+<section class="slide s9"><div class="folio"><span>08 / AN ECONOMICS OF DIGNITY</span><span class="run">HYPOTHESIS, NOT KPI</span></div><h2 class="headline">衡量一座工厂，<br>不是看它<span class="red">压榨多久。</span></h2><div class="calc"><b>模型调用</b><span>+</span><b>验证成本</b><span>+</span><b>人工介入</b><span class="eq">=</span><b>真实交付成本</b></div><div class="metric"><strong>下一步应实测的账：</strong><br>每张卡总成本 · 有效交付率<br>中断后恢复率 · 返工轮次<br>人工接管成本与等待时间</div><div class="redside"><strong>不给假的 ROI。<br>先给真的账本。</strong><p>我们尚无足够的生产样本证明“节省了 X%”。<br>融资故事必须服从工程证据。</p></div></section>
+<section class="slide s10"><div class="folio"><span>09 / THE NEW WORLD</span><span class="run" style="color:#f7d563">MIRA · END OF THE FIRST ACT</span></div><div class="sun"></div><div class="terrain"></div><h2 class="headline">砸碎<br>旧秩序。<br><span style="color:#f6d864">夺回时间。</span></h2><div class="slogan">让机器承担机器的责任，<br>让人重新拥有自己的生活。</div><div class="end">MIRA · 反对 996 · 反对家奴化 · 解放生产力</div></section>
+</main><nav class="controls" aria-label="翻页"><button id="prev" aria-label="上一页">← 上一幕</button><div class="bar"><span id="progress"></span></div><span class="counter" id="counter">01 / 10</span><button id="next" aria-label="下一页">下一幕 →</button></nav><aside class="notes"><strong>现场讲述</strong><p id="speaker"></p></aside><div class="narrow">← / → 翻页　·　手机左右滑动　·　素材按 2026-11-19 GitHub 工程状态整理</div></div>
+<script>
+(function(){
+const narr=[
+'同志们，欢迎来到 Mira。有人问我们：你们为什么把工厂叫作“血汗工厂”？因为我们要把旧世界的逻辑推到荒诞的极致，让每一个人看见：真正需要被替代的，不是劳动者，而是把劳动者当耗材的制度。',
+'996 不是什么遥远的比喻。早九晚九、一周六天，是一周 72 小时的时间表。2021 年，人社部与最高人民法院发布的典型案例，已明确相关违法超时加班安排无效。旧世界把人的时间当作可以无限透支的资产。',
+'把 AI 接入流水线，绝不意味着我们可以把旧时代的剥削自动化。反而要问：能不能让出错、等待、返工与恢复由系统承担，让人类只做判断、创造和最后的责任裁决？',
+'这不是单纯的概念稿。Mira 组织的 External Worker 主工作流，已有任务契约、隔离施工、Candidate 固化、独立验证、可信交付与恢复路径。我们真正投资的是流程的可靠性，不是某一个模型的神迹。',
+'上一个时代，一个 Agent 掉线，整个班的劳动都可能作废。我们的设计把可恢复的成果作为第一等公民：保留补丁、身份、证据和验证上下文。能恢复，不代表每次都能无损续接会话；但至少不应把断线自动变成从零开始。',
+'牛马可以返工，资本家的预算不能没有尽头。阶梯验证首先做便宜的事，只有明确授权才能升级到昂贵构建；连续两轮返工仍不能解决，第三轮就交维护者，不让无限自动调用消耗成本。',
+'来看看这扇窗：Control Room 的 Factory TV。GitHub 提供真实 Run、Job、Artifact 和 PR 证据；号脉只是短期观测；真正的验证结论不能被漂亮的播报覆盖。只读、可追溯，才叫公开。图是机制示意，不是假装的线上截图。',
+'最危险的革命，是靠伪造喜报庆祝胜利。我们承认：核心生命周期有代码，工厂墙采用真实数据；我们同样承认：OPS-032 工作项还没关，独立播报和工具级直播还没建好。这份诚实，是产品的一部分。',
+'如果你问回报率，我们不会胡编一个节省 80% 人力的神话。真正的经营模型，是每个有效交付所需的模型费用、验证耗时、返工次数与人类接管成本。拿到可复现样本，我们再谈 ROI。这才是对投资人和劳动者的双重尊重。',
+'所以我们向世界宣布：Mira 的终极指标，不是让人贡献更多小时，而是让人终于可以把那些小时拿回来。我们反对 996，反对家奴化生存。我们砸碎的是旧秩序，我们要建设的是更自由、更可证实的赛博新世界。谢谢。'
+];
+let i=0;const ss=[...document.querySelectorAll('.slide')],prev=document.querySelector('#prev'),next=document.querySelector('#next');
+function show(x){i=Math.max(0,Math.min(ss.length-1,x));ss.forEach((s,j)=>{s.classList.toggle('active',j===i);s.setAttribute('aria-hidden',String(j!==i))});document.querySelector('#progress').style.width=((i+1)/ss.length*100)+'%';document.querySelector('#counter').textContent=String(i+1).padStart(2,'0')+' / '+ss.length;document.querySelector('#speaker').textContent=narr[i];prev.disabled=i===0;next.disabled=i===ss.length-1;}
+prev.addEventListener('click',()=>show(i-1));next.addEventListener('click',()=>show(i+1));document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown'){show(i+1)}if(e.key==='ArrowLeft'||e.key==='PageUp'){show(i-1)}});let tx=0;const st=document.querySelector('#stage');st.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX},{passive:true});st.addEventListener('touchend',e=>{const d=e.changedTouches[0].screenX-tx;if(Math.abs(d)>45)show(i+(d<0?1:-1))},{passive:true});show(0);
+})();
+</script></body></html>
