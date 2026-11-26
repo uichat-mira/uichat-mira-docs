@@ -11,7 +11,7 @@
   },
   "include": [
     "vite.config.ts",
-    "mira-docs-static.ts",
+    "folio-static.ts",
     "scripts/blog-taxonomy-check.ts",
     "src/content/blog-taxonomy.ts",
     "src/content/mobile-landing.ts",

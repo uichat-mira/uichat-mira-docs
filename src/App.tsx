@@ -40,7 +40,7 @@ import {
   slug,
   type AuthorKey,
   type Doc,
-} from "./content/mira-docs-adapter";
+} from "./content/folio-adapter";
 import {
   blogCategoryIconKey,
   orderBlogCategories,

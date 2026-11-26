@@ -1,17 +1,17 @@
 import {
   extractHeadings,
-  renderMiraMarkdown,
-  type MiraDoc,
-  type MiraDocsConfig,
-} from "@uichat-mira/docs";
+  renderFolioMarkdown,
+  type FolioDoc,
+  type FolioConfig,
+} from "@uichat-mira/folio";
 import {
-  miraDocsAbsoluteAssetUrl,
-  miraDocsAbsoluteRouteUrl,
-  miraDocsEscapeHtml,
-  type MiraDocsStaticBuildContext,
-  type MiraDocsStaticBuildOptions,
-  type MiraDocsStaticRoute,
-} from "@uichat-mira/docs/vite";
+  folioAbsoluteAssetUrl,
+  folioAbsoluteRouteUrl,
+  folioEscapeHtml,
+  type FolioStaticBuildContext,
+  type FolioStaticBuildOptions,
+  type FolioStaticRoute,
+} from "@uichat-mira/folio/vite";
 import {
   mobileLandingFacts,
   mobileLandingMeta,
@@ -27,7 +27,7 @@ import {
 const homeProductDescription =
   "UIChat Mira 是一个本地优先、桌面优先、多 Provider 的个人 AI 工作台，以聊天为入口，让模型、知识库、角色、Agent、MCP、工具与微应用在同一工作环境中协作。";
 
-type StaticDoc = MiraDoc & {
+type StaticDoc = FolioDoc & {
   root: string;
   source: string;
   authors: string[];
@@ -69,8 +69,8 @@ function authorAvatar(name: string): string {
     : "https://avatars.githubusercontent.com/u/20751798?s=160&v=4";
 }
 
-function staticDocs(docs: MiraDoc[]): StaticDoc[] {
-  const parsed: StaticDoc[] = docs.map((doc: MiraDoc) => {
+function staticDocs(docs: FolioDoc[]): StaticDoc[] {
+  const parsed: StaticDoc[] = docs.map((doc: FolioDoc) => {
     const explicitAuthors = dataList(doc.data, "author").map(authorName);
     return {
       ...doc,
@@ -120,13 +120,13 @@ function canonicalRoutePath(path: string): string {
   return `${canonicalPath}${suffix}`;
 }
 
-function docHref(path: string, context: MiraDocsStaticBuildContext): string {
+function docHref(path: string, context: FolioStaticBuildContext): string {
   return `${basePath(context.base)}${canonicalRoutePath(path)}`;
 }
 
 function canonicalizeInternalHtmlLinks(
   html: string,
-  context: MiraDocsStaticBuildContext,
+  context: FolioStaticBuildContext,
 ): string {
   return html.replace(/href="(\/[^"]*)"/g, (_match, href: string) => {
     return `href="${docHref(href, context)}"`;
@@ -142,19 +142,19 @@ function logicalStaticAreaKey(root: string): string {
 function pageNavigation(
   previous: StaticDoc | undefined,
   next: StaticDoc | undefined,
-  context: MiraDocsStaticBuildContext,
+  context: FolioStaticBuildContext,
 ): string {
   if (!previous && !next) return "";
   const previousLink = previous
-    ? `<a href="${docHref(previous.path, context)}"><span class="dir">上一篇</span><span class="to">← ${miraDocsEscapeHtml(previous.title)}</span></a>`
+    ? `<a href="${docHref(previous.path, context)}"><span class="dir">上一篇</span><span class="to">← ${folioEscapeHtml(previous.title)}</span></a>`
     : "<span></span>";
   const nextLink = next
-    ? `<a class="next" href="${docHref(next.path, context)}"><span class="dir">下一篇</span><span class="to">${miraDocsEscapeHtml(next.title)} →</span></a>`
+    ? `<a class="next" href="${docHref(next.path, context)}"><span class="dir">下一篇</span><span class="to">${folioEscapeHtml(next.title)} →</span></a>`
     : "";
   return `<div class="page-nav">${previousLink}${nextLink}</div>`;
 }
 
-function staticSiteHeader(context: MiraDocsStaticBuildContext): string {
+function staticSiteHeader(context: FolioStaticBuildContext): string {
   const links = [
     ["首页", "/"],
     ["指南", "/guide"],
@@ -165,7 +165,7 @@ function staticSiteHeader(context: MiraDocsStaticBuildContext): string {
   const navigation = links
     .map(
       ([label, path]) =>
-        `<li><a href="${docHref(path, context)}">${miraDocsEscapeHtml(label)}</a></li>`,
+        `<li><a href="${docHref(path, context)}">${folioEscapeHtml(label)}</a></li>`,
     )
     .join("");
   return `<nav class="top-nav docs-header seo-static-header"><div class="wrap"><a class="brand" href="${docHref("/", context)}"><img class="brand-logo" alt="" src="${docHref("/mira-logo.png", context)}" />UIChat Mira</a><ul class="menu">${navigation}</ul></div></nav>`;
@@ -204,7 +204,7 @@ function staticDirectoryTitle(directory: string): string {
 function staticDocNav(
   doc: StaticDoc,
   docs: StaticDoc[],
-  context: MiraDocsStaticBuildContext,
+  context: FolioStaticBuildContext,
 ): string {
   const logicalRoot = logicalStaticAreaKey(doc.root);
   const scoped = docs
@@ -244,13 +244,13 @@ function staticDocNav(
       const links = items
         .map(
           (item) =>
-            `<li><a${item.path === doc.path ? ' class="active" aria-current="page"' : ""} href="${docHref(item.path, context)}">${miraDocsEscapeHtml(item.title)}</a></li>`,
+            `<li><a${item.path === doc.path ? ' class="active" aria-current="page"' : ""} href="${docHref(item.path, context)}">${folioEscapeHtml(item.title)}</a></li>`,
         )
         .join("");
-      return `<div class="docnav-group"><h5>${miraDocsEscapeHtml(staticDirectoryTitle(directory))}</h5><ul>${links}</ul></div>`;
+      return `<div class="docnav-group"><h5>${folioEscapeHtml(staticDirectoryTitle(directory))}</h5><ul>${links}</ul></div>`;
     })
     .join("");
-  return `<nav class="docnav"><h5>目录</h5><div class="docnav-group"><h5><a href="${docHref(rootPath, context)}">${miraDocsEscapeHtml(rootTitle)}</a></h5></div>${sections}</nav>`;
+  return `<nav class="docnav"><h5>目录</h5><div class="docnav-group"><h5><a href="${docHref(rootPath, context)}">${folioEscapeHtml(rootTitle)}</a></h5></div>${sections}</nav>`;
 }
 
 function staticDocToc(doc: StaticDoc): string {
@@ -258,7 +258,7 @@ function staticDocToc(doc: StaticDoc): string {
   const links = doc.headings
     .map(
       (heading) =>
-        `<li class="toc-depth-${heading.depth}"><a href="#${miraDocsEscapeHtml(heading.id)}">${miraDocsEscapeHtml(heading.text)}</a></li>`,
+        `<li class="toc-depth-${heading.depth}"><a href="#${folioEscapeHtml(heading.id)}">${folioEscapeHtml(heading.text)}</a></li>`,
     )
     .join("");
   return `<aside class="toc"><h5>本页目录</h5><ul>${links}</ul></aside>`;
@@ -268,14 +268,14 @@ function documentBody(
   doc: StaticDoc,
   previous: StaticDoc | undefined,
   next: StaticDoc | undefined,
-  context: MiraDocsStaticBuildContext,
+  context: FolioStaticBuildContext,
   docs: StaticDoc[],
 ): string {
   const body = canonicalizeInternalHtmlLinks(
-    renderMiraMarkdown(doc.source, { removeH1: true }),
+    renderFolioMarkdown(doc.source, { removeH1: true }),
     context,
   );
-  const main = `<main class="doc-main seo-static-content"><div class="doc-eyebrow">${miraDocsEscapeHtml(doc.group)} · ${String(doc.order).padStart(2, "0")}</div><div class="doc-title-block"><h1>${miraDocsEscapeHtml(doc.title)}</h1>${doc.description ? `<p class="doc-lede">${miraDocsEscapeHtml(doc.description)}</p>` : ""}</div><article class="markdown">${body}</article>${pageNavigation(previous, next, context)}</main>`;
+  const main = `<main class="doc-main seo-static-content"><div class="doc-eyebrow">${folioEscapeHtml(doc.group)} · ${String(doc.order).padStart(2, "0")}</div><div class="doc-title-block"><h1>${folioEscapeHtml(doc.title)}</h1>${doc.description ? `<p class="doc-lede">${folioEscapeHtml(doc.description)}</p>` : ""}</div><article class="markdown">${body}</article>${pageNavigation(previous, next, context)}</main>`;
   return `${staticSiteHeader(context)}<div class="docs-app seo-static-docs-app"><div class="docs-shell">${staticDocNav(doc, docs, context)}${main}${staticDocToc(doc)}</div></div>`;
 }
 
@@ -285,7 +285,7 @@ function articleToc(doc: StaticDoc): string {
   const items = headings
     .map(
       (heading) =>
-        `<li><a href="#${miraDocsEscapeHtml(heading.id)}">${miraDocsEscapeHtml(heading.text)}</a></li>`,
+        `<li><a href="#${folioEscapeHtml(heading.id)}">${folioEscapeHtml(heading.text)}</a></li>`,
     )
     .join("");
   return `<aside class="article-toc"><h5>本文目录</h5><ul>${items}</ul></aside>`;
@@ -295,16 +295,16 @@ function articleBody(
   doc: StaticDoc,
   previous: StaticDoc | undefined,
   next: StaticDoc | undefined,
-  context: MiraDocsStaticBuildContext,
+  context: FolioStaticBuildContext,
 ): string {
   const body = canonicalizeInternalHtmlLinks(
-    renderMiraMarkdown(doc.source, { removeH1: true }),
+    renderFolioMarkdown(doc.source, { removeH1: true }),
     context,
   );
   const authors = doc.authors.join(" × ");
   const meta = [authors, doc.date, doc.readTime, doc.group]
     .filter(Boolean)
-    .map((item) => `<span>${miraDocsEscapeHtml(String(item))}</span>`)
+    .map((item) => `<span>${folioEscapeHtml(String(item))}</span>`)
     .join('<span class="dot"></span>');
   const visual = doc.image
     ? `<div aria-hidden="true" class="article-header-visual"><img alt="" class="article-header-visual-image" src="${imageUrl(doc, context)}" /></div>`
@@ -316,14 +316,14 @@ function articleBody(
     )
     .join("");
   const authorCountClass = doc.authors.length > 1 ? "duo" : "solo";
-  const main = `<main class="doc-main seo-static-content blog-post-page"><article class="article-header">${visual}<h1>${miraDocsEscapeHtml(doc.title)}</h1>${doc.description ? `<p class="doc-lede">${miraDocsEscapeHtml(doc.description)}</p>` : ""}<div class="post-meta post-meta-article">${meta}</div></article><div class="article-shell"><div class="article-body markdown blog-markdown">${body}<section class="author-signature author-signature-${authorCountClass}"><div class="author-signature-avatars author-signature-avatars-${doc.authors.length}">${authorAvatars}</div><div class="author-signature-copy"><h4>${miraDocsEscapeHtml(authors)}</h4></div></section>${pageNavigation(previous, next, context)}</div>${articleToc(doc)}</div></main>`;
+  const main = `<main class="doc-main seo-static-content blog-post-page"><article class="article-header">${visual}<h1>${folioEscapeHtml(doc.title)}</h1>${doc.description ? `<p class="doc-lede">${folioEscapeHtml(doc.description)}</p>` : ""}<div class="post-meta post-meta-article">${meta}</div></article><div class="article-shell"><div class="article-body markdown blog-markdown">${body}<section class="author-signature author-signature-${authorCountClass}"><div class="author-signature-avatars author-signature-avatars-${doc.authors.length}">${authorAvatars}</div><div class="author-signature-copy"><h4>${folioEscapeHtml(authors)}</h4></div></section>${pageNavigation(previous, next, context)}</div>${articleToc(doc)}</div></main>`;
   return `${staticSiteHeader(context)}<div class="docs-app blog-app seo-static-docs-app"><div class="docs-shell blog-shell">${main}</div></div>`;
 }
 
 function areaBody(
   root: string,
   docs: StaticDoc[],
-  context: MiraDocsStaticBuildContext,
+  context: FolioStaticBuildContext,
 ): string {
   const title =
     root === "guide"
@@ -339,18 +339,18 @@ function areaBody(
     .filter((doc: StaticDoc) => logicalStaticAreaKey(doc.root) === root)
     .map(
       (doc: StaticDoc) =>
-        `<li><a href="${docHref(doc.path, context)}">${miraDocsEscapeHtml(doc.title)}</a><p>${miraDocsEscapeHtml(doc.description)}</p></li>`,
+        `<li><a href="${docHref(doc.path, context)}">${folioEscapeHtml(doc.title)}</a><p>${folioEscapeHtml(doc.description)}</p></li>`,
     )
     .join("");
   const specialLinks =
     root === mobileLandingMeta.root
-      ? `<li><a href="${docHref(mobileLandingMeta.path, context)}">${miraDocsEscapeHtml(mobileLandingMeta.title)}</a><p>${miraDocsEscapeHtml(mobileLandingMeta.description)}</p></li>`
+      ? `<li><a href="${docHref(mobileLandingMeta.path, context)}">${folioEscapeHtml(mobileLandingMeta.title)}</a><p>${folioEscapeHtml(mobileLandingMeta.description)}</p></li>`
       : "";
-  const main = `<main class="doc-main seo-static-content"><div class="doc-title-block"><h1>${miraDocsEscapeHtml(title)}</h1></div><section class="docs-sitemap-grid"><section class="area-overview-card"><ol>${links}${specialLinks}</ol></section></section></main>`;
+  const main = `<main class="doc-main seo-static-content"><div class="doc-title-block"><h1>${folioEscapeHtml(title)}</h1></div><section class="docs-sitemap-grid"><section class="area-overview-card"><ol>${links}${specialLinks}</ol></section></section></main>`;
   return `${staticSiteHeader(context)}<div class="docs-app seo-static-docs-app"><div class="docs-shell">${main}</div></div>`;
 }
 
-function homeBody(context: MiraDocsStaticBuildContext): string {
+function homeBody(context: FolioStaticBuildContext): string {
   const links = [
     ["产品定义", "/guide/about/origin"],
     ["Local-first", "/guide/philosophy/local-first"],
@@ -372,42 +372,42 @@ function staticMobilePhoneMockup(): string {
   return `<figure class="mobile-landing-phone-stage" aria-label="Mira Mobile 会话界面示意"><div class="mobile-landing-phone-orbit" aria-hidden="true"></div><div class="mobile-landing-phone"><div class="mobile-landing-phone-screen"><div class="mobile-landing-phone-notch" aria-hidden="true"></div><div class="mobile-landing-phone-brand">Mira</div><div class="mobile-landing-phone-bubble me">今晚回去继续刚才那段对话。</div><div class="mobile-landing-phone-bubble">可以。你也可以连接桌面 Mira，把更重的工作交给电脑。</div><div class="mobile-landing-phone-status">DESKTOP HOST CONNECTED</div></div></div></figure>`;
 }
 
-function mobileLandingBody(context: MiraDocsStaticBuildContext): string {
+function mobileLandingBody(context: FolioStaticBuildContext): string {
   const pathCards = mobileLandingPaths
     .map(
       (item) =>
-        `<article><span>${miraDocsEscapeHtml(item.eyebrow)}</span><h2>${miraDocsEscapeHtml(item.title)}</h2><p>${miraDocsEscapeHtml(item.description)}</p><code>${miraDocsEscapeHtml(item.endpoint)}</code></article>`,
+        `<article><span>${folioEscapeHtml(item.eyebrow)}</span><h2>${folioEscapeHtml(item.title)}</h2><p>${folioEscapeHtml(item.description)}</p><code>${folioEscapeHtml(item.endpoint)}</code></article>`,
     )
     .join("");
   const facts = mobileLandingFacts
     .map(
       (item) =>
-        `<li><strong>${miraDocsEscapeHtml(item.title)}</strong><p>${miraDocsEscapeHtml(item.description)}</p></li>`,
+        `<li><strong>${folioEscapeHtml(item.title)}</strong><p>${folioEscapeHtml(item.description)}</p></li>`,
     )
     .join("");
-  const main = `<main class="mobile-landing-page seo-static-content"><div class="doc-title-block"><span class="doc-eyebrow">MIRA MOBILE · PREVIEW</span><h1>Mira，跟你一起出门。</h1><p class="doc-lede">${miraDocsEscapeHtml(mobileLandingMeta.description)}</p></div>${staticMobilePhoneMockup()}<section><h2>同一个 Mira，两种进入方式。</h2>${pathCards}</section><section><h2>现在已经跑起来的部分。</h2><ul>${facts}</ul></section><section><h2>不是把 Desktop 塞进一块更小的屏幕。</h2><p>手机更适合发起、继续、查看和确认；需要桌面环境和更重能力时，再连接 Desktop Host。</p></section><p><a href="https://github.com/uichat-mira/mira-mobile/releases">下载 Mira Mobile</a> · <a href="https://github.com/uichat-mira/mira-mobile">查看源码</a></p></main>`;
+  const main = `<main class="mobile-landing-page seo-static-content"><div class="doc-title-block"><span class="doc-eyebrow">MIRA MOBILE · PREVIEW</span><h1>Mira，跟你一起出门。</h1><p class="doc-lede">${folioEscapeHtml(mobileLandingMeta.description)}</p></div>${staticMobilePhoneMockup()}<section><h2>同一个 Mira，两种进入方式。</h2>${pathCards}</section><section><h2>现在已经跑起来的部分。</h2><ul>${facts}</ul></section><section><h2>不是把 Desktop 塞进一块更小的屏幕。</h2><p>手机更适合发起、继续、查看和确认；需要桌面环境和更重能力时，再连接 Desktop Host。</p></section><p><a href="https://github.com/uichat-mira/mira-mobile/releases">下载 Mira Mobile</a> · <a href="https://github.com/uichat-mira/mira-mobile">查看源码</a></p></main>`;
   return `${staticSiteHeader(context)}${main}`;
 }
 
-function aboutLandingBody(context: MiraDocsStaticBuildContext): string {
-  const projects = aboutProjects.map((project, index) => `<a class="about-project-card" href="${miraDocsEscapeHtml(project.href)}"><span>${String(index + 1).padStart(2, "0")}</span><h3>${miraDocsEscapeHtml(project.name)}</h3><strong>${miraDocsEscapeHtml(project.role)}</strong><p>${miraDocsEscapeHtml(project.description)}</p></a>`).join("");
-  const principles = aboutPrinciples.map((item, index) => `<article><span>${String(index + 1).padStart(2, "0")}</span><div><h3>${miraDocsEscapeHtml(item.title)}</h3><p>${miraDocsEscapeHtml(item.description)}</p></div></article>`).join("");
-  const main = `<main class="about-landing-page seo-static-content"><section class="about-hero"><div class="wrap"><span class="about-kicker">MIRA ORGANIZATION</span><h1>我们在做 Mira，也在公开它是怎样被做出来的。</h1><p>${miraDocsEscapeHtml(aboutLandingMeta.description)}</p><p><a href="${miraDocsEscapeHtml(aboutOrganizationLinks.github)}">GitHub Organization</a> · <a href="${miraDocsEscapeHtml(aboutOrganizationLinks.controlRoom)}">Control Room</a></p></div></section><section class="about-section"><div class="wrap"><h2>一个组织，不是一只越来越大的仓库。</h2><div class="about-project-grid">${projects}</div></div></section><section class="about-section"><div class="wrap"><h2>把能力做大，但把责任边界写清楚。</h2><div class="about-principle-list">${principles}</div></div></section><section id="fair-work" class="about-section"><div class="wrap"><h2>People are not infrastructure.</h2><p>人不是基础设施。</p><p><a href="${miraDocsEscapeHtml(aboutOrganizationLinks.fairWork)}">阅读 Mira 公平劳动声明</a></p></div></section></main>`;
+function aboutLandingBody(context: FolioStaticBuildContext): string {
+  const projects = aboutProjects.map((project, index) => `<a class="about-project-card" href="${folioEscapeHtml(project.href)}"><span>${String(index + 1).padStart(2, "0")}</span><h3>${folioEscapeHtml(project.name)}</h3><strong>${folioEscapeHtml(project.role)}</strong><p>${folioEscapeHtml(project.description)}</p></a>`).join("");
+  const principles = aboutPrinciples.map((item, index) => `<article><span>${String(index + 1).padStart(2, "0")}</span><div><h3>${folioEscapeHtml(item.title)}</h3><p>${folioEscapeHtml(item.description)}</p></div></article>`).join("");
+  const main = `<main class="about-landing-page seo-static-content"><section class="about-hero"><div class="wrap"><span class="about-kicker">MIRA ORGANIZATION</span><h1>我们在做 Mira，也在公开它是怎样被做出来的。</h1><p>${folioEscapeHtml(aboutLandingMeta.description)}</p><p><a href="${folioEscapeHtml(aboutOrganizationLinks.github)}">GitHub Organization</a> · <a href="${folioEscapeHtml(aboutOrganizationLinks.controlRoom)}">Control Room</a></p></div></section><section class="about-section"><div class="wrap"><h2>一个组织，不是一只越来越大的仓库。</h2><div class="about-project-grid">${projects}</div></div></section><section class="about-section"><div class="wrap"><h2>把能力做大，但把责任边界写清楚。</h2><div class="about-principle-list">${principles}</div></div></section><section id="fair-work" class="about-section"><div class="wrap"><h2>People are not infrastructure.</h2><p>人不是基础设施。</p><p><a href="${folioEscapeHtml(aboutOrganizationLinks.fairWork)}">阅读 Mira 公平劳动声明</a></p></div></section></main>`;
   return `${staticSiteHeader(context)}${main}`;
 }
 
-function notFoundBody(context: MiraDocsStaticBuildContext): string {
+function notFoundBody(context: FolioStaticBuildContext): string {
   const main = `<main class="doc-main seo-static-content"><div class="doc-not-found"><h1>这条路径没有内容</h1><p>页面可能已经移动、被删除，或者地址输入有误。</p><a class="btn btn-primary" href="${basePath(context.base)}/">返回首页</a></div></main>`;
   return `${staticSiteHeader(context)}${main}`;
 }
 
 function imageUrl(
   doc: StaticDoc | undefined,
-  context: MiraDocsStaticBuildContext,
+  context: FolioStaticBuildContext,
 ): string {
   const image = doc?.image?.trim() || "mira-logo.png";
   if (/^https?:\/\//i.test(image)) return image;
-  return miraDocsAbsoluteAssetUrl(
+  return folioAbsoluteAssetUrl(
     context.config.siteUrl || "",
     context.base,
     image,
@@ -415,9 +415,9 @@ function imageUrl(
 }
 
 function homepageJsonLd(
-  context: MiraDocsStaticBuildContext,
+  context: FolioStaticBuildContext,
 ): Record<string, unknown> {
-  const siteUrl = miraDocsAbsoluteRouteUrl(
+  const siteUrl = folioAbsoluteRouteUrl(
     context.config.siteUrl || "",
     context.base,
     "/",
@@ -453,14 +453,14 @@ function homepageJsonLd(
 }
 
 function websiteJsonLd(
-  context: MiraDocsStaticBuildContext,
+  context: FolioStaticBuildContext,
   path: string,
 ): Record<string, unknown> {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "UIChat Mira",
-    url: miraDocsAbsoluteRouteUrl(
+    url: folioAbsoluteRouteUrl(
       context.config.siteUrl || "",
       context.base,
       path,
@@ -470,9 +470,9 @@ function websiteJsonLd(
 
 function documentJsonLd(
   doc: StaticDoc,
-  context: MiraDocsStaticBuildContext,
+  context: FolioStaticBuildContext,
 ): Record<string, unknown> {
-  const url = miraDocsAbsoluteRouteUrl(
+  const url = folioAbsoluteRouteUrl(
     context.config.siteUrl || "",
     context.base,
     doc.path,
@@ -507,9 +507,9 @@ function siblingDocs(
   };
 }
 
-function routes(context: MiraDocsStaticBuildContext): MiraDocsStaticRoute[] {
+function routes(context: FolioStaticBuildContext): FolioStaticRoute[] {
   const docs = staticDocs(context.docs);
-  const result: MiraDocsStaticRoute[] = [
+  const result: FolioStaticRoute[] = [
     {
       path: "/",
       title: "本地优先的个人 AI 工作台",
@@ -566,7 +566,7 @@ function routes(context: MiraDocsStaticBuildContext): MiraDocsStaticRoute[] {
       "@type": "WebPage",
       name: mobileLandingMeta.title,
       description: mobileLandingMeta.description,
-      url: miraDocsAbsoluteRouteUrl(
+      url: folioAbsoluteRouteUrl(
         context.config.siteUrl || "",
         context.base,
         mobileLandingMeta.path,
@@ -594,9 +594,9 @@ function routes(context: MiraDocsStaticBuildContext): MiraDocsStaticRoute[] {
   return result;
 }
 
-export const miraDocsStaticBuild: MiraDocsStaticBuildOptions = {
+export const folioStaticBuild: FolioStaticBuildOptions = {
   routes,
-  notFound: (context: MiraDocsStaticBuildContext): MiraDocsStaticRoute => ({
+  notFound: (context: FolioStaticBuildContext): FolioStaticRoute => ({
     path: "/404",
     title: "页面不存在",
     description: "你访问的页面不存在，可能已经移动、被删除，或者地址输入有误。",
@@ -614,11 +614,11 @@ export const miraDocsStaticBuild: MiraDocsStaticBuildOptions = {
     height: 760,
   },
   twitterCard: "summary_large_image",
-  title: (route: MiraDocsStaticRoute, config: MiraDocsConfig): string =>
+  title: (route: FolioStaticRoute, config: FolioConfig): string =>
     `${route.title} · ${config.title}`,
   transformTemplate: (
     template: string,
-    context: MiraDocsStaticBuildContext,
+    context: FolioStaticBuildContext,
   ): string => {
     const assetBase = context.base === "/" ? "/" : context.base;
     return template.replace(

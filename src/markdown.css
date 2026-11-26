@@ -48,3 +48,8 @@
   .visual-html-frame.cyber-roadshow-embed{margin-right:-8px;margin-left:-8px;border-radius:0}
   .visual-html-frame.cyber-roadshow-embed iframe{height:1015px}
 }
+
+/* Folio 0.2 owns Markdown semantics; Mira keeps its existing visual shell. */
+.markdown .folio-code-frame{margin:0}
+.markdown .folio-code-frame__header{display:none}
+.markdown .folio-table-scroll{max-width:100%;overflow-x:auto}

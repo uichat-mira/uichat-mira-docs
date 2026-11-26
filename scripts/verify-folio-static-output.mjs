@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { relative, resolve } from "node:path";
 import { verifyBlogFeed } from "./blog-feed.mjs";
-import { parseMiraDoc } from "@uichat-mira/docs";
+import { parseFolioDoc } from "@uichat-mira/folio";
 
 const root = process.cwd();
 const pagesRoot = resolve(root, "src/pages");
@@ -70,7 +70,7 @@ const visibleRoutes = new Set(["/"]);
 const docsByRoute = new Map();
 for (const file of markdownFiles(pagesRoot)) {
   const sourcePath = relative(pagesRoot, file).replace(/\\/g, "/");
-  const doc = parseMiraDoc(sourcePath, readFileSync(file, "utf8"));
+  const doc = parseFolioDoc(sourcePath, readFileSync(file, "utf8"));
   const merge = dataString(doc.data, "merge");
   const mergeIndex = dataString(doc.data, "mergeIndex") === "true";
   if (merge && !mergeIndex) continue;
@@ -398,11 +398,11 @@ if (existsSync(robotsPath)) {
 }
 
 if (failures.length) {
-  console.error("MiraDocs 静态产物检查失败：");
+  console.error("Folio 静态产物检查失败：");
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 
 console.log(
-  `MiraDocs static output passed: ${visibleRoutes.size} routes, complete article shells/Markdown rendering/canonical/JSON-LD/404/sitemap/robots/redirects verified.`,
+  `Folio static output passed: ${visibleRoutes.size} routes, complete article shells/Markdown rendering/canonical/JSON-LD/404/sitemap/robots/redirects verified.`,
 );

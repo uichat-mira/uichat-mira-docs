@@ -1,4 +1,4 @@
-import type { Doc } from "../content/mira-docs-adapter";
+import type { Doc } from "../content/folio-adapter";
 
 const appBase = import.meta.env.BASE_URL;
 const randomModulus = 2_147_483_647;
