@@ -23,6 +23,11 @@ import {
   aboutPrinciples,
   aboutProjects,
 } from "./src/content/about-landing";
+import {
+  MIRA_AUTHORS,
+  MIRA_AUTHOR_KEYS,
+  authorProfile,
+} from "./src/content/authors";
 
 const homeProductDescription =
   "UIChat Mira 是一个本地优先、桌面优先、多 Provider 的个人 AI 工作台，以聊天为入口，让模型、知识库、角色、Agent、MCP、工具与微应用在同一工作环境中协作。";
@@ -57,16 +62,21 @@ function dataList(data: Record<string, unknown>, key: string): string[] {
 }
 
 function authorName(value: string): string {
-  const normalized = value.trim().toLowerCase();
-  if (normalized === "tomz") return "Tomz Dang";
-  if (normalized === "mira") return "Mira";
-  return value;
+  return authorProfile(value)?.name ?? value;
 }
 
 function authorAvatar(name: string): string {
-  return name === "Mira"
-    ? "https://assets.tomz.io/images/1784065334968-image-20260715054214404.webp"
-    : "https://avatars.githubusercontent.com/u/20751798?s=160&v=4";
+  return authorProfile(name)?.avatar ?? MIRA_AUTHORS.tomz.avatar;
+}
+
+function staticSiteAuthors(): string {
+  const authors = MIRA_AUTHOR_KEYS
+    .map((key) => {
+      const author = MIRA_AUTHORS[key];
+      return `<article class="mira-site-author"><span class="folio-doc-meta__avatar mira-site-author__avatar" aria-hidden="true">${folioEscapeHtml(author.name.slice(0, 1))}<img alt="" loading="lazy" src="${author.avatar}" /></span><div><div class="mira-site-author__role">${folioEscapeHtml(author.roleLabel)}</div><h3>${folioEscapeHtml(author.name)}</h3><p>${folioEscapeHtml(author.bio)}</p></div></article>`;
+    })
+    .join("");
+  return `<section class="mira-site-authors" aria-labelledby="mira-site-authors-title"><div class="mira-site-authors__heading"><span>AUTHORS</span><h2 id="mira-site-authors-title">本站作者</h2></div><div class="mira-site-authors__grid">${authors}</div></section>`;
 }
 
 function staticDocs(docs: FolioDoc[]): StaticDoc[] {
@@ -76,7 +86,12 @@ function staticDocs(docs: FolioDoc[]): StaticDoc[] {
       ...doc,
       root: doc.path.split("/")[1] || "docs",
       source: doc.body,
-      authors: explicitAuthors.length ? explicitAuthors : ["Tomz Dang"],
+      authors:
+        dataString(doc.data, "writingMode") === "co-authored"
+          ? [MIRA_AUTHORS.tomz.name, MIRA_AUTHORS.mira.name]
+          : explicitAuthors.length
+            ? explicitAuthors
+            : [MIRA_AUTHORS.tomz.name],
       readTime:
         dataString(doc.data, "readTime") ||
         dataString(doc.data, "readtime") ||
@@ -280,15 +295,48 @@ function documentBody(
 }
 
 function articleToc(doc: StaticDoc): string {
-  const headings = doc.headings.filter((heading) => heading.depth === 2);
-  if (!headings.length) return "";
-  const items = headings
+  if (!doc.headings.length) return "";
+  const items = doc.headings
     .map(
       (heading) =>
-        `<li><a href="#${folioEscapeHtml(heading.id)}">${folioEscapeHtml(heading.text)}</a></li>`,
+        `<li class="folio-toc-depth-${heading.depth}"><a data-folio-toc-id="${folioEscapeHtml(heading.id)}" href="#${folioEscapeHtml(heading.id)}">${folioEscapeHtml(heading.text)}</a></li>`,
     )
     .join("");
-  return `<aside class="article-toc"><h5>本文目录</h5><ul>${items}</ul></aside>`;
+  return `<aside class="folio-toc" aria-label="本页目录"><h2>本文目录</h2><ul>${items}</ul></aside>`;
+}
+
+function articlePageNavigation(
+  previous: StaticDoc | undefined,
+  next: StaticDoc | undefined,
+  context: FolioStaticBuildContext,
+): string {
+  if (!previous && !next) return "";
+  const previousLink = previous
+    ? `<a class="folio-page-nav__previous" href="${docHref(previous.path, context)}"><span>上一篇</span><strong>${folioEscapeHtml(previous.title)}</strong></a>`
+    : "<span></span>";
+  const nextLink = next
+    ? `<a class="folio-page-nav__next" href="${docHref(next.path, context)}"><span>下一篇</span><strong>${folioEscapeHtml(next.title)}</strong></a>`
+    : "<span></span>";
+  return `<nav class="folio-page-nav" aria-label="博客文章分页">${previousLink}${nextLink}</nav>`;
+}
+
+function articleByline(doc: StaticDoc): string {
+  const authors = doc.authors
+    .map(
+      (name) =>
+        `<span class="folio-doc-meta__author"><span class="folio-doc-meta__avatar" aria-hidden="true">${folioEscapeHtml(name.slice(0, 1))}<img alt="" loading="lazy" src="${authorAvatar(name)}" /></span><span class="folio-doc-meta__name">${folioEscapeHtml(name)}</span></span>`,
+    )
+    .join("");
+  const details = [
+    doc.date
+      ? `<span class="folio-doc-meta__detail"><span class="folio-doc-meta__separator" aria-hidden="true">/</span><span>${folioEscapeHtml(doc.date)}</span></span>`
+      : "",
+    doc.readTime
+      ? `<span class="folio-doc-meta__detail"><span class="folio-doc-meta__separator" aria-hidden="true">/</span><span>${folioEscapeHtml(doc.readTime)}</span></span>`
+      : "",
+    `<span class="folio-doc-meta__detail"><span class="folio-doc-meta__separator" aria-hidden="true">/</span><span>${folioEscapeHtml(doc.group)}</span></span>`,
+  ].join("");
+  return `<div class="folio-doc-meta mira-article-byline" role="group" aria-label="文章信息">${authors}${details}</div>`;
 }
 
 function articleBody(
@@ -301,25 +349,13 @@ function articleBody(
     renderFolioMarkdown(doc.source, { removeH1: true }),
     context,
   );
-  const authors = doc.authors.join(" × ");
-  const meta = [authors, doc.date, doc.readTime, doc.group]
-    .filter(Boolean)
-    .map((item) => `<span>${folioEscapeHtml(String(item))}</span>`)
-    .join('<span class="dot"></span>');
-  const visual = doc.image
-    ? `<div aria-hidden="true" class="article-header-visual"><img alt="" class="article-header-visual-image" src="${imageUrl(doc, context)}" /></div>`
-    : "";
-  const authorAvatars = doc.authors
-    .map(
-      (name) =>
-        `<img alt="" class="author-signature-avatar" src="${authorAvatar(name)}" />`,
-    )
-    .join("");
-  const authorCountClass = doc.authors.length > 1 ? "duo" : "solo";
-  const main = `<main class="doc-main seo-static-content blog-post-page"><article class="article-header">${visual}<h1>${folioEscapeHtml(doc.title)}</h1>${doc.description ? `<p class="doc-lede">${folioEscapeHtml(doc.description)}</p>` : ""}<div class="post-meta post-meta-article">${meta}</div></article><div class="article-shell"><div class="article-body markdown blog-markdown">${body}<section class="author-signature author-signature-${authorCountClass}"><div class="author-signature-avatars author-signature-avatars-${doc.authors.length}">${authorAvatars}</div><div class="author-signature-copy"><h4>${folioEscapeHtml(authors)}</h4></div></section>${pageNavigation(previous, next, context)}</div>${articleToc(doc)}</div></main>`;
+  const articleMain = `<main class="folio-doc-page${doc.headings.length ? " folio-article-main" : ""}"><h1>${folioEscapeHtml(doc.title)}</h1>${doc.description ? `<p class="folio-lede">${folioEscapeHtml(doc.description)}</p>` : ""}${articleByline(doc)}<article class="folio-markdown">${body}</article>${staticSiteAuthors()}${articlePageNavigation(previous, next, context)}</main>`;
+  const reading = doc.headings.length
+    ? `<div class="folio-article-layout"><details class="folio-article-mobile-toc"><summary>本页目录</summary>${articleToc(doc)}</details>${articleMain}${articleToc(doc)}</div>`
+    : articleMain;
+  const main = `<div class="doc-main seo-static-content mira-folio-article"><div class="mira-folio-article__topline"><a class="mira-folio-article__back" href="${docHref("/blogs", context)}">← 返回博客</a></div>${reading}</div>`;
   return `${staticSiteHeader(context)}<div class="docs-app blog-app seo-static-docs-app"><div class="docs-shell blog-shell">${main}</div></div>`;
 }
-
 function areaBody(
   root: string,
   docs: StaticDoc[],

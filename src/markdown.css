@@ -25,12 +25,6 @@
 .md-custom-block p{margin-top:6px}
 .md-anchor{margin-left:8px;color:transparent!important;text-decoration:none!important;font:13px var(--font-mono)}
 .markdown h2:hover .md-anchor,.markdown h3:hover .md-anchor{color:var(--primary)!important}
-.blog-markdown h3{font-family:var(--font-sans);font-weight:600;font-size:17px;margin:28px 0 8px}
-.blog-markdown p{max-width:none}
-.blog-markdown img{display:block;width:100%;max-width:100%;height:auto}
-.blog-markdown blockquote{margin:28px 0;padding-left:20px;border-left:3px solid var(--primary);font-family:var(--font-display);font-size:21px;font-style:italic;color:var(--ink);max-width:56ch;background:none;border-radius:0}
-.blog-markdown .md-custom-block{background:var(--surface-soft);border-left:3px solid var(--accent-teal);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:14px 18px}
-.blog-markdown pre{padding:20px 22px;margin:20px 0 28px}
 .markdown-mermaid{width:100%;margin:24px 0;overflow-x:auto}
 .markdown-mermaid svg{display:block;max-width:100%;height:auto;margin:0 auto}
 .visual-html-frame{margin:32px -24px 48px;border:1px solid var(--hairline);border-radius:var(--r-lg);background:var(--surface-card);overflow:hidden}

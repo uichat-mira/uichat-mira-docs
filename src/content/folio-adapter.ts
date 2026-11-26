@@ -10,8 +10,8 @@ import {
   mobileLandingMeta,
   mobileLandingSearchText,
 } from "./mobile-landing";
+import type { AuthorKey } from "./authors";
 
-export type AuthorKey = "tomz" | "mira";
 export type WritingMode = "authored" | "co-authored";
 
 export const pageDirectories = folioRoots;

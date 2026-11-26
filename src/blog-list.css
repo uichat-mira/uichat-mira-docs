@@ -162,3 +162,7 @@
 @keyframes blog-atom-a{0%,100%{transform:rotate(0deg)}50%{transform:rotate(11deg)}}
 @keyframes blog-atom-b{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(15deg)}}
 @keyframes blog-atom-c{0%,100%{transform:rotate(2deg)}50%{transform:rotate(-13deg)}}
+
+/* Blog index metadata belongs to the listing surface, not article detail. */
+.post-meta{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin-bottom:12px;flex-wrap:wrap}
+.post-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--muted-soft)}
