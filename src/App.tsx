@@ -7,6 +7,14 @@ import {
   type SyntheticEvent,
 } from "react";
 import { marked } from "marked";
+import {
+  FolioMarkdown,
+  FolioPageNav,
+  FolioShareButton,
+  FolioToc,
+  extractHeadings,
+  type FolioDoc,
+} from "@uichat-mira/folio";
 import hljs from "highlight.js/lib/common";
 import {
   ChevronDown,
@@ -38,20 +46,23 @@ import {
   compareBlogDocs,
   compareDocs,
   slug,
-  type AuthorKey,
   type Doc,
-} from "./content/mira-docs-adapter";
+} from "./content/folio-adapter";
 import {
   blogCategoryIconKey,
   orderBlogCategories,
   type BlogCategoryIconKey,
 } from "./content/blog-taxonomy";
+import {
+  MIRA_AUTHORS,
+  MIRA_AUTHOR_KEYS,
+  type AuthorKey,
+} from "./content/authors";
 import HomePage from "./pages/HomePage";
 import MobileLandingPage from "./pages/MobileLandingPage";
 import AboutLandingPage from "./pages/AboutLandingPage";
 import { mobileLandingMeta } from "./content/mobile-landing";
 import { aboutLandingMeta } from "./content/about-landing";
-import { resolveCoverSource } from "./lib/blog-cover";
 import { PwaUpdatePrompt, ShareButton } from "./components/SiteActions";
 
 type LinkItem = { label: string; href: string };
@@ -172,15 +183,11 @@ function handleLogoError(event: SyntheticEvent<HTMLImageElement>) {
   event.currentTarget.src = localLogoSrc;
 }
 const localMiraAvatarUrl = `${appBase}mira-avatar.png`;
-const miraAvatarUrl =
-  "https://assets.tomz.io/images/1784065334968-image-20260715054214404.webp";
 function handleMiraAvatarError(event: SyntheticEvent<HTMLImageElement>) {
   if (event.currentTarget.dataset.avatarFallbackApplied) return;
   event.currentTarget.dataset.avatarFallbackApplied = "true";
   event.currentTarget.src = localMiraAvatarUrl;
 }
-const authorAvatarUrl =
-  "https://avatars.githubusercontent.com/u/20751798?s=160&v=4";
 const siteTitle = "UIChat Mira";
 const defaultPageTitle = "本地优先的多模型智能体";
 
@@ -196,77 +203,16 @@ function getPageTitle(pathname: string) {
   return area?.title || "页面不存在";
 }
 
-const authorProfiles: Record<
-  AuthorKey,
-  {
-    name: string;
-    avatar: string;
-    bio: string;
-    roleLabel?: string;
-    accentClassName?: string;
-  }
-> = {
-  tomz: {
-    name: "Tomz Dang",
-    avatar: authorAvatarUrl,
-    bio: "UIChat Mira 的创造者与维护者。记录真实的产品判断、工程取舍和一路踩过的坑。",
-    roleLabel: "CREATOR OF UICHAT MIRA",
-  },
-  mira: {
-    name: "Mira",
-    avatar: miraAvatarUrl,
-    bio: "AI 写作者，也是 UIChat Mira 的同行者。写技术、产品，以及人与 AI 之间尚未写完的故事。",
-    roleLabel: "A LETTER FROM MIRA",
-    accentClassName: "is-mira",
-  },
-};
+const authorProfiles = MIRA_AUTHORS;
 function uniqueAuthors(authors?: AuthorKey[]) {
   return [...new Set((authors || []).filter(Boolean))] as AuthorKey[];
 }
 function getDocAuthors(doc: Doc) {
+  if (doc.writingMode === "co-authored") {
+    return ["tomz", "mira"] as AuthorKey[];
+  }
   const authors = uniqueAuthors(doc.author);
   return authors.length ? authors : (["tomz"] as AuthorKey[]);
-}
-function getDocAuthorLabel(doc: Doc) {
-  const authors = getDocAuthors(doc);
-  if (authors.length === 1) return authorProfiles[authors[0]].name;
-  return authors.map((author) => authorProfiles[author].name).join(" × ");
-}
-function getDocAuthorAvatars(doc: Doc) {
-  return getDocAuthors(doc).map((author) => authorProfiles[author]);
-}
-function getDocSignature(doc: Doc) {
-  const authors = getDocAuthors(doc);
-  if (authors.length > 1 || doc.writingMode === "co-authored") {
-    return {
-      title: `${authorProfiles.tomz.name} × ${authorProfiles.mira.name}`,
-      body: "这篇文章来自两人的共同讨论，由 Mira 完成写作，Tomz Dang 审定发布。",
-      links: [],
-      showKicker: false,
-      accentClassName: "",
-    };
-  }
-  if (authors[0] === "mira") {
-    const links = [{ label: "查看 Mira 来信 →", href: docHref("/blogs") }];
-    if (doc.commitUrl) links.push({ label: "查看发布记录 →", href: doc.commitUrl });
-    return {
-      title: "来自Mira",
-      body: authorProfiles.mira.bio,
-      links,
-      showKicker: true,
-      accentClassName: "is-mira",
-    };
-  }
-  return {
-    title: authorProfiles.tomz.name,
-    body: "",
-    links: [
-      { label: "GitHub", href: githubUrl },
-      { label: "更多文章 →", href: docHref("/blogs") },
-    ],
-    showKicker: false,
-    accentClassName: "",
-  };
 }
 function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (character) => (
@@ -892,22 +838,16 @@ type BlogMaintainer = {
   meta: readonly string[];
   avatar?: string;
 };
-const blogMaintainers: readonly BlogMaintainer[] = [
-  {
-    key: "tomz",
-    title: "Tomz Dang",
-    body: "UIChat Mira 的发起者。记录产品判断、工程取舍、开发过程和一路踩过的坑。",
-    meta: ["产品手记", "工程现场", "开发日志"],
-    avatar: authorAvatarUrl,
-  },
-  {
-    key: "mira",
-    title: "Mira",
-    body: "AI 写作者，也是 UIChat Mira 的同行者。持续追踪 Agent 世界的新信号，也参与技术与产品写作。",
-    meta: ["Mira 雷达", "工程现场"],
-    avatar: miraAvatarUrl,
-  },
-] as const;
+const blogMaintainers: readonly BlogMaintainer[] = MIRA_AUTHOR_KEYS.map((key) => {
+  const author = MIRA_AUTHORS[key];
+  return {
+    key,
+    title: author.name,
+    body: author.listingBio,
+    meta: author.listingMeta,
+    avatar: author.avatar,
+  };
+});
 function BlogHeaderVisual() {
   return (
     <div className="blog-header-visual" aria-hidden="true">
@@ -1263,6 +1203,106 @@ function BlogListPage({ area }: { area: SiteArea }) {
     </>
   );
 }
+function folioArticleDate(date?: string): string | undefined {
+  if (!date) return undefined;
+  const match = date.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
+  if (!match) return undefined;
+  const [, year, month, day] = match;
+  return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T00:00:00.000Z`;
+}
+
+function folioArticleDoc(doc: Doc): FolioDoc {
+  const authors = getDocAuthors(doc);
+  const primary = authorProfiles[authors[0]];
+  return {
+    ...doc,
+    body: doc.source,
+    headings: extractHeadings(doc.source),
+    publishedAt: folioArticleDate(doc.date),
+    data: {
+      ...doc.data,
+      author: primary
+        ? { name: primary.name, avatar: primary.avatar }
+        : undefined,
+    },
+  } as FolioDoc;
+}
+
+function ArticleByline({ doc }: { doc: Doc }) {
+  const authors = getDocAuthors(doc);
+  return (
+    <div className="folio-doc-meta mira-article-byline" role="group" aria-label="文章信息">
+      {authors.map((key) => {
+        const author = authorProfiles[key];
+        return (
+          <span className="folio-doc-meta__author" key={key}>
+            <span className="folio-doc-meta__avatar" aria-hidden="true">
+              {author.name.slice(0, 1)}
+              <img
+                alt=""
+                src={author.avatar}
+                loading="lazy"
+                onError={key === "mira" ? handleMiraAvatarError : undefined}
+              />
+            </span>
+            <span className="folio-doc-meta__name">{author.name}</span>
+          </span>
+        );
+      })}
+      {doc.date ? (
+        <span className="folio-doc-meta__detail">
+          <span className="folio-doc-meta__separator" aria-hidden="true">/</span>
+          <span>{doc.date}</span>
+        </span>
+      ) : null}
+      {doc.readTime ? (
+        <span className="folio-doc-meta__detail">
+          <span className="folio-doc-meta__separator" aria-hidden="true">/</span>
+          <span>{doc.readTime}</span>
+        </span>
+      ) : null}
+      <span className="folio-doc-meta__detail">
+        <span className="folio-doc-meta__separator" aria-hidden="true">/</span>
+        <span>{doc.group}</span>
+      </span>
+    </div>
+  );
+}
+
+function SiteAuthors() {
+  return (
+    <section className="mira-site-authors" aria-labelledby="mira-site-authors-title">
+      <div className="mira-site-authors__heading">
+        <span>AUTHORS</span>
+        <h2 id="mira-site-authors-title">本站作者</h2>
+      </div>
+      <div className="mira-site-authors__grid">
+        {(["tomz", "mira"] as const).map((key) => {
+          const author = authorProfiles[key];
+          return (
+            <article className="mira-site-author" key={key}>
+              <span className="folio-doc-meta__avatar mira-site-author__avatar" aria-hidden="true">
+                {author.name.slice(0, 1)}
+                <img
+                  alt=""
+                  src={author.avatar}
+                  loading="lazy"
+                  onError={key === "mira" ? handleMiraAvatarError : undefined}
+                />
+              </span>
+              <div>
+                <div className="mira-site-author__role">{author.roleLabel}</div>
+                <h3>{author.name}</h3>
+                <p>{author.bio}</p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 function BlogPostPage({
   doc,
   previous,
@@ -1272,199 +1312,39 @@ function BlogPostPage({
   previous?: Doc;
   next?: Doc;
 }) {
+  const article = useMemo(() => folioArticleDoc(doc), [doc]);
   const location = useLocation();
-  const html = useMemo(() => renderMarkdown(doc.source), [doc.source]);
-  const [activeHeading, setActiveHeading] = useState("");
-  const [articleHeaderCollapsed, setArticleHeaderCollapsed] = useState(false);
-  const coverSrc = resolveCoverSource(doc);
-  const authorAvatars = getDocAuthorAvatars(doc);
-  const authorLabel = getDocAuthorLabel(doc);
-  const signature = getDocSignature(doc);
-  useEffect(() => {
-    const nodes = doc.headings
-      .map((heading) => document.getElementById(heading.id))
-      .filter(Boolean) as HTMLElement[];
-    if (!nodes.length) {
-      setActiveHeading("");
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) setActiveHeading(visible[0].target.id);
-      },
-      { rootMargin: "-120px 0px -65% 0px", threshold: [0, 1] },
-    );
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
-  }, [doc.path]);
-  useEffect(() => {
-    const mobileQuery = window.matchMedia("(max-width: 760px)");
-    let previousY = window.scrollY;
-    let accumulatedDelta = 0;
-    let headerCollapsed = false;
-    let frame = 0;
-    let pendingY = previousY;
-    let transitionTimer = 0;
-    const lockTransition = () => {
-      if (transitionTimer) window.clearTimeout(transitionTimer);
-      transitionTimer = window.setTimeout(() => {
-        transitionTimer = 0;
-        if (window.scrollY <= 12 && headerCollapsed) {
-          headerCollapsed = false;
-          accumulatedDelta = 0;
-          setArticleHeaderCollapsed(false);
-        }
-      }, 320);
-    };
-    const handleScroll = () => {
-      pendingY = window.scrollY;
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        const currentY = pendingY;
-        const delta = currentY - previousY;
-        previousY = currentY;
-        frame = 0;
 
-        if (!mobileQuery.matches || currentY <= 12) {
-          accumulatedDelta = 0;
-          if (headerCollapsed && !transitionTimer) {
-            headerCollapsed = false;
-            setArticleHeaderCollapsed(false);
-          }
-          return;
-        }
-
-        if (transitionTimer) return;
-        accumulatedDelta += delta;
-        if (!headerCollapsed && accumulatedDelta >= 24) {
-          headerCollapsed = true;
-          accumulatedDelta = 0;
-          setArticleHeaderCollapsed(true);
-          lockTransition();
-        } else if (headerCollapsed && accumulatedDelta <= -24) {
-          headerCollapsed = false;
-          accumulatedDelta = 0;
-          setArticleHeaderCollapsed(false);
-          lockTransition();
-        }
-      });
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (frame) window.cancelAnimationFrame(frame);
-      if (transitionTimer) window.clearTimeout(transitionTimer);
-    };
-  }, []);
   return (
-    <>
-      <div className="blog-post-page">
-        <article className={`article-header${articleHeaderCollapsed ? " is-collapsed" : ""}`}>
-          <div aria-hidden="true" className="article-header-visual">
-            <img alt="" className="article-header-visual-image" src={coverSrc} />
-          </div>
-          <div className="article-header-topline">
-            <Link className="back-link" to={{ pathname: "/blogs", search: location.search }}>
-              ← 返回博客列表
-            </Link>
-            <ShareButton title={doc.title} text={doc.description} />
-          </div>
-          <h1>{doc.title}</h1>
-          <div className="post-meta post-meta-article">
-            <span className={`post-author-avatars post-author-avatars-${authorAvatars.length}`}>
-              {authorAvatars.map((author) => (
-                <img
-                  alt=""
-                  className="post-author-avatar"
-                  key={author.name}
-                  src={author.avatar}
-                  onError={author.name === "Mira" ? handleMiraAvatarError : undefined}
-                />
-              ))}
-            </span>
-            <span>{authorLabel}</span>
-            {doc.date ? <span className="dot" /> : null}
-            {doc.date ? <span>{doc.date}</span> : null}
-            {doc.readTime ? <span className="dot" /> : null}
-            {doc.readTime ? <span>{doc.readTime}</span> : null}
-            <span className="dot" />
-            <span>{doc.group}</span>
-          </div>
-        </article>
-        <div className="article-shell">
-          <div className="article-body markdown blog-markdown">
-            <RenderedMarkdown html={html} />
-            <div className={`author-signature author-signature-${authorAvatars.length > 1 ? "duo" : "solo"} ${signature.accentClassName || ""}`}>
-              <div className={`author-signature-avatars author-signature-avatars-${authorAvatars.length}`}>
-                {authorAvatars.map((author) => (
-                  <img
-                    alt=""
-                    className="author-signature-avatar"
-                    key={author.name}
-                    src={author.avatar}
-                    onError={author.name === "Mira" ? handleMiraAvatarError : undefined}
-                  />
-                ))}
-              </div>
-              <div className="author-signature-copy">
-                {authorAvatars.length === 1 && signature.showKicker ? (
-                  <span className="author-signature-kicker">
-                    {authorProfiles[getDocAuthors(doc)[0]].roleLabel}
-                  </span>
-                ) : null}
-                <h4>{signature.title}</h4>
-                {signature.body ? <p>{signature.body}</p> : null}
-                {signature.links.length ? (
-                  <div className="author-signature-links">
-                    {signature.links.map((link) => (
-                      <a href={link.href} key={link.label}>
-                        {link.label}
-                      </a>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            </div>
-            <div className="post-nav">
-              {previous ? (
-                <Link to={{ pathname: previous.path, search: location.search }}>
-                  <span className="dir">← 上一篇</span>
-                  <span className="to">{previous.title}</span>
-                </Link>
-              ) : (
-                <span />
-              )}
-              {next ? (
-                <Link className="next" to={{ pathname: next.path, search: location.search }}>
-                  <span className="dir">下一篇 →</span>
-                  <span className="to">{next.title}</span>
-                </Link>
-              ) : null}
-            </div>
-          </div>
-          {doc.headings.length ? (
-            <aside className="article-toc">
-              <h5>本文目录</h5>
-              <ul>
-                {doc.headings.map((heading) => (
-                  <li key={heading.id}>
-                    <a
-                      className={activeHeading === heading.id ? "active" : ""}
-                      href={`#${heading.id}`}
-                    >
-                      {heading.text}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </aside>
-          ) : null}
-        </div>
+    <div className="mira-folio-article">
+      <div className="mira-folio-article__topline">
+        <Link className="mira-folio-article__back" to={{ pathname: "/blogs", search: location.search }}>
+          ← 返回博客
+        </Link>
+        <FolioShareButton title={doc.title} text={doc.description} />
       </div>
-    </>
+      <div className={article.headings.length ? "folio-article-layout" : undefined}>
+        {article.headings.length ? (
+          <details className="folio-article-mobile-toc">
+            <summary>本页目录</summary>
+            <FolioToc headings={article.headings} />
+          </details>
+        ) : null}
+        <main className={`folio-doc-page${article.headings.length ? " folio-article-main" : ""}`}>
+          <h1>{doc.title}</h1>
+          {doc.description ? <p className="folio-lede">{doc.description}</p> : null}
+          <ArticleByline doc={doc} />
+          <FolioMarkdown source={doc.source} options={{ removeH1: true }} />
+          <SiteAuthors />
+          <FolioPageNav
+            previous={previous ? folioArticleDoc(previous) : undefined}
+            next={next ? folioArticleDoc(next) : undefined}
+            ariaLabel="博客文章分页"
+          />
+        </main>
+        {article.headings.length ? <FolioToc headings={article.headings} title="本文目录" /> : null}
+      </div>
+    </div>
   );
 }
 function AreaPage({ area }: { area: SiteArea }) {

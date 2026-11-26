@@ -13,6 +13,7 @@ import "@fontsource/jetbrains-mono/400.css";
 import "@fontsource/jetbrains-mono/500.css";
 import App from "./App";
 import ReleaseDownloadEnhancer from "./components/ReleaseDownloadEnhancer";
+import "@uichat-mira/folio/styles.css";
 import "./claude.theme.css";
 import "./tailwind.css";
 import "./styles.css";

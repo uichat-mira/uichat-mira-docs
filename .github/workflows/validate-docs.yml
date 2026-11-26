@@ -43,8 +43,8 @@ jobs:
       - name: Test comic image pipeline
         run: pnpm run comic:test
 
-      - name: Verify MiraDocs content compatibility
-        run: pnpm run verify:mira-docs
+      - name: Verify Folio content compatibility
+        run: pnpm run verify:folio
 
       - name: Test current-status freshness semantics
         run: node --test scripts/verify-current-status.test.mjs

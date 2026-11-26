@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { ArrowUpRight, Download, GitBranch } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CoreCapabilities, type CapabilityItem } from "../CoreCapabilities";
-import { allDocs, compareBlogDocs } from "../content/mira-docs-adapter";
+import { allDocs, compareBlogDocs } from "../content/folio-adapter";
 
 const appBase = import.meta.env.BASE_URL;
 const desktopRepoUrl = "https://github.com/uichat-mira/mira-desktop";

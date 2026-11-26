@@ -1,20 +1,20 @@
 import {
   extractHeadings,
-  type MiraDoc,
-  type MiraHeading,
-} from "@uichat-mira/docs";
-import miraDocsContent, {
-  roots as miraDocsRoots,
-} from "virtual:mira-docs/content";
+  type FolioDoc,
+  type FolioHeading,
+} from "@uichat-mira/folio";
+import folioContent, {
+  roots as folioRoots,
+} from "virtual:folio/content";
 import {
   mobileLandingMeta,
   mobileLandingSearchText,
 } from "./mobile-landing";
+import type { AuthorKey } from "./authors";
 
-export type AuthorKey = "tomz" | "mira";
 export type WritingMode = "authored" | "co-authored";
 
-export const pageDirectories = miraDocsRoots;
+export const pageDirectories = folioRoots;
 
 export function slug(value: string): string {
   return value
@@ -24,7 +24,7 @@ export function slug(value: string): string {
     .toLowerCase();
 }
 
-export type Doc = Omit<MiraDoc, "body" | "headings" | "path"> & {
+export type Doc = Omit<FolioDoc, "body" | "headings" | "path"> & {
   path: string;
   readTime?: string;
   source: string;
@@ -122,23 +122,23 @@ function inferDocAuthors(
 }
 
 function legacyLevelTwoHeadings(source: string): Doc["headings"] {
-  const headings: MiraHeading[] = extractHeadings(source);
+  const headings: FolioHeading[] = extractHeadings(source);
   const seen = new Set<string>();
   return headings
-    .filter((heading: MiraHeading) => heading.depth === 2)
-    .filter((heading: MiraHeading) => {
+    .filter((heading: FolioHeading) => heading.depth === 2)
+    .filter((heading: FolioHeading) => {
       const id = slug(heading.text);
       if (!id || seen.has(id)) return false;
       seen.add(id);
       return true;
     })
-    .map((heading: MiraHeading) => ({
+    .map((heading: FolioHeading) => ({
       text: heading.text,
       id: slug(heading.text),
     }));
 }
 
-function adaptSiteDoc(core: MiraDoc): Doc {
+function adaptSiteDoc(core: FolioDoc): Doc {
   const root = core.sourcePath.split("/")[0] || "docs";
   const prefix = `${root}/`;
   const relativePath = (
@@ -227,7 +227,7 @@ const specialDocs = [
 ];
 
 const parsedDocs = [
-  ...(miraDocsContent as MiraDoc[]).map(adaptSiteDoc),
+  ...(folioContent as FolioDoc[]).map(adaptSiteDoc),
   ...specialDocs,
 ];
 

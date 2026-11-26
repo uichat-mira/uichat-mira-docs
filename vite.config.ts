@@ -2,8 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
-import { miraDocs } from "@uichat-mira/docs/vite";
-import { miraDocsStaticBuild } from "./mira-docs-static";
+import { folio } from "@uichat-mira/folio/vite";
+import { folioStaticBuild } from "./folio-static";
 import { blogTaxonomyCheck } from "./scripts/blog-taxonomy-check";
 import { seo as seoConfig, siteUrl } from "./src/site.config";
 
@@ -23,14 +23,14 @@ export default defineConfig(({ mode }) => {
       port: 5174,
     },
     plugins: [
-      miraDocs({
+      folio({
         contentDir: "src/pages",
         config: {
           title: "UIChat Mira",
           description: productDescription,
           siteUrl,
         },
-        staticRoutes: seoConfig.enabled ? miraDocsStaticBuild : false,
+        staticRoutes: seoConfig.enabled ? folioStaticBuild : false,
         exclude: (sourcePath) => /(^|\/)README\.md$/i.test(sourcePath),
         route: (_sourcePath, doc) => doc.path || "/",
       }),

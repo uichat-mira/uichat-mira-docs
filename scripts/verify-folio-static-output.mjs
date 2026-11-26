@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { relative, resolve } from "node:path";
 import { verifyBlogFeed } from "./blog-feed.mjs";
-import { parseMiraDoc } from "@uichat-mira/docs";
+import { parseFolioDoc } from "@uichat-mira/folio";
 
 const root = process.cwd();
 const pagesRoot = resolve(root, "src/pages");
@@ -70,7 +70,7 @@ const visibleRoutes = new Set(["/"]);
 const docsByRoute = new Map();
 for (const file of markdownFiles(pagesRoot)) {
   const sourcePath = relative(pagesRoot, file).replace(/\\/g, "/");
-  const doc = parseMiraDoc(sourcePath, readFileSync(file, "utf8"));
+  const doc = parseFolioDoc(sourcePath, readFileSync(file, "utf8"));
   const merge = dataString(doc.data, "merge");
   const mergeIndex = dataString(doc.data, "mergeIndex") === "true";
   if (merge && !mergeIndex) continue;
@@ -339,14 +339,17 @@ if (blogEntry) {
   const file = routeFile(route);
   if (existsSync(file)) {
     const html = readFileSync(file, "utf8");
-    if (!html.includes('class="article-header"')) {
-      failures.push(`博客静态页缺少文章头: ${route}`);
+    if (!html.includes('class="folio-doc-page folio-article-main"')) {
+      failures.push(`博客静态页未使用 Folio 原生文章阅读壳: ${route}`);
     }
-    if (!html.includes("post-meta post-meta-article")) {
-      failures.push(`博客静态页缺少作者、日期和分类信息: ${route}`);
+    if (!html.includes("folio-doc-meta mira-article-byline")) {
+      failures.push(`博客静态页缺少文章署名信息: ${route}`);
     }
-    if (!html.includes("author-signature")) {
-      failures.push(`博客静态页缺少作者署名区: ${route}`);
+    if (!html.includes("mira-site-authors")) {
+      failures.push(`博客静态页缺少本站作者介绍: ${route}`);
+    }
+    if (!html.includes("Tomz Dang") || !html.includes(">Mira<")) {
+      failures.push(`博客静态页没有同时保留 Tomz Dang 与 Mira: ${route}`);
     }
     if (!html.includes('class="top-nav docs-header seo-static-header"')) {
       failures.push(`博客静态页缺少站点导航: ${route}`);
@@ -398,11 +401,11 @@ if (existsSync(robotsPath)) {
 }
 
 if (failures.length) {
-  console.error("MiraDocs 静态产物检查失败：");
+  console.error("Folio 静态产物检查失败：");
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 
 console.log(
-  `MiraDocs static output passed: ${visibleRoutes.size} routes, complete article shells/Markdown rendering/canonical/JSON-LD/404/sitemap/robots/redirects verified.`,
+  `Folio static output passed: ${visibleRoutes.size} routes, complete article shells/Markdown rendering/canonical/JSON-LD/404/sitemap/robots/redirects verified.`,
 );

@@ -1,4 +1,4 @@
 allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:
-  - '@uichat-mira/docs'
+  - '@uichat-mira/folio'

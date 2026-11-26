@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { relative, resolve } from "node:path";
-import { parseMiraDoc } from "@uichat-mira/docs";
+import { parseFolioDoc } from "@uichat-mira/folio";
 
 const contentRoot = resolve(process.cwd(), "src/pages");
 
@@ -30,7 +30,7 @@ for (const file of files) {
   const raw = readFileSync(file, "utf8");
 
   try {
-    const doc = parseMiraDoc(sourcePath, raw);
+    const doc = parseFolioDoc(sourcePath, raw);
     const route = routeForSource(sourcePath);
     if (sourcePath.startsWith("docs/")) {
       failures.push(`旧 docs 物理根仍存在: ${sourcePath}`);
@@ -63,7 +63,7 @@ if (files.length === 0) {
 }
 
 if (failures.length > 0) {
-  console.error("MiraDocs 兼容检查失败：");
+  console.error("Folio 内容兼容检查失败：");
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
@@ -74,5 +74,5 @@ const summary = [...counts.entries()]
   .join(", ");
 
 console.log(
-  `MiraDocs compatibility passed: ${files.length} files, ${routes.size} routes (${summary}).`,
+  `Folio compatibility passed: ${files.length} files, ${routes.size} routes (${summary}).`,
 );

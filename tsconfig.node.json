@@ -11,11 +11,12 @@
   },
   "include": [
     "vite.config.ts",
-    "mira-docs-static.ts",
+    "folio-static.ts",
     "scripts/blog-taxonomy-check.ts",
     "src/content/blog-taxonomy.ts",
     "src/content/mobile-landing.ts",
     "src/content/about-landing.ts",
+    "src/content/authors.ts",
     "src/site.config.ts"
   ]
 }
